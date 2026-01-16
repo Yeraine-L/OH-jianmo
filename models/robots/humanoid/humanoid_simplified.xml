@@ -1,0 +1,207 @@
+<mujoco model="humanoid_simplified">
+  <!-- 简化人形机器人模型 -->
+  <!-- 适用于基本步态和平衡测试 -->
+
+  <compiler angle="degree" coordinate="local" inertiafromgeom="true"/>
+
+  <option timestep="0.001" gravity="0 0 -9.81" iterations="50"/>
+
+  <asset>
+    <!-- 人形机器人材质 -->
+    <material name="robot_body" rgba="0.7 0.7 0.7 1"
+              specular="0.4" shininess="0.2"/>
+    <material name="robot_joint" rgba="0.3 0.3 0.4 1"
+              specular="0.5" shininess="0.3"/>
+  </asset>
+
+  <worldbody>
+    <!-- 人形机器人主体 -->
+    <body name="pelvis" pos="0 0 1.0">
+      <!-- 自由浮动基座 (6DOF) -->
+      <freejoint name="root"/>
+
+      <!-- 骨盆 -->
+      <geom name="pelvis_geom" type="capsule" size="0.08"
+            fromto="0 -0.1 0 0 0.1 0" material="robot_body" mass="5"/>
+
+      <!-- 躯干 -->
+      <body name="torso" pos="0 0 0.15">
+        <joint name="torso_joint" type="hinge" axis="1 0 0"
+               range="-30 30" damping="5" armature="0.1"/>
+        <geom name="torso_geom" type="capsule" size="0.1"
+              fromto="0 0 0 0 0 0.4" material="robot_body" mass="10"/>
+
+        <!-- 头部 -->
+        <body name="head" pos="0 0 0.5">
+          <joint name="neck_joint" type="ball" damping="2" armature="0.05"/>
+          <geom name="head_geom" type="sphere" size="0.12"
+                material="robot_body" mass="3"/>
+
+          <!-- 相机位置（传感器用） -->
+          <site name="head_camera" pos="0.08 0 0" size="0.01"
+                rgba="0 0 1 0.5"/>
+        </body>
+
+        <!-- 右臂 -->
+        <body name="right_upper_arm" pos="0 -0.18 0.3" euler="0 0 -20">
+          <joint name="right_shoulder" type="ball" damping="2" armature="0.05"/>
+          <geom name="right_upper_arm_geom" type="capsule" size="0.04"
+                fromto="0 0 0 0 0 -0.25" material="robot_body" mass="1.5"/>
+
+          <!-- 右前臂 -->
+          <body name="right_forearm" pos="0 0 -0.25">
+            <joint name="right_elbow" type="hinge" axis="1 0 0"
+                   range="0 150" damping="1" armature="0.03"/>
+            <geom name="right_forearm_geom" type="capsule" size="0.035"
+                  fromto="0 0 0 0 0 -0.22" material="robot_body" mass="1"/>
+
+            <!-- 右手 -->
+            <body name="right_hand" pos="0 0 -0.22">
+              <joint name="right_wrist" type="ball" damping="0.5" armature="0.01"/>
+              <geom name="right_hand_geom" type="box" size="0.04 0.06 0.02"
+                    material="robot_joint" mass="0.3"/>
+            </body>
+          </body>
+        </body>
+
+        <!-- 左臂 (镜像) -->
+        <body name="left_upper_arm" pos="0 0.18 0.3" euler="0 0 20">
+          <joint name="left_shoulder" type="ball" damping="2" armature="0.05"/>
+          <geom name="left_upper_arm_geom" type="capsule" size="0.04"
+                fromto="0 0 0 0 0 -0.25" material="robot_body" mass="1.5"/>
+
+          <body name="left_forearm" pos="0 0 -0.25">
+            <joint name="left_elbow" type="hinge" axis="1 0 0"
+                   range="0 150" damping="1" armature="0.03"/>
+            <geom name="left_forearm_geom" type="capsule" size="0.035"
+                  fromto="0 0 0 0 0 -0.22" material="robot_body" mass="1"/>
+
+            <body name="left_hand" pos="0 0 -0.22">
+              <joint name="left_wrist" type="ball" damping="0.5" armature="0.01"/>
+              <geom name="left_hand_geom" type="box" size="0.04 0.06 0.02"
+                    material="robot_joint" mass="0.3"/>
+            </body>
+          </body>
+        </body>
+      </body>
+
+      <!-- 右腿 -->
+      <body name="right_thigh" pos="0 -0.1 -0.05">
+        <joint name="right_hip" type="ball" damping="3" armature="0.08"/>
+        <geom name="right_thigh_geom" type="capsule" size="0.06"
+              fromto="0 0 0 0 0 -0.35" material="robot_body" mass="4"/>
+
+        <!-- 右小腿 -->
+        <body name="right_shin" pos="0 0 -0.35">
+          <joint name="right_knee" type="hinge" axis="1 0 0"
+                 range="-150 0" damping="2" armature="0.05"/>
+          <geom name="right_shin_geom" type="capsule" size="0.05"
+                fromto="0 0 0 0 0 -0.35" material="robot_body" mass="2.5"/>
+
+          <!-- 右脚 -->
+          <body name="right_foot" pos="0 0 -0.35">
+            <joint name="right_ankle" type="ball" damping="1" armature="0.03"/>
+            <geom name="right_foot_geom" type="box" size="0.08 0.05 0.02"
+                  pos="0.04 0 -0.02" material="robot_joint" mass="0.8"
+                  friction="1.2 0.6 0.01"/>
+
+            <!-- 脚底传感器位置 -->
+            <site name="right_foot_sensor" pos="0.04 0 -0.04"
+                  size="0.01" rgba="1 0 0 0.5"/>
+          </body>
+        </body>
+      </body>
+
+      <!-- 左腿 (镜像) -->
+      <body name="left_thigh" pos="0 0.1 -0.05">
+        <joint name="left_hip" type="ball" damping="3" armature="0.08"/>
+        <geom name="left_thigh_geom" type="capsule" size="0.06"
+              fromto="0 0 0 0 0 -0.35" material="robot_body" mass="4"/>
+
+        <body name="left_shin" pos="0 0 -0.35">
+          <joint name="left_knee" type="hinge" axis="1 0 0"
+                 range="-150 0" damping="2" armature="0.05"/>
+          <geom name="left_shin_geom" type="capsule" size="0.05"
+                fromto="0 0 0 0 0 -0.35" material="robot_body" mass="2.5"/>
+
+          <body name="left_foot" pos="0 0 -0.35">
+            <joint name="left_ankle" type="ball" damping="1" armature="0.03"/>
+            <geom name="left_foot_geom" type="box" size="0.08 0.05 0.02"
+                  pos="0.04 0 -0.02" material="robot_joint" mass="0.8"
+                  friction="1.2 0.6 0.01"/>
+
+            <site name="left_foot_sensor" pos="0.04 0 -0.04"
+                  size="0.01" rgba="1 0 0 0.5"/>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <!-- 执行器配置 -->
+  <actuator>
+    <!-- 躯干控制 -->
+    <motor name="torso" joint="torso_joint" gear="100"
+           ctrllimited="true" ctrlrange="-1 1"/>
+
+    <!-- 右腿执行器 -->
+    <motor name="right_hip_x" joint="right_hip" gear="120"
+           ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="right_knee" joint="right_knee" gear="100"
+           ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="right_ankle" joint="right_ankle" gear="80"
+           ctrllimited="true" ctrlrange="-1 1"/>
+
+    <!-- 左腿执行器 -->
+    <motor name="left_hip_x" joint="left_hip" gear="120"
+           ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="left_knee" joint="left_knee" gear="100"
+           ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="left_ankle" joint="left_ankle" gear="80"
+           ctrllimited="true" ctrlrange="-1 1"/>
+
+    <!-- 右臂执行器 -->
+    <motor name="right_shoulder" joint="right_shoulder" gear="80"
+           ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="right_elbow" joint="right_elbow" gear="60"
+           ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="right_wrist" joint="right_wrist" gear="40"
+           ctrllimited="true" ctrlrange="-1 1"/>
+
+    <!-- 左臂执行器 -->
+    <motor name="left_shoulder" joint="left_shoulder" gear="80"
+           ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="left_elbow" joint="left_elbow" gear="60"
+           ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="left_wrist" joint="left_wrist" gear="40"
+           ctrllimited="true" ctrlrange="-1 1"/>
+
+    <!-- 头部执行器 -->
+    <motor name="neck" joint="neck_joint" gear="30"
+           ctrllimited="true" ctrlrange="-1 1"/>
+  </actuator>
+
+  <!-- 传感器配置 -->
+  <sensor>
+    <!-- IMU (惯性测量单元) -->
+    <accelerometer name="pelvis_accel" site="head_camera"/>
+    <gyro name="pelvis_gyro" site="head_camera"/>
+    <framequat name="pelvis_quat" objtype="body" objname="pelvis"/>
+
+    <!-- 脚底力传感器 -->
+    <force name="right_foot_force" site="right_foot_sensor"/>
+    <force name="left_foot_force" site="left_foot_sensor"/>
+
+    <!-- 关节位置传感器 -->
+    <jointpos name="right_hip_pos" joint="right_hip"/>
+    <jointpos name="right_knee_pos" joint="right_knee"/>
+    <jointpos name="right_ankle_pos" joint="right_ankle"/>
+
+    <jointpos name="left_hip_pos" joint="left_hip"/>
+    <jointpos name="left_knee_pos" joint="left_knee"/>
+    <jointpos name="left_ankle_pos" joint="left_ankle"/>
+
+    <!-- 质心位置 -->
+    <subtreecom name="torso_com" body="torso"/>
+  </sensor>
+</mujoco>

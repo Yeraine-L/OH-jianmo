@@ -1,0 +1,1064 @@
+<mujoco model="home_complete">
+  <!-- ====================================================================
+       完整家居场景 - 多房间设计
+       包含：玄关、客厅、厨房、卧室
+       特性：物理可交互的门、丰富的家具、美观的材质
+       ====================================================================== -->
+
+  <!-- 编译器选项 -->
+  <compiler angle="degree" coordinate="local" inertiafromgeom="true" meshdir="../assets/meshes"/>
+
+  <!-- 仿真选项 -->
+  <option timestep="0.002" gravity="0 0 -9.81">
+    <flag warmstart="enable"/>
+  </option>
+
+  <!-- 默认物理参数 -->
+  <default>
+    <geom solref="0.01 1" solimp="0.95 0.95 0.001"/>
+    <joint damping="1" armature="0.01"/>
+  </default>
+
+  <!-- ====================================================================
+       资源定义：纹理和材质
+       ====================================================================== -->
+  <asset>
+    <!-- 地板纹理 -->
+    <texture name="wood_floor_texture" type="2d" builtin="checker"
+             rgb1="0.72 0.52 0.32" rgb2="0.62 0.42 0.22"
+             width="512" height="512" mark="edge" markrgb="0.45 0.30 0.15"/>
+
+    <texture name="tile_floor_texture" type="2d" builtin="checker"
+             rgb1="0.95 0.95 0.95" rgb2="0.88 0.88 0.88"
+             width="512" height="512" mark="none"/>
+
+    <texture name="carpet_texture" type="2d" builtin="checker"
+             rgb1="0.75 0.35 0.35" rgb2="0.65 0.25 0.25"
+             width="256" height="256" mark="none"/>
+
+    <!-- 墙壁纹理 -->
+    <texture name="wall_texture" type="2d" builtin="flat"
+             rgb1="0.96 0.94 0.88" width="512" height="512"/>
+
+    <texture name="wallpaper_texture" type="2d" builtin="gradient"
+             rgb1="0.92 0.90 0.85" rgb2="0.88 0.86 0.80"
+             width="512" height="512"/>
+
+    <!-- 家具纹理 -->
+    <texture name="wood_dark_texture" type="2d" builtin="gradient"
+             rgb1="0.45 0.30 0.18" rgb2="0.35 0.22 0.12"
+             width="512" height="512" mark="cross" markrgb="0.30 0.18 0.08"/>
+
+    <texture name="wood_light_texture" type="2d" builtin="gradient"
+             rgb1="0.75 0.60 0.45" rgb2="0.65 0.50 0.35"
+             width="512" height="512" mark="cross" markrgb="0.55 0.40 0.25"/>
+
+    <texture name="fabric_texture" type="2d" builtin="flat"
+             rgb1="0.35 0.45 0.55" width="512" height="512"/>
+
+    <texture name="metal_texture" type="2d" builtin="flat"
+             rgb1="0.75 0.75 0.80" width="256" height="256"/>
+
+    <texture name="ceramic_texture" type="2d" builtin="gradient"
+             rgb1="0.9 0.9 0.95" rgb2="0.8 0.8 0.88" width="256" height="256"/>
+
+    <!-- 材质定义 -->
+    <material name="wood_floor_mat" texture="wood_floor_texture"
+              specular="0.4" shininess="0.25" reflectance="0.1"/>
+
+    <material name="tile_floor_mat" texture="tile_floor_texture"
+              specular="0.6" shininess="0.4" reflectance="0.2"/>
+
+    <material name="carpet_mat" texture="carpet_texture"
+              specular="0.05" shininess="0.01" reflectance="0"/>
+
+    <material name="wall_mat" texture="wall_texture"
+              specular="0.15" shininess="0.08" reflectance="0.02"/>
+
+    <material name="wallpaper_mat" texture="wallpaper_texture"
+              specular="0.1" shininess="0.05" reflectance="0.01"/>
+
+    <material name="wood_dark_mat" texture="wood_dark_texture"
+              specular="0.5" shininess="0.35" reflectance="0.08"/>
+
+    <material name="wood_light_mat" texture="wood_light_texture"
+              specular="0.5" shininess="0.35" reflectance="0.08"/>
+
+    <material name="fabric_mat" texture="fabric_texture"
+              specular="0.1" shininess="0.02" reflectance="0.01"/>
+
+    <material name="metal_mat" texture="metal_texture"
+              specular="0.9" shininess="0.7" reflectance="0.3"/>
+
+    <material name="ceramic_mat" texture="ceramic_texture"
+              specular="0.8" shininess="0.6" reflectance="0.15"/>
+
+    <!-- 茶壶网格 -->
+    <mesh name="teapot_mesh" file="teapot_simple.obj" scale="1.0 1.0 1.0"/>
+  </asset>
+
+  <!-- ====================================================================
+       视觉效果设置
+       ====================================================================== -->
+  <visual>
+    <global offwidth="1920" offheight="1080" elevation="-25" azimuth="135" fovy="50"/>
+    <quality shadowsize="4096" offsamples="8"/>
+    <map force="0.1" zfar="50" znear="0.01"/>
+    <headlight ambient="0.4 0.4 0.4" diffuse="0.8 0.8 0.8" specular="0.4 0.4 0.4"/>
+  </visual>
+
+  <!-- ====================================================================
+       世界定义
+       ====================================================================== -->
+  <worldbody>
+    <!-- 光照系统 -->
+    <!-- 主光源（天花板中央） -->
+    <light name="ceiling_main" pos="0 -1 2.8" dir="0 0 -1"
+           directional="false" diffuse="0.9 0.9 0.85" specular="0.6 0.6 0.6"
+           castshadow="true"/>
+
+    <!-- 客厅补光 -->
+    <light name="living_room_light" pos="-1 -3 2.5" dir="0 0 -1"
+           directional="false" diffuse="0.7 0.7 0.7" specular="0.4 0.4 0.4"
+           castshadow="false"/>
+
+    <!-- 厨房补光 -->
+    <light name="kitchen_light" pos="2.5 -3.5 2.5" dir="0 0 -1"
+           directional="false" diffuse="0.8 0.8 0.8" specular="0.5 0.5 0.5"
+           castshadow="false"/>
+
+    <!-- 卧室补光 -->
+    <light name="bedroom_light" pos="-2 0.5 2.3" dir="0 0 -1"
+           directional="false" diffuse="0.6 0.6 0.55" specular="0.3 0.3 0.3"
+           castshadow="false"/>
+
+    <!-- 浴室主光源 -->
+    <light name="bathroom_light" pos="-5.2 0.5 2.3" dir="0 0 -1"
+           directional="false" diffuse="0.95 0.95 1.0" specular="0.7 0.7 0.7"
+           castshadow="true"/>
+
+    <!-- ====================================================================
+         地板系统（不同房间不同材质）
+         ====================================================================== -->
+
+    <!-- 主地板基础层 -->
+    <geom name="floor_base" type="plane" size="7 6 0.1"
+          rgba="0.5 0.5 0.5 1" condim="3" friction="1.0 0.5 0.01"
+          solref="0.02 1" solimp="0.9 0.95 0.001"/>
+
+    <!-- 客厅地板（木地板） -->
+    <geom name="floor_living_room" type="box" pos="-1.5 -3 0.005" size="2.5 2 0.005"
+          material="wood_floor_mat" friction="1.0 0.5 0.01"/>
+
+    <!-- 厨房地板（瓷砖） -->
+    <geom name="floor_kitchen" type="box" pos="2.5 -3.5 0.005" size="1.5 1.5 0.005"
+          material="tile_floor_mat" friction="0.8 0.4 0.01"/>
+
+    <!-- 卧室地板（木地板） -->
+    <geom name="floor_bedroom" type="box" pos="-2 0.5 0.005" size="2 1.5 0.005"
+          material="wood_floor_mat" friction="1.0 0.5 0.01"/>
+
+    <!-- 浴室地板（防滑瓷砖） -->
+    <geom name="floor_bathroom" type="box" pos="-5.2 0.5 0.005" size="1.2 1.5 0.005"
+          material="tile_floor_mat" friction="1.2 0.6 0.02"/>
+
+    <!-- 玄关地板（瓷砖） -->
+    <geom name="floor_entrance" type="box" pos="-5 -4 0.005" size="1 1 0.005"
+          material="tile_floor_mat" friction="0.8 0.4 0.01"/>
+
+    <!-- 客厅地毯 -->
+    <geom name="carpet_living_room" type="box" pos="-1.5 -3 0.012" size="1.8 1.4 0.008"
+          material="carpet_mat" friction="1.8 0.9 0.02"
+          solref="0.005 0.5" solimp="0.95 0.98 0.001"/>
+
+    <!-- ====================================================================
+         墙壁系统
+         ====================================================================== -->
+
+    <!-- 外墙 -->
+    <geom name="wall_north" type="box" pos="0 2 1.25" size="7 0.1 1.25"
+          material="wall_mat" contype="1" conaffinity="1"/>
+
+    <geom name="wall_south" type="box" pos="0 -6 1.25" size="7 0.1 1.25"
+          material="wall_mat" contype="1" conaffinity="1"/>
+
+    <geom name="wall_east" type="box" pos="4 -2 1.25" size="0.1 4 1.25"
+          material="wall_mat" contype="1" conaffinity="1"/>
+
+    <geom name="wall_west" type="box" pos="-6 -2 1.25" size="0.1 4 1.25"
+          material="wall_mat" contype="1" conaffinity="1"/>
+
+    <!-- 内墙 - 卧室与客厅之间 -->
+    <geom name="wall_bedroom_living_left" type="box" pos="-4 -1 1.25" size="0.1 2 1.25"
+          material="wallpaper_mat" contype="1" conaffinity="1"/>
+
+    <geom name="wall_bedroom_living_bottom" type="box" pos="-1 -1 1.25" size="2.6 0.1 1.25"
+          material="wallpaper_mat" contype="1" conaffinity="1"/>
+
+    <!-- 内墙 - 浴室与卧室之间（带门洞） -->
+    <geom name="wall_bathroom_bedroom_left" type="box" pos="-4 -0.5 1.25" size="0.1 0.4 1.25"
+          material="tile_floor_mat" contype="1" conaffinity="1"/>
+
+    <geom name="wall_bathroom_bedroom_right" type="box" pos="-4 1.5 1.25" size="0.1 0.5 1.25"
+          material="tile_floor_mat" contype="1" conaffinity="1"/>
+
+    <geom name="wall_bathroom_bedroom_top" type="box" pos="-4 0.5 2.2" size="0.1 0.5 0.3"
+          material="tile_floor_mat" contype="1" conaffinity="1"/>
+
+    <!-- 浴室内墙 -->
+    <geom name="wall_bathroom_north" type="box" pos="-5.2 2 1.25" size="1.3 0.1 1.25"
+          material="tile_floor_mat" contype="1" conaffinity="1"/>
+
+    <geom name="wall_bathroom_south" type="box" pos="-5.2 -1 1.25" size="1.3 0.1 1.25"
+          material="tile_floor_mat" contype="1" conaffinity="1"/>
+
+    <!-- 内墙 - 厨房与客厅之间（带门洞） -->
+    <geom name="wall_kitchen_living_left" type="box" pos="1 -4.5 1.25" size="0.1 0.9 1.25"
+          material="wall_mat" contype="1" conaffinity="1"/>
+
+    <geom name="wall_kitchen_living_right" type="box" pos="1 -2.1 1.25" size="0.1 0.9 1.25"
+          material="wall_mat" contype="1" conaffinity="1"/>
+
+    <geom name="wall_kitchen_living_top" type="box" pos="1 -3.3 2.2" size="0.1 0.8 0.3"
+          material="wall_mat" contype="1" conaffinity="1"/>
+
+    <!-- 内墙 - 玄关分隔墙（带门洞） -->
+    <geom name="wall_entrance_left" type="box" pos="-4 -5 1.25" size="0.1 1 1.25"
+          material="wall_mat" contype="1" conaffinity="1"/>
+
+    <geom name="wall_entrance_top" type="box" pos="-5 -3 1.25" size="1 0.1 1.25"
+          material="wall_mat" contype="1" conaffinity="1"/>
+
+    <!-- ====================================================================
+         门系统（带铰链物理）
+         ====================================================================== -->
+
+    <!-- 门1：主入口门（玄关外门） -->
+    <body name="main_door" pos="-6 -4 0">
+      <geom name="main_door_frame_left" type="box" pos="0.05 -0.5 1.0" size="0.05 0.05 1.0"
+            material="wood_dark_mat"/>
+      <geom name="main_door_frame_right" type="box" pos="0.05 0.5 1.0" size="0.05 0.05 1.0"
+            material="wood_dark_mat"/>
+      <geom name="main_door_frame_top" type="box" pos="0.05 0 2.0" size="0.05 0.5 0.05"
+            material="wood_dark_mat"/>
+
+      <!-- 门板（可旋转） -->
+      <body name="main_door_panel" pos="0.05 -0.5 1.0">
+        <joint name="main_door_hinge" type="hinge" pos="0 0 0" axis="0 0 1"
+               range="-5 90" damping="5" armature="0.1"/>
+        <geom name="main_door_board" type="box" pos="0.05 0.45 0" size="0.04 0.45 0.95"
+              material="wood_dark_mat" mass="15" friction="1.0 0.5 0.01"/>
+        <!-- 门把手 -->
+        <geom name="main_door_handle" type="cylinder" pos="0.1 0.75 0" size="0.02 0.08"
+              rgba="0.7 0.6 0.3 1" mass="0.2" euler="0 90 0"/>
+      </body>
+    </body>
+
+    <!-- 门2：卧室门 -->
+    <body name="bedroom_door" pos="-4 -1 0">
+      <geom name="bedroom_door_frame_left" type="box" pos="-0.5 0.05 1.0" size="0.05 0.05 1.0"
+            material="wood_light_mat"/>
+      <geom name="bedroom_door_frame_right" type="box" pos="0.5 0.05 1.0" size="0.05 0.05 1.0"
+            material="wood_light_mat"/>
+      <geom name="bedroom_door_frame_top" type="box" pos="0 0.05 2.0" size="0.5 0.05 0.05"
+            material="wood_light_mat"/>
+
+      <!-- 门板 -->
+      <body name="bedroom_door_panel" pos="-0.5 0.05 1.0">
+        <joint name="bedroom_door_hinge" type="hinge" pos="0 0 0" axis="0 0 1"
+               range="-5 90" damping="5" armature="0.1"/>
+        <geom name="bedroom_door_board" type="box" pos="0.45 0.04 0" size="0.45 0.04 0.95"
+              material="wood_light_mat" mass="12" friction="1.0 0.5 0.01"/>
+        <geom name="bedroom_door_handle" type="cylinder" pos="0.75 0.1 0" size="0.02 0.08"
+              rgba="0.7 0.6 0.3 1" mass="0.2" euler="0 90 0"/>
+      </body>
+    </body>
+
+    <!-- 门3：厨房门 -->
+    <body name="kitchen_door" pos="1 -3.3 0">
+      <geom name="kitchen_door_frame_left" type="box" pos="0.05 -0.4 1.0" size="0.05 0.05 1.0"
+            material="wood_light_mat"/>
+      <geom name="kitchen_door_frame_right" type="box" pos="0.05 0.4 1.0" size="0.05 0.05 1.0"
+            material="wood_light_mat"/>
+      <geom name="kitchen_door_frame_top" type="box" pos="0.05 0 2.0" size="0.05 0.4 0.05"
+            material="wood_light_mat"/>
+
+      <!-- 门板 -->
+      <body name="kitchen_door_panel" pos="0.05 -0.4 1.0">
+        <joint name="kitchen_door_hinge" type="hinge" pos="0 0 0" axis="0 0 1"
+               range="-5 90" damping="5" armature="0.1"/>
+        <geom name="kitchen_door_board" type="box" pos="0.04 0.35 0" size="0.04 0.35 0.95"
+              material="wood_light_mat" mass="10" friction="1.0 0.5 0.01"/>
+        <geom name="kitchen_door_handle" type="cylinder" pos="0.1 0.6 0" size="0.02 0.08"
+              rgba="0.7 0.6 0.3 1" mass="0.2" euler="0 90 0"/>
+      </body>
+    </body>
+
+    <!-- 门4：浴室门 -->
+    <body name="bathroom_door" pos="-4 0.5 0">
+      <geom name="bathroom_door_frame_left" type="box" pos="0.05 -0.45 1.0" size="0.05 0.05 1.0"
+            material="wood_light_mat"/>
+      <geom name="bathroom_door_frame_right" type="box" pos="0.05 0.45 1.0" size="0.05 0.05 1.0"
+            material="wood_light_mat"/>
+      <geom name="bathroom_door_frame_top" type="box" pos="0.05 0 2.0" size="0.05 0.45 0.05"
+            material="wood_light_mat"/>
+
+      <!-- 门板（半透明磨砂效果） -->
+      <body name="bathroom_door_panel" pos="0.05 -0.45 1.0">
+        <joint name="bathroom_door_hinge" type="hinge" pos="0 0 0" axis="0 0 1"
+               range="-5 90" damping="5" armature="0.1"/>
+        <geom name="bathroom_door_board" type="box" pos="0.04 0.4 0" size="0.04 0.4 0.95"
+              rgba="0.95 0.95 0.98 0.7" mass="10" friction="1.0 0.5 0.01"/>
+        <geom name="bathroom_door_handle" type="cylinder" pos="0.1 0.7 0" size="0.02 0.08"
+              rgba="0.85 0.85 0.88 1" mass="0.2" euler="0 90 0"/>
+      </body>
+    </body>
+
+    <!-- ====================================================================
+         玄关家具
+         ====================================================================== -->
+
+    <!-- 鞋柜 -->
+    <body name="shoe_cabinet" pos="-5.4 -3.3 0.35">
+      <geom name="shoe_cabinet_body" type="box" size="0.4 0.35 0.35"
+            material="wood_dark_mat" mass="25"/>
+      <geom name="shoe_cabinet_top" type="box" pos="0 0 0.37" size="0.42 0.37 0.02"
+            material="wood_dark_mat" mass="5"/>
+      <!-- 装饰物 -->
+      <geom name="vase" type="cylinder" pos="0 0 0.48" size="0.06 0.1"
+            rgba="0.3 0.5 0.7 1" mass="0.8"/>
+    </body>
+
+    <!-- 衣架 -->
+    <body name="coat_rack" pos="-5.4 -4.7 0">
+      <geom name="coat_rack_base" type="cylinder" size="0.15 0.02"
+            rgba="0.3 0.25 0.2 1" mass="3"/>
+      <geom name="coat_rack_pole" type="cylinder" pos="0 0 1.0" size="0.025 1.0"
+            rgba="0.3 0.25 0.2 1" mass="2"/>
+      <geom name="coat_rack_hook1" type="box" pos="0.1 0 1.8" size="0.1 0.02 0.02"
+            rgba="0.3 0.25 0.2 1" mass="0.1"/>
+      <geom name="coat_rack_hook2" type="box" pos="-0.1 0 1.6" size="0.1 0.02 0.02"
+            rgba="0.3 0.25 0.2 1" mass="0.1"/>
+    </body>
+
+    <!-- ====================================================================
+         客厅家具
+         ====================================================================== -->
+
+    <!-- 茶几 -->
+    <body name="coffee_table" pos="-1.5 -3 0.35">
+      <geom name="table_top" type="box" size="0.6 0.4 0.025"
+            material="wood_light_mat" mass="12" friction="0.8 0.4 0.01"/>
+      <geom name="leg_1" type="cylinder" pos="0.5 0.3 -0.325" size="0.03 0.325"
+            rgba="0.35 0.25 0.15 1" mass="1.2" friction="1.0 0.5 0.01"/>
+      <geom name="leg_2" type="cylinder" pos="0.5 -0.3 -0.325" size="0.03 0.325"
+            rgba="0.35 0.25 0.15 1" mass="1.2" friction="1.0 0.5 0.01"/>
+      <geom name="leg_3" type="cylinder" pos="-0.5 0.3 -0.325" size="0.03 0.325"
+            rgba="0.35 0.25 0.15 1" mass="1.2" friction="1.0 0.5 0.01"/>
+      <geom name="leg_4" type="cylinder" pos="-0.5 -0.3 -0.325" size="0.03 0.325"
+            rgba="0.35 0.25 0.15 1" mass="1.2" friction="1.0 0.5 0.01"/>
+      <!-- 可移动物品已移至 worldbody 顶层 -->
+    </body>
+
+    <!-- 沙发 -->
+    <body name="sofa" pos="-1.5 -4.8 0.25">
+      <geom name="sofa_base" type="box" size="1.2 0.45 0.08"
+            rgba="0.25 0.25 0.30 1" mass="20" friction="1.2 0.6 0.01"/>
+      <geom name="sofa_seat" type="box" pos="0 0 0.16" size="1.15 0.42 0.08"
+            material="fabric_mat" mass="8" friction="1.5 0.8 0.02"/>
+      <geom name="sofa_backrest" type="box" pos="0 0.38 0.45" size="1.15 0.1 0.37"
+            material="fabric_mat" mass="12"/>
+      <geom name="sofa_armrest_left" type="box" pos="-1.1 0 0.30" size="0.1 0.45 0.22"
+            material="fabric_mat" mass="4"/>
+      <geom name="sofa_armrest_right" type="box" pos="1.1 0 0.30" size="0.1 0.45 0.22"
+            material="fabric_mat" mass="4"/>
+
+      <!-- 靠垫 -->
+    </body>
+
+    <!-- 电视柜 -->
+    <body name="tv_stand" pos="-1.5 -1.2 0.3">
+      <geom name="tv_stand_body" type="box" size="0.8 0.25 0.3"
+            material="wood_dark_mat" mass="30"/>
+      <geom name="tv_stand_top" type="box" pos="0 0 0.32" size="0.82 0.27 0.02"
+            material="wood_dark_mat" mass="8"/>
+
+      <!-- 可开关的左柜门 -->
+      <body name="tv_stand_door_left" pos="-0.4 -0.27 0">
+        <joint name="tv_door_left_hinge" type="hinge" pos="-0.38 0 0" axis="0 0 1"
+               range="-90 5" damping="3" armature="0.05"/>
+        <geom name="tv_door_left_panel" type="box" pos="0 0 0" size="0.38 0.02 0.28"
+              material="wood_dark_mat" mass="3" friction="1.0 0.5 0.01"/>
+        <geom name="tv_door_left_knob" type="sphere" pos="0.3 -0.04 0" size="0.015"
+              rgba="0.7 0.6 0.3 1" mass="0.05"/>
+      </body>
+
+      <!-- 可开关的右柜门 -->
+      <body name="tv_stand_door_right" pos="0.4 -0.27 0">
+        <joint name="tv_door_right_hinge" type="hinge" pos="0.38 0 0" axis="0 0 1"
+               range="-5 90" damping="3" armature="0.05"/>
+        <geom name="tv_door_right_panel" type="box" pos="0 0 0" size="0.38 0.02 0.28"
+              material="wood_dark_mat" mass="3" friction="1.0 0.5 0.01"/>
+        <geom name="tv_door_right_knob" type="sphere" pos="-0.3 -0.04 0" size="0.015"
+              rgba="0.7 0.6 0.3 1" mass="0.05"/>
+      </body>
+
+      <!-- 电视 -->
+      <geom name="tv_screen" type="box" pos="0 0 0.6" size="0.55 0.05 0.35"
+            rgba="0.1 0.1 0.1 1" mass="10"/>
+      <geom name="tv_stand_pole" type="cylinder" pos="0 0 0.45" size="0.05 0.1"
+            rgba="0.2 0.2 0.2 1" mass="2"/>
+
+      <!-- 可移动物品：遥控器 -->
+    </body>
+
+    <!-- 书架 -->
+    <body name="bookshelf" pos="-3.8 -4.5 0.6">
+      <geom name="shelf_back" type="box" size="0.3 0.02 0.6"
+            material="wood_dark_mat" mass="8"/>
+      <geom name="shelf_1" type="box" pos="0 0.15 -0.4" size="0.28 0.15 0.02"
+            material="wood_dark_mat" mass="3"/>
+      <geom name="shelf_2" type="box" pos="0 0.15 -0.1" size="0.28 0.15 0.02"
+            material="wood_dark_mat" mass="3"/>
+      <geom name="shelf_3" type="box" pos="0 0.15 0.2" size="0.28 0.15 0.02"
+            material="wood_dark_mat" mass="3"/>
+
+      <!-- 装饰书本 -->
+      <geom name="book_1" type="box" pos="0 0.25 -0.28" size="0.04 0.08 0.12"
+            rgba="0.6 0.2 0.2 1" mass="0.2"/>
+      <geom name="book_2" type="box" pos="0.1 0.25 -0.28" size="0.04 0.08 0.12"
+            rgba="0.2 0.4 0.6 1" mass="0.2"/>
+      <geom name="book_3" type="box" pos="-0.1 0.25 -0.28" size="0.04 0.08 0.12"
+            rgba="0.3 0.6 0.3 1" mass="0.2"/>
+    </body>
+
+    <!-- ====================================================================
+         厨房家具
+         ====================================================================== -->
+
+    <!-- 冰箱 -->
+    <body name="refrigerator" pos="3.6 -4.8 0.85">
+      <geom name="fridge_body" type="box" size="0.35 0.35 0.85"
+            material="metal_mat" mass="80"/>
+      <geom name="fridge_door" type="box" pos="-0.36 0 0.3" size="0.02 0.33 0.5"
+            rgba="0.85 0.85 0.9 1" mass="8"/>
+      <geom name="fridge_handle" type="box" pos="-0.4 -0.28 0.3" size="0.015 0.06 0.15"
+            rgba="0.3 0.3 0.35 1" mass="0.2"/>
+    </body>
+
+    <!-- 厨房操作台 + 水槽 -->
+    <body name="kitchen_counter" pos="2.5 -2.3 0.45">
+      <!-- 台面 -->
+      <geom name="counter_top" type="box" size="1.3 0.3 0.03"
+            material="tile_floor_mat" mass="40"/>
+      <!-- 柜体 -->
+      <geom name="counter_cabinet" type="box" pos="0 0 -0.42" size="1.28 0.28 0.42"
+            material="wood_light_mat" mass="35"/>
+
+      <!-- 可开关的左柜门 -->
+      <body name="counter_door_left" pos="-0.6 -0.3 -0.42">
+        <joint name="counter_door_left_hinge" type="hinge" pos="-0.65 0 0" axis="0 0 1"
+               range="-90 5" damping="3" armature="0.05"/>
+        <geom name="counter_door_left_panel" type="box" pos="0 0 0" size="0.6 0.02 0.4"
+              material="wood_light_mat" mass="3" friction="1.0 0.5 0.01"/>
+        <geom name="counter_door_left_knob" type="sphere" pos="0.5 -0.04 0.2" size="0.015"
+              rgba="0.85 0.85 0.88 1" mass="0.05"/>
+      </body>
+
+      <!-- 可开关的右柜门 -->
+      <body name="counter_door_right" pos="0.6 -0.3 -0.42">
+        <joint name="counter_door_right_hinge" type="hinge" pos="0.65 0 0" axis="0 0 1"
+               range="-5 90" damping="3" armature="0.05"/>
+        <geom name="counter_door_right_panel" type="box" pos="0 0 0" size="0.6 0.02 0.4"
+              material="wood_light_mat" mass="3" friction="1.0 0.5 0.01"/>
+        <geom name="counter_door_right_knob" type="sphere" pos="-0.5 -0.04 0.2" size="0.015"
+              rgba="0.85 0.85 0.88 1" mass="0.05"/>
+      </body>
+
+      <!-- 水槽 -->
+      <geom name="sink_basin" type="box" pos="0.5 0 -0.05" size="0.25 0.2 0.1"
+            material="metal_mat" mass="5"/>
+      <!-- 水龙头 -->
+      <geom name="faucet_base" type="cylinder" pos="0.5 -0.15 0.08" size="0.02 0.05"
+            material="metal_mat" mass="0.3"/>
+      <geom name="faucet_spout" type="cylinder" pos="0.5 0 0.18" size="0.015 0.1"
+            material="metal_mat" mass="0.2" euler="75 0 0"/>
+
+      <!-- 可移动物品：碗 -->
+
+      <!-- 可移动物品：杯子 -->
+    </body>
+
+    <!-- 灶台 -->
+    <body name="stove" pos="1.5 -2.3 0.45">
+      <geom name="stove_top" type="box" size="0.35 0.3 0.03"
+            rgba="0.2 0.2 0.2 1" mass="25"/>
+      <geom name="stove_body" type="box" pos="0 0 -0.42" size="0.33 0.28 0.42"
+            material="wood_light_mat" mass="30"/>
+
+      <!-- 灶眼 -->
+      <geom name="burner_1" type="cylinder" pos="-0.15 0.1 0.04" size="0.08 0.01"
+            rgba="0.3 0.3 0.3 1" mass="0.5"/>
+      <geom name="burner_2" type="cylinder" pos="0.15 0.1 0.04" size="0.08 0.01"
+            rgba="0.3 0.3 0.3 1" mass="0.5"/>
+    </body>
+
+    <!-- 餐桌 -->
+    <body name="dining_table" pos="2.2 -4.5 0.4">
+      <geom name="dining_table_top" type="box" size="0.5 0.4 0.025"
+            material="wood_light_mat" mass="15"/>
+      <geom name="dining_table_leg" type="cylinder" pos="0 0 -0.375" size="0.04 0.375"
+            rgba="0.35 0.25 0.15 1" mass="3"/>
+
+      <!-- 可移动物品：盘子 -->
+
+      <!-- 可移动物品：玻璃杯 -->
+
+      <!-- 可移动物品：苹果 -->
+
+      <!-- 可移动物品：香蕉 -->
+    </body>
+
+    <!-- 餐椅1 -->
+    <body name="dining_chair_1" pos="2.2 -5.1 0.25">
+      <geom name="chair1_seat" type="box" size="0.2 0.2 0.03"
+            material="wood_light_mat" mass="3"/>
+      <geom name="chair1_back" type="box" pos="0 0.18 0.25" size="0.18 0.03 0.25"
+            material="wood_light_mat" mass="2"/>
+      <geom name="chair1_leg1" type="cylinder" pos="0.15 0.15 -0.225" size="0.02 0.225"
+            rgba="0.35 0.25 0.15 1" mass="0.3"/>
+      <geom name="chair1_leg2" type="cylinder" pos="-0.15 0.15 -0.225" size="0.02 0.225"
+            rgba="0.35 0.25 0.15 1" mass="0.3"/>
+    </body>
+
+    <!-- ====================================================================
+         卧室家具
+         ====================================================================== -->
+
+    <!-- 床 -->
+    <body name="bed" pos="-2 1.2 0.4">
+      <!-- 床架 -->
+      <geom name="bed_frame" type="box" size="0.95 0.7 0.15"
+            material="wood_dark_mat" mass="40"/>
+      <!-- 床垫 -->
+      <geom name="bed_mattress" type="box" pos="0 0 0.2" size="0.9 0.65 0.1"
+            rgba="0.95 0.95 0.98 1" mass="20" friction="1.5 0.8 0.02"
+            solref="0.005 0.8" solimp="0.9 0.95 0.001"/>
+      <!-- 枕头 -->
+    </body>
+
+    <!-- 衣柜 -->
+    <body name="wardrobe" pos="-3.7 0.5 1.0">
+      <geom name="wardrobe_body" type="box" size="0.25 0.5 1.0"
+            material="wood_dark_mat" mass="70"/>
+      <geom name="wardrobe_door_left" type="box" pos="-0.26 -0.25 0" size="0.02 0.23 0.95"
+            material="wood_dark_mat" mass="8"/>
+      <geom name="wardrobe_door_right" type="box" pos="-0.26 0.25 0" size="0.02 0.23 0.95"
+            material="wood_dark_mat" mass="8"/>
+      <geom name="wardrobe_handle_left" type="cylinder" pos="-0.3 -0.15 0" size="0.015 0.06"
+            rgba="0.7 0.6 0.3 1" mass="0.1" euler="0 90 0"/>
+      <geom name="wardrobe_handle_right" type="cylinder" pos="-0.3 0.15 0" size="0.015 0.06"
+            rgba="0.7 0.6 0.3 1" mass="0.1" euler="0 90 0"/>
+    </body>
+
+    <!-- 床头柜1 -->
+    <body name="nightstand_1" pos="-3.2 1.2 0.3">
+      <geom name="nightstand1_body" type="box" size="0.25 0.2 0.3"
+            material="wood_light_mat" mass="12"/>
+      <geom name="nightstand1_top" type="box" pos="0 0 0.32" size="0.27 0.22 0.02"
+            material="wood_light_mat" mass="3"/>
+
+      <!-- 可拉出的抽屉 -->
+      <body name="nightstand1_drawer" pos="0 -0.22 0.15">
+        <joint name="nightstand1_drawer_slide" type="slide" pos="0 0 0" axis="0 1 0"
+               range="0 0.15" damping="5" armature="0.05"/>
+        <geom name="drawer1_front" type="box" pos="0 0 0" size="0.22 0.02 0.12"
+              material="wood_light_mat" mass="1.5" friction="1.0 0.5 0.01"/>
+        <geom name="drawer1_body" type="box" pos="0 0.06 0" size="0.22 0.06 0.11"
+              material="wood_light_mat" mass="1" friction="0.8 0.4 0.01"/>
+        <geom name="drawer1_handle" type="box" pos="0 -0.03 0" size="0.06 0.01 0.015"
+              rgba="0.7 0.6 0.3 1" mass="0.05"/>
+      </body>
+
+      <!-- 台灯 -->
+      <body name="lamp_1" pos="0 0 0.37">
+        <geom name="lamp1_base" type="cylinder" size="0.06 0.015"
+              rgba="0.2 0.2 0.2 1" mass="0.5"/>
+        <geom name="lamp1_pole" type="cylinder" pos="0 0 0.15" size="0.01 0.15"
+              rgba="0.3 0.3 0.3 1" mass="0.2"/>
+        <geom name="lamp1_shade" type="cylinder" pos="0 0 0.33" size="0.08 0.04"
+              rgba="0.95 0.9 0.85 0.8" mass="0.1"/>
+      </body>
+    </body>
+
+    <!-- 床头柜2 -->
+    <body name="nightstand_2" pos="-0.8 1.2 0.3">
+      <geom name="nightstand2_body" type="box" size="0.25 0.2 0.3"
+            material="wood_light_mat" mass="12"/>
+      <geom name="nightstand2_top" type="box" pos="0 0 0.32" size="0.27 0.22 0.02"
+            material="wood_light_mat" mass="3"/>
+
+      <!-- 可拉出的抽屉 -->
+      <body name="nightstand2_drawer" pos="0 -0.22 0.15">
+        <joint name="nightstand2_drawer_slide" type="slide" pos="0 0 0" axis="0 1 0"
+               range="0 0.15" damping="5" armature="0.05"/>
+        <geom name="drawer2_front" type="box" pos="0 0 0" size="0.22 0.02 0.12"
+              material="wood_light_mat" mass="1.5" friction="1.0 0.5 0.01"/>
+        <geom name="drawer2_body" type="box" pos="0 0.06 0" size="0.22 0.06 0.11"
+              material="wood_light_mat" mass="1" friction="0.8 0.4 0.01"/>
+        <geom name="drawer2_handle" type="box" pos="0 -0.03 0" size="0.06 0.01 0.015"
+              rgba="0.7 0.6 0.3 1" mass="0.05"/>
+
+        <!-- 抽屉里的可移动物品：闹钟 -->
+      </body>
+    </body>
+
+    <!-- 梳妆台 -->
+    <body name="dresser" pos="-3.7 1.7 0.4">
+      <geom name="dresser_body" type="box" size="0.25 0.4 0.4"
+            material="wood_light_mat" mass="35"/>
+      <geom name="dresser_top" type="box" pos="0 0 0.42" size="0.27 0.42 0.02"
+            material="wood_light_mat" mass="8"/>
+
+      <!-- 镜子 -->
+      <geom name="dresser_mirror" type="box" pos="-0.05 0 0.85" size="0.02 0.35 0.4"
+            rgba="0.9 0.95 1.0 0.7" mass="3"/>
+    </body>
+
+    <!-- ====================================================================
+         浴室家具
+         ====================================================================== -->
+
+    <!-- 洗手池 + 浴室柜 -->
+    <body name="bathroom_sink" pos="-5.8 1.5 0.45">
+      <!-- 柜体 -->
+      <geom name="sink_cabinet_body" type="box" pos="0 0 -0.4" size="0.35 0.25 0.4"
+            material="wood_light_mat" mass="25"/>
+      <!-- 台面 -->
+      <geom name="sink_countertop" type="box" size="0.38 0.27 0.03"
+            material="tile_floor_mat" mass="12"/>
+
+      <!-- 水池 -->
+      <geom name="bathroom_sink_basin" type="box" pos="0 0 0.05" size="0.2 0.15 0.08"
+            material="ceramic_mat" mass="5"/>
+      <!-- 水龙头 -->
+      <geom name="sink_faucet_base" type="cylinder" pos="0 -0.12 0.18" size="0.015 0.05"
+            material="metal_mat" mass="0.2"/>
+      <geom name="sink_faucet_spout" type="cylinder" pos="0 0 0.24" size="0.012 0.06"
+            material="metal_mat" mass="0.15" euler="60 0 0"/>
+
+      <!-- 镜子 -->
+      <geom name="bathroom_mirror" type="box" pos="-0.02 0 0.75" size="0.01 0.35 0.4"
+            rgba="0.9 0.95 1.0 0.85" mass="3" contype="0" conaffinity="0"/>
+
+      <!-- 可交互的柜门 -->
+      <body name="sink_cabinet_door" pos="0 -0.27 -0.4">
+        <joint name="sink_door_hinge" type="hinge" pos="-0.35 0 0" axis="0 0 1"
+               range="-90 5" damping="3" armature="0.05"/>
+        <geom name="sink_door_panel" type="box" pos="0 0 0" size="0.35 0.02 0.38"
+              material="wood_light_mat" mass="3" friction="1.0 0.5 0.01"/>
+        <geom name="sink_door_knob" type="sphere" pos="0.28 -0.04 0" size="0.015"
+              rgba="0.85 0.85 0.88 1" mass="0.05"/>
+      </body>
+
+      <!-- 可移动物品：牙刷架 -->
+
+      <!-- 可移动物品：香皂 -->
+    </body>
+
+    <!-- 马桶 -->
+    <body name="toilet" pos="-5.8 -0.3 0.2">
+      <!-- 马桶底座 -->
+      <geom name="toilet_base" type="box" size="0.2 0.25 0.2"
+            material="ceramic_mat" mass="25"/>
+      <!-- 马桶水箱 -->
+      <geom name="toilet_tank" type="box" pos="-0.15 0 0.35" size="0.08 0.22 0.15"
+            material="ceramic_mat" mass="15"/>
+
+      <!-- 马桶座圈（可交互） -->
+      <body name="toilet_seat" pos="0 0 0.22">
+        <joint name="toilet_seat_hinge" type="hinge" pos="0 0.2 0" axis="1 0 0"
+               range="0 100" damping="2" armature="0.03"/>
+        <geom name="toilet_seat_ring" type="box" pos="0 -0.05 0" size="0.18 0.2 0.02"
+              rgba="0.95 0.95 0.98 1" mass="1.5" friction="0.8 0.4 0.01"/>
+      </body>
+
+      <!-- 冲水按钮 -->
+      <geom name="toilet_flush_button" type="cylinder" pos="-0.15 0 0.52" size="0.025 0.01"
+            rgba="0.85 0.85 0.90 1" mass="0.05"/>
+    </body>
+
+    <!-- 淋浴区 -->
+    <body name="shower_area" pos="-4.6 0.5 0">
+      <!-- 淋浴房底座 -->
+      <geom name="shower_base" type="box" pos="0 0 0.02" size="0.5 0.5 0.02"
+            material="tile_floor_mat" mass="20"/>
+
+      <!-- 淋浴房玻璃墙（前） -->
+      <geom name="shower_glass_front" type="box" pos="0.5 0 1.0" size="0.02 0.48 1.0"
+            rgba="0.9 0.95 1.0 0.3" mass="8" contype="1" conaffinity="1"/>
+      <!-- 淋浴房玻璃墙（左） -->
+      <geom name="shower_glass_left" type="box" pos="0 -0.5 1.0" size="0.48 0.02 1.0"
+            rgba="0.9 0.95 1.0 0.3" mass="8" contype="1" conaffinity="1"/>
+
+      <!-- 淋浴头支架 -->
+      <geom name="shower_pipe" type="cylinder" pos="-0.3 -0.3 1.5" size="0.015 0.5"
+            material="metal_mat" mass="1" euler="10 0 0"/>
+      <!-- 淋浴头 -->
+      <geom name="shower_head" type="cylinder" pos="-0.25 -0.2 2.0" size="0.06 0.03"
+            material="metal_mat" mass="0.5"/>
+
+      <!-- 花洒龙头 -->
+      <geom name="shower_faucet" type="box" pos="-0.3 -0.35 1.0" size="0.04 0.03 0.06"
+            material="metal_mat" mass="0.3"/>
+    </body>
+
+    <!-- 毛巾架 -->
+    <body name="towel_rack" pos="-5.2 0.5 1.2">
+      <!-- 横杆 -->
+      <geom name="towel_bar" type="cylinder" size="0.015 0.4"
+            material="metal_mat" mass="0.8" euler="0 90 0"/>
+      <!-- 支架 -->
+      <geom name="towel_bracket_left" type="box" pos="-0.4 0 0" size="0.03 0.03 0.05"
+            material="metal_mat" mass="0.2"/>
+      <geom name="towel_bracket_right" type="box" pos="0.4 0 0" size="0.03 0.03 0.05"
+            material="metal_mat" mass="0.2"/>
+
+      <!-- 可移动的毛巾 -->
+    </body>
+
+    <!-- 浴室储物架 -->
+    <body name="bathroom_shelf" pos="-5.8 0.5 1.6">
+      <geom name="bath_shelf_1" type="box" size="0.25 0.15 0.015"
+            material="wood_light_mat" mass="2"/>
+      <geom name="bath_shelf_bracket_l" type="box" pos="-0.22 0 -0.08" size="0.015 0.12 0.08"
+            material="metal_mat" mass="0.3"/>
+      <geom name="bath_shelf_bracket_r" type="box" pos="0.22 0 -0.08" size="0.015 0.12 0.08"
+            material="metal_mat" mass="0.3"/>
+
+      <!-- 可移动物品：洗发水 -->
+
+      <!-- 可移动物品：沐浴露 -->
+    </body>
+
+    <!-- ====================================================================
+         装饰物品
+         ====================================================================== -->
+
+    <!-- 客厅相框（墙上装饰，无碰撞） -->
+    <geom name="picture_frame_1" type="box" pos="-1.5 -1.15 1.6" size="0.3 0.01 0.4"
+          rgba="0.8 0.7 0.5 1" contype="0" conaffinity="0"/>
+
+    <!-- 厨房时钟 -->
+    <geom name="wall_clock" type="cylinder" pos="2.5 -2.05 2.0" size="0.15 0.03"
+          rgba="0.95 0.95 0.95 1" contype="0" conaffinity="0" euler="90 0 0"/>
+
+    <!-- 卧室窗帘（装饰） -->
+    <geom name="bedroom_curtain" type="box" pos="-4.05 1.5 1.5" size="0.02 0.5 0.8"
+          rgba="0.7 0.75 0.8 0.6" contype="0" conaffinity="0"/>
+
+    <!-- ====================================================================
+         窗户系统
+         ====================================================================== -->
+
+    <!-- 客厅窗户（大窗） -->
+    <body name="living_room_window" pos="-1.5 -5.95 1.2">
+      <!-- 窗框 -->
+      <geom name="lr_window_frame" type="box" size="1.0 0.05 0.8"
+            material="wood_light_mat" contype="0" conaffinity="0"/>
+      <!-- 玻璃 -->
+      <geom name="lr_window_glass" type="box" pos="0 0.03 0" size="0.95 0.02 0.75"
+            rgba="0.85 0.92 0.98 0.4" mass="5" contype="0" conaffinity="0"/>
+      <!-- 窗帘 -->
+      <geom name="lr_window_curtain_left" type="box" pos="-0.7 0.08 0" size="0.3 0.02 0.8"
+            rgba="0.75 0.8 0.85 0.7" contype="0" conaffinity="0"/>
+      <geom name="lr_window_curtain_right" type="box" pos="0.7 0.08 0" size="0.3 0.02 0.8"
+            rgba="0.75 0.8 0.85 0.7" contype="0" conaffinity="0"/>
+    </body>
+
+    <!-- 卧室窗户（可开关） -->
+    <body name="bedroom_window" pos="-6.05 1.5 1.3">
+      <!-- 窗框 -->
+      <geom name="br_window_frame_outer" type="box" size="0.05 0.7 0.7"
+            material="wood_light_mat" contype="1" conaffinity="1"/>
+
+      <!-- 可开关的窗扇 -->
+      <body name="bedroom_window_sash" pos="0 0 0">
+        <joint name="bedroom_window_hinge" type="hinge" pos="0 -0.7 0" axis="0 0 1"
+               range="0 90" damping="3" armature="0.05"/>
+        <geom name="br_window_frame" type="box" pos="0.04 0 0" size="0.04 0.65 0.65"
+              material="wood_light_mat" mass="6"/>
+        <geom name="br_window_glass" type="box" pos="0.08 0 0" size="0.01 0.6 0.6"
+              rgba="0.85 0.92 0.98 0.5" mass="3"/>
+      </body>
+    </body>
+
+    <!-- 厨房窗户（小窗） -->
+    <body name="kitchen_window" pos="3.95 -3.5 1.5">
+      <!-- 窗框 -->
+      <geom name="k_window_frame" type="box" size="0.05 0.6 0.5"
+            material="wood_light_mat" contype="0" conaffinity="0"/>
+      <!-- 玻璃 -->
+      <geom name="k_window_glass" type="box" pos="-0.03 0 0" size="0.02 0.55 0.45"
+            rgba="0.85 0.92 0.98 0.4" mass="3" contype="0" conaffinity="0"/>
+    </body>
+
+    <!-- 浴室窗户（磨砂玻璃） -->
+    <body name="bathroom_window" pos="-6.05 0.5 1.6">
+      <!-- 窗框 -->
+      <geom name="bath_window_frame" type="box" size="0.05 0.4 0.4"
+            material="wood_light_mat" contype="0" conaffinity="0"/>
+      <!-- 磨砂玻璃 -->
+      <geom name="bath_window_glass" type="box" pos="-0.03 0 0" size="0.02 0.35 0.35"
+            rgba="0.92 0.95 0.98 0.6" mass="2" contype="0" conaffinity="0"/>
+    </body>
+
+    <!-- ====================================================================
+         机器人放置区域
+         ====================================================================== -->
+
+    <!-- 客厅机器人操作区（机械臂） -->
+    <body name="robot_workspace_living" pos="-3 -2.5 0.01">
+      <geom name="workspace_platform" type="cylinder" size="0.4 0.01"
+            rgba="0.3 0.8 0.3 0.3" contype="0" conaffinity="0"/>
+      <site name="robot_arm_mount" pos="0 0 0.02" size="0.03" rgba="0 1 0 0.8"/>
+    </body>
+
+    <!-- 玄关人形机器人生成点 -->
+    <body name="robot_spawn_humanoid" pos="-5 -4.5 0.01">
+      <geom name="spawn_platform_humanoid" type="box" size="0.3 0.3 0.01"
+            rgba="0.3 0.3 0.8 0.3" contype="0" conaffinity="0"/>
+      <site name="humanoid_spawn_site" pos="0 0 0.02" size="0.03" rgba="0 0 1 0.8"/>
+    </body>
+
+    <!-- 客厅移动机器人导航区 -->
+    <site name="mobile_robot_nav_point_1" pos="-2 -3.5 0.05" size="0.05" rgba="1 1 0 0.5"/>
+    <site name="mobile_robot_nav_point_2" pos="0 -4 0.05" size="0.05" rgba="1 1 0 0.5"/>
+    <site name="mobile_robot_nav_point_3" pos="2 -4 0.05" size="0.05" rgba="1 1 0 0.5"/>
+
+    <!-- ====================================================================
+         物体操作任务点
+         ====================================================================== -->
+
+    <!-- 厨房操作任务区 -->
+    <site name="kitchen_task_counter" pos="2.5 -2.0 0.48" size="0.08" rgba="1 0.5 0 0.7"/>
+    <site name="kitchen_task_sink" pos="3.0 -2.3 0.48" size="0.08" rgba="1 0.5 0 0.7"/>
+    <site name="kitchen_task_stove" pos="1.5 -2.0 0.48" size="0.08" rgba="1 0.5 0 0.7"/>
+
+    <!-- 餐桌操作任务区 -->
+    <site name="dining_task_table" pos="2.2 -4.5 0.43" size="0.08" rgba="1 0.5 0 0.7"/>
+
+    <!-- 客厅操作任务区 -->
+    <site name="living_task_coffee_table" pos="-1.5 -3 0.38" size="0.08" rgba="1 0.5 0 0.7"/>
+    <site name="living_task_tv_stand" pos="-1.5 -0.9 0.34" size="0.08" rgba="1 0.5 0 0.7"/>
+
+    <!-- 卧室操作任务区 -->
+    <site name="bedroom_task_nightstand1" pos="-3.2 1.2 0.34" size="0.08" rgba="1 0.5 0 0.7"/>
+    <site name="bedroom_task_nightstand2" pos="-0.8 1.2 0.34" size="0.08" rgba="1 0.5 0 0.7"/>
+    <site name="bedroom_task_bed" pos="-2 1.2 0.5" size="0.08" rgba="1 0.5 0 0.7"/>
+
+    <!-- 浴室操作任务区 -->
+    <site name="bathroom_task_sink" pos="-5.8 1.5 0.48" size="0.08" rgba="1 0.5 0 0.7"/>
+    <site name="bathroom_task_toilet" pos="-5.8 -0.3 0.25" size="0.08" rgba="1 0.5 0 0.7"/>
+
+    <!-- 抓取目标标记点 -->
+    <site name="grasp_target_teapot" pos="-1.35 -3 0.42" size="0.04" rgba="0 1 1 0.6"/>
+    <site name="grasp_target_cup" pos="-1.2 -2.85 0.4" size="0.04" rgba="0 1 1 0.6"/>
+    <site name="grasp_target_plate" pos="2.35 -4.4 0.45" size="0.04" rgba="0 1 1 0.6"/>
+    <site name="grasp_target_bowl" pos="1.7 -2.3 0.51" size="0.04" rgba="0 1 1 0.6"/>
+
+    <!-- ====================================================================
+         相机视角
+         ====================================================================== -->
+
+    <camera name="main_view" pos="5 -6 4.5" xyaxes="0.6 0.8 0 -0.48 0.36 0.8" fovy="55"/>
+    <camera name="top_view" pos="0 -2 8" xyaxes="1 0 0 0 1 0" fovy="60"/>
+    <camera name="living_room_view" pos="-1 -6 2" xyaxes="1 0 0 0 0.707 0.707" fovy="60"/>
+    <camera name="kitchen_view" pos="4.5 -3.5 2" xyaxes="0 1 0 -0.707 0 0.707" fovy="55"/>
+    <camera name="bedroom_view" pos="-5 0.5 2.5" xyaxes="0.707 0.707 0 -0.408 0.408 0.816" fovy="55"/>
+    <camera name="entrance_view" pos="-7 -4 1.8" xyaxes="0.707 -0.707 0 0.5 0.5 0.707" fovy="50"/>
+    <camera name="bathroom_view" pos="-3.5 0.5 1.8" xyaxes="-1 0 0 0 0.707 0.707" fovy="55"/>
+
+    <!-- ====================================================================
+         可移动物品（Moveable Objects）
+         所有带 freejoint 的物体必须是 worldbody 的直接子元素
+         ====================================================================== -->
+
+    <!-- 客厅茶几上的物品 -->
+    <body name="teapot" pos="-1.35 -3 0.42">
+      <freejoint/>
+      <geom name="teapot_geom" type="mesh" mesh="teapot_mesh"
+            material="ceramic_mat" mass="0.5" friction="0.6 0.3 0.005"/>
+    </body>
+
+    <body name="table_book_1" pos="-1.7 -2.9 0.39">
+      <freejoint/>
+      <geom name="book1_geom" type="box" size="0.08 0.12 0.02"
+            rgba="0.3 0.5 0.7 1" mass="0.35" friction="0.9 0.45 0.01"/>
+    </body>
+
+    <body name="table_book_2" pos="-1.7 -3.15 0.39">
+      <freejoint/>
+      <geom name="book2_geom" type="box" size="0.1 0.14 0.025"
+            rgba="0.7 0.3 0.3 1" mass="0.4" friction="0.9 0.45 0.01"/>
+    </body>
+
+    <body name="tea_cup" pos="-1.2 -2.85 0.395">
+      <freejoint/>
+      <geom name="tea_cup_geom" type="cylinder" size="0.035 0.05"
+            rgba="0.95 0.95 0.98 1" mass="0.1" friction="0.7 0.35 0.01"/>
+    </body>
+
+    <!-- 沙发上的靠垫 -->
+    <body name="cushion_1" pos="-2.0 -4.95 0.55">
+      <freejoint/>
+      <geom name="cushion_1_geom" type="box" size="0.15 0.15 0.08"
+            rgba="0.85 0.75 0.45 1" mass="0.3" friction="1.0 0.5 0.01"/>
+    </body>
+
+    <!-- 床上的枕头 -->
+    <body name="pillow_1" pos="-2.4 1.2 0.75">
+      <freejoint/>
+      <geom name="pillow_1_geom" type="box" size="0.2 0.15 0.06"
+            rgba="0.9 0.9 0.95 1" mass="0.4" friction="1.2 0.6 0.01"
+            solref="0.003 0.5"/>
+    </body>
+
+    <body name="pillow_2" pos="-1.6 1.2 0.75">
+      <freejoint/>
+      <geom name="pillow_2_geom" type="box" size="0.2 0.15 0.06"
+            rgba="0.9 0.9 0.95 1" mass="0.4" friction="1.2 0.6 0.01"
+            solref="0.003 0.5"/>
+    </body>
+
+    <!-- 床头柜上的闹钟 -->
+    <body name="alarm_clock" pos="-0.8 1.06 0.5">
+      <freejoint/>
+      <geom name="clock_body" type="box" size="0.045 0.03 0.04"
+            rgba="0.2 0.2 0.25 1" mass="0.15" friction="0.8 0.4 0.01"/>
+    </body>
+
+    <!-- 电视柜上的遥控器 -->
+    <body name="tv_remote" pos="-1.2 -1.1 0.66">
+      <freejoint/>
+      <geom name="remote_geom" type="box" size="0.04 0.015 0.12"
+            rgba="0.15 0.15 0.15 1" mass="0.08" friction="0.8 0.4 0.01"/>
+    </body>
+
+    <!-- 厨房台面上的物品 -->
+    <body name="bowl" pos="1.7 -2.3 0.51">
+      <freejoint/>
+      <geom name="bowl_geom" type="cylinder" size="0.08 0.04"
+            material="ceramic_mat" mass="0.2" friction="0.7 0.35 0.01"/>
+    </body>
+
+    <body name="cup" pos="1.5 -2.2 0.505">
+      <freejoint/>
+      <geom name="cup_geom" type="cylinder" size="0.035 0.06"
+            rgba="0.9 0.4 0.3 1" mass="0.12" friction="0.7 0.35 0.01"/>
+    </body>
+
+    <!-- 餐桌上的物品 -->
+    <body name="plate" pos="2.35 -4.4 0.44">
+      <freejoint/>
+      <geom name="plate_geom" type="cylinder" size="0.1 0.01"
+            material="ceramic_mat" mass="0.25" friction="0.7 0.35 0.01"/>
+    </body>
+
+    <body name="glass" pos="2.05 -4.35 0.455">
+      <freejoint/>
+      <geom name="glass_geom" type="cylinder" size="0.03 0.06"
+            rgba="0.9 0.95 1.0 0.6" mass="0.15" friction="0.6 0.3 0.01"/>
+    </body>
+
+    <body name="apple" pos="2.2 -4.6 0.445">
+      <freejoint/>
+      <geom name="apple_geom" type="sphere" size="0.04"
+            rgba="0.8 0.2 0.2 1" mass="0.18" friction="0.8 0.4 0.01"/>
+    </body>
+
+    <body name="banana" pos="2.4 -4.55 0.44">
+      <freejoint/>
+      <geom name="banana_geom" type="capsule" size="0.02 0.06"
+            rgba="0.95 0.85 0.3 1" mass="0.12" friction="0.7 0.35 0.01" euler="0 90 20"/>
+    </body>
+
+    <!-- 浴室洗手池上的物品 -->
+    <body name="toothbrush_holder" pos="-5.65 1.65 0.53">
+      <freejoint/>
+      <geom name="holder_base" type="cylinder" size="0.04 0.06"
+            material="ceramic_mat" mass="0.15" friction="0.8 0.4 0.01"/>
+    </body>
+
+    <body name="soap" pos="-5.95 1.6 0.51">
+      <freejoint/>
+      <geom name="soap_bar" type="box" size="0.04 0.03 0.015"
+            rgba="0.95 0.85 0.75 1" mass="0.08" friction="0.6 0.3 0.01"/>
+    </body>
+
+    <!-- 浴室储物架上的物品 -->
+    <body name="shampoo_bottle" pos="-5.9 0.5 1.67">
+      <freejoint/>
+      <geom name="shampoo_geom" type="cylinder" size="0.03 0.08"
+            rgba="0.2 0.6 0.8 0.9" mass="0.25" friction="0.7 0.35 0.01"/>
+    </body>
+
+    <body name="body_wash_bottle" pos="-5.7 0.5 1.67">
+      <freejoint/>
+      <geom name="body_wash_geom" type="cylinder" size="0.03 0.08"
+            rgba="0.8 0.4 0.6 0.9" mass="0.25" friction="0.7 0.35 0.01"/>
+    </body>
+
+    <!-- 毛巾架上的毛巾 -->
+    <body name="towel_1" pos="-5.2 0.5 1.18">
+      <freejoint/>
+      <geom name="towel_geom" type="box" size="0.35 0.25 0.015"
+            rgba="0.85 0.95 0.95 1" mass="0.3" friction="1.5 0.8 0.02"
+            solref="0.003 0.5"/>
+    </body>
+
+  </worldbody>
+
+  <!-- ====================================================================
+       执行器（门控制）
+       ====================================================================== -->
+  <actuator>
+    <!-- 门的位置控制（可选，用于机器人控制门） -->
+    <position name="main_door_actuator" joint="main_door_hinge"
+              kp="100" ctrlrange="-5 90"/>
+    <position name="bedroom_door_actuator" joint="bedroom_door_hinge"
+              kp="100" ctrlrange="-5 90"/>
+    <position name="kitchen_door_actuator" joint="kitchen_door_hinge"
+              kp="100" ctrlrange="-5 90"/>
+    <position name="bathroom_door_actuator" joint="bathroom_door_hinge"
+              kp="100" ctrlrange="-5 90"/>
+
+    <!-- 浴室可交互物体控制 -->
+    <position name="toilet_seat_actuator" joint="toilet_seat_hinge"
+              kp="50" ctrlrange="0 100"/>
+    <position name="sink_door_actuator" joint="sink_door_hinge"
+              kp="50" ctrlrange="-90 5"/>
+
+    <!-- 卧室抽屉控制 -->
+    <position name="nightstand1_drawer_actuator" joint="nightstand1_drawer_slide"
+              kp="80" ctrlrange="0 0.15"/>
+    <position name="nightstand2_drawer_actuator" joint="nightstand2_drawer_slide"
+              kp="80" ctrlrange="0 0.15"/>
+
+    <!-- 客厅电视柜门控制 -->
+    <position name="tv_door_left_actuator" joint="tv_door_left_hinge"
+              kp="50" ctrlrange="-90 5"/>
+    <position name="tv_door_right_actuator" joint="tv_door_right_hinge"
+              kp="50" ctrlrange="-5 90"/>
+
+    <!-- 厨房柜门控制 -->
+    <position name="counter_door_left_actuator" joint="counter_door_left_hinge"
+              kp="50" ctrlrange="-90 5"/>
+    <position name="counter_door_right_actuator" joint="counter_door_right_hinge"
+              kp="50" ctrlrange="-5 90"/>
+
+    <!-- 窗户控制 -->
+    <position name="bedroom_window_actuator" joint="bedroom_window_hinge"
+              kp="60" ctrlrange="0 90"/>
+  </actuator>
+</mujoco>

@@ -1,0 +1,82 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# MuJoCo
+*.log
+mujoco_log.txt
+
+# Output files
+outputs/
+recordings/
+videos/
+*.mp4
+*.avi
+*.gif
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Data files (large datasets)
+data/raw/
+*.hdf5
+*.pkl
+*.pickle
+
+# Model checkpoints
+checkpoints/
+*.pth
+*.pt
+*.ckpt
+
+# Documentation builds
+docs/_build/
+docs/.doctrees/
+
+# OS generated files
+Thumbs.db
+.DS_Store
+Desktop.ini
+
+# Custom meshes (if large)
+# Uncomment if you have large mesh files
+# assets/meshes/*.stl
+# assets/meshes/*.obj
