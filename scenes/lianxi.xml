@@ -1,0 +1,315 @@
+<mujoco model="apartment_3br1lr">
+  <compiler angle="degree" coordinate="local" inertiafromgeom="true" meshdir="../assets/meshes"/>
+  <option timestep="0.003" iterations="100" gravity="0 0 -9.81">
+    <flag warmstart="enable"/>
+  </option>
+  <default>
+    <geom solref="0.01 1" solimp="0.95 0.95 0.001"/>
+    <joint damping="2" armature="0.01"/>
+  </default>
+  <asset>
+    <texture name="wall_texture" type="2d" builtin="flat" rgb1="0.96 0.94 0.88" width="512" height="512"/>
+    <texture name="wood_floor_texture" type="2d" builtin="checker" rgb1="0.72 0.52 0.32" rgb2="0.62 0.42 0.22" width="512" height="512" mark="edge" markrgb="0.45 0.30 0.15"/>
+    <texture name="tile_floor_texture" type="2d" builtin="checker" rgb1="0.95 0.95 0.95" rgb2="0.88 0.88 0.88" width="512" height="512" mark="none"/>
+    <texture name="wood_dark_texture" type="2d" builtin="gradient" rgb1="0.45 0.30 0.18" rgb2="0.35 0.22 0.12" width="512" height="512" mark="cross" markrgb="0.30 0.20 0.10"/>
+    <texture name="wood_light_texture" type="2d" builtin="gradient" rgb1="0.75 0.62 0.45" rgb2="0.65 0.52 0.35" width="512" height="512" mark="cross" markrgb="0.45 0.35 0.22"/>
+    <texture name="fabric_texture" type="2d" builtin="flat" rgb1="0.35 0.45 0.55" width="512" height="512"/>
+    <texture name="ceramic_texture" type="2d" builtin="gradient" rgb1="0.9 0.9 0.95" rgb2="0.8 0.8 0.88" width="256" height="256"/>
+    <texture name="metal_texture" type="2d" builtin="flat" rgb1="0.75 0.75 0.78" width="256" height="256"/>
+    <material name="wall_mat" texture="wall_texture" rgba="0.95 0.95 0.95 1.0" specular="0.1" shininess="0.05"/>
+    <material name="wall_ext_mat" rgba="0.9 0.9 0.9 1.0" specular="0.1" shininess="0.05"/>
+    <material name="wood_floor_mat" texture="wood_floor_texture" reflectance="0.02"/>
+    <material name="tile_floor_mat" texture="tile_floor_texture" reflectance="0.01"/>
+    <material name="wood_dark_mat" texture="wood_dark_texture"/>
+    <material name="wood_light_mat" texture="wood_light_texture"/>
+    <material name="fabric_mat" texture="fabric_texture"/>
+    <material name="ceramic_mat" texture="ceramic_texture"/>
+    <material name="metal_mat" texture="metal_texture"/>
+  </asset>
+  <worldbody>
+    <light name="main_light" pos="0 -2 2.5" dir="0 0 -1" directional="false" diffuse="0.95 0.95 1.0" specular="0.6 0.6 0.6" castshadow="false"/>
+    <camera name="main_view" pos="0 -6 6" xyaxes="1 0 0 0 1 0" fovy="60"/>
+    <geom name="floor_base" type="plane" size="6 4.5 0.1" material="tile_floor_mat" friction="0.9 0.5 0.01"/>
+
+    <geom name="wall_north" type="box" pos="0 4.5 1.25" size="6 0.05 1.25" material="wall_ext_mat"/>
+    <geom name="wall_south" type="box" pos="0 -4.5 1.25" size="6 0.05 1.25" material="wall_ext_mat"/>
+    <geom name="wall_east" type="box" pos="6 0 1.25" size="0.05 4.5 1.25" material="wall_ext_mat"/>
+    <geom name="wall_west" type="box" pos="-6 0 1.25" size="0.05 4.5 1.25" material="wall_ext_mat"/>
+
+    <geom name="wall_h_mid_left" type="box" pos="-5.225 1 1.25" size="0.775 0.05 1.25" material="wall_mat"/>
+    <geom name="wall_h_mid_midleft" type="box" pos="-2 1 1.25" size="1.55 0.05 1.25" material="wall_mat"/>
+    <geom name="wall_h_mid_midright" type="box" pos="2 1 1.25" size="1.55 0.05 1.25" material="wall_mat"/>
+    <geom name="wall_h_mid_right" type="box" pos="5.225 1 1.25" size="0.775 0.05 1.25" material="wall_mat"/>
+
+    <geom name="wall_v_left_top" type="box" pos="-2 2.75 1.25" size="0.05 1.75 1.25" material="wall_mat"/>
+    <geom name="wall_v_right_top" type="box" pos="2 2.75 1.25" size="0.05 1.75 1.25" material="wall_mat"/>
+
+    <geom name="wall_v_kitchen_bottom" type="box" pos="1 -2.975 1.25" size="0.05 1.525 1.25" material="wall_mat"/>
+    <geom name="wall_v_kitchen_top" type="box" pos="1 0.225 1.25" size="0.05 0.775 1.25" material="wall_mat"/>
+
+    <geom name="bath_wall_e" type="box" pos="6 -3.25 1.25" size="0.05 1.25 1.25" material="wall_mat"/>
+    <!-- 移除负侧卫生间墙体，卫生间迁移到右上区域 -->
+    <geom name="rt_inner_n" type="box" pos="4.5 3.5 1.25" size="1.2 0.05 1.25" material="wall_mat"/>
+    <geom name="rt_inner_s" type="box" pos="4.5 2.1 1.25" size="1.2 0.05 1.25" material="wall_mat"/>
+    <geom name="rt_inner_e" type="box" pos="5.6 2.8 1.25" size="0.05 0.7 1.25" material="wall_mat"/>
+    <geom name="rt_inner_w" type="box" pos="3.4 2.8 1.25" size="0.05 0.7 1.25" material="wall_mat"/>
+
+    <geom name="floor_living" type="box" pos="-2.5 -2 0.005" size="3 2 0.005" material="wood_floor_mat" friction="1.0 0.5 0.01" contype="0" conaffinity="0"/>
+    <geom name="floor_kitchen" type="box" pos="3.0 -2 0.005" size="2.5 2 0.005" material="tile_floor_mat" friction="0.8 0.4 0.01" contype="0" conaffinity="0"/>
+    <geom name="floor_bedroom_left" type="box" pos="-4 2.75 0.005" size="2 1.5 0.005" material="wood_floor_mat" contype="0" conaffinity="0"/>
+    <geom name="floor_bedroom_mid" type="box" pos="0 2.75 0.005" size="2 1.5 0.005" material="wood_floor_mat" contype="0" conaffinity="0"/>
+    <!-- 右侧卧室改为卫生间区域（右上角） -->
+    <geom name="floor_bathroom_top" type="box" pos="4.5 2.8 0.005" size="1.3 1.3 0.005" material="tile_floor_mat" contype="0" conaffinity="0"/>
+    <geom name="floor_foyer" type="box" pos="-5 -3.5 0.005" size="1.5 1 0.005" material="tile_floor_mat" contype="0" conaffinity="0"/>
+    <!-- 移除负侧卫生间地面 -->
+
+    <body name="main_door" pos="-4 -4.5 0">
+      <body name="main_door_panel" pos="-0.45 0 1.0">
+        <joint name="main_door_hinge" type="hinge" pos="0 0 0" axis="0 0 1" range="-5 90" damping="5" armature="0.1"/>
+        <geom name="main_door_board" type="box" pos="0.45 0 0" size="0.45 0.04 0.95" rgba="0.8 0.8 0.82 1"/>
+      </body>
+    </body>
+
+    <body name="door_bed_left" pos="-4 1 0">
+      <body name="door_bed_left_panel" pos="-0.45 0 1.0">
+        <joint name="door_bed_left_hinge" type="hinge" pos="0 0 0" axis="0 0 1" range="-5 90" damping="5" armature="0.1"/>
+        <geom name="door_bed_left_board" type="box" pos="0.45 0 0" size="0.45 0.04 0.95" material="wood_floor_mat"/>
+      </body>
+    </body>
+
+    <body name="door_bed_mid" pos="0 1 0">
+      <body name="door_bed_mid_panel" pos="-0.45 0 1.0">
+        <joint name="door_bed_mid_hinge" type="hinge" pos="0 0 0" axis="0 0 1" range="-5 90" damping="5" armature="0.1"/>
+        <geom name="door_bed_mid_board" type="box" pos="0.45 0 0" size="0.45 0.04 0.95" material="wood_floor_mat"/>
+      </body>
+    </body>
+
+    <!-- 右侧卧室门移除（房间改为卫生间） -->
+
+    <body name="door_kitchen" pos="1 -1 0">
+      <body name="door_kitchen_panel" pos="0 -0.45 1.0">
+        <joint name="door_kitchen_hinge" type="hinge" pos="0 0 0" axis="0 0 1" range="-5 90" damping="5" armature="0.1"/>
+        <geom name="door_kitchen_board" type="box" pos="0 0.45 0" size="0.04 0.45 0.95" material="wood_floor_mat"/>
+      </body>
+    </body>
+
+    <!-- 负侧卫生间门移除 -->
+    <body name="rt_bath_door" pos="3.4 2.6 0">
+      <body name="rt_bath_door_panel" pos="-0.45 0 1.0">
+        <joint name="rt_bath_door_hinge" type="hinge" pos="0 0 0" axis="0 0 1" range="-5 90" damping="5" armature="0.1"/>
+        <geom name="rt_bath_door_board" type="box" pos="0.45 0 0" size="0.45 0.04 0.95" material="wood_light_mat"/>
+      </body>
+    </body>
+    <!-- 卫生间内间围墙：保持 rt_inner_* 作为干区外间与湿区内间分隔 -->
+    <!-- 为卧室添加窗户（透明玻璃，不参与碰撞） -->
+    <geom name="bl_window_north" type="box" pos="-4 4.45 1.2" size="0.8 0.02 0.6" rgba="0.9 0.95 1.0 0.4" contype="0" conaffinity="0"/>
+    <geom name="bm_window_north" type="box" pos="0 4.45 1.2" size="0.8 0.02 0.6" rgba="0.9 0.95 1.0 0.4" contype="0" conaffinity="0"/>
+
+    <body name="lr_coffee_table" pos="-2.5 -2 0.35">
+      <geom name="lr_table_top" type="box" size="0.6 0.4 0.025" material="wood_light_mat" mass="12" friction="0.8 0.4 0.01"/>
+      <geom name="lr_leg_1" type="cylinder" pos="0.5 0.3 -0.2" size="0.03 0.175" rgba="0.35 0.25 0.15 1" mass="1.2" friction="1.0 0.5 0.01"/>
+      <geom name="lr_leg_2" type="cylinder" pos="0.5 -0.3 -0.2" size="0.03 0.175" rgba="0.35 0.25 0.15 1" mass="1.2" friction="1.0 0.5 0.01"/>
+      <geom name="lr_leg_3" type="cylinder" pos="-0.5 0.3 -0.2" size="0.03 0.175" rgba="0.35 0.25 0.15 1" mass="1.2" friction="1.0 0.5 0.01"/>
+      <geom name="lr_leg_4" type="cylinder" pos="-0.5 -0.3 -0.2" size="0.03 0.175" rgba="0.35 0.25 0.15 1" mass="1.2" friction="1.0 0.5 0.01"/>
+    </body>
+
+    <body name="lr_sofa" pos="-2.5 -2.7 0.25">
+      <geom name="lr_sofa_base" type="box" size="1.2 0.45 0.08" rgba="0.25 0.25 0.30 1" mass="20" friction="1.2 0.6 0.01"/>
+      <geom name="lr_sofa_seat" type="box" pos="0 0 0.16" size="1.15 0.42 0.08" material="fabric_mat" mass="8" friction="1.5 0.8 0.02"/>
+      <geom name="lr_sofa_backrest" type="box" pos="0 -0.38 0.45" size="1.15 0.1 0.37" material="fabric_mat" mass="12"/>
+      <geom name="lr_sofa_armrest_left" type="box" pos="-1.1 0 0.30" size="0.1 0.45 0.22" material="fabric_mat" mass="4"/>
+      <geom name="lr_sofa_armrest_right" type="box" pos="1.1 0 0.30" size="0.1 0.45 0.22" material="fabric_mat" mass="4"/>
+    </body>
+
+    <body name="lr_tv_stand" pos="-2.5 -1.2 0.3">
+      <geom name="lr_tv_stand_body" type="box" size="0.8 0.25 0.3" material="wood_dark_mat" mass="30"/>
+      <geom name="lr_tv_stand_top" type="box" pos="0 0 0.32" size="0.82 0.27 0.02" material="wood_dark_mat" mass="8"/>
+      <body name="lr_tv_stand_door_left" pos="-0.4 -0.27 0">
+        <joint name="lr_tv_door_left_hinge" type="hinge" pos="-0.38 0 0" axis="0 0 1" range="-90 5" damping="3" armature="0.05"/>
+        <geom name="lr_tv_door_left_panel" type="box" pos="0 0 0" size="0.38 0.02 0.28" material="wood_dark_mat" mass="3" friction="1.0 0.5 0.01"/>
+        <geom name="lr_tv_door_left_knob" type="sphere" pos="0.3 -0.04 0" size="0.015" rgba="0.7 0.6 0.3 1" mass="0.05"/>
+      </body>
+      <body name="lr_tv_stand_door_right" pos="0.4 -0.27 0">
+        <joint name="lr_tv_door_right_hinge" type="hinge" pos="0.38 0 0" axis="0 0 1" range="-5 90" damping="3" armature="0.05"/>
+        <geom name="lr_tv_door_right_panel" type="box" pos="0 0 0" size="0.38 0.02 0.28" material="wood_dark_mat" mass="3" friction="1.0 0.5 0.01"/>
+        <geom name="lr_tv_door_right_knob" type="sphere" pos="-0.3 -0.04 0" size="0.015" rgba="0.7 0.6 0.3 1" mass="0.05"/>
+      </body>
+      <geom name="lr_tv_screen" type="box" pos="0 0 0.6" size="0.55 0.05 0.35" rgba="0.1 0.1 0.1 1" mass="10"/>
+      <geom name="lr_tv_stand_pole" type="cylinder" pos="0 0 0.45" size="0.05 0.1" rgba="0.2 0.2 0.2 1" mass="2"/>
+    </body>
+    <!-- 客厅落地灯，提升照明与真实感 -->
+    <body name="lr_floor_lamp" pos="-1.5 -2.2 0">
+      <geom name="lr_lamp_base" type="cylinder" size="0.15 0.02" rgba="0.3 0.3 0.3 1" mass="2"/>
+      <geom name="lr_lamp_pole" type="cylinder" pos="0 0 1.2" size="0.02 1.2" rgba="0.3 0.3 0.3 1" mass="1.5"/>
+      <geom name="lr_lamp_shade" type="box" pos="0 0 1.35" size="0.25 0.25 0.12" rgba="1.0 0.95 0.85 0.8" mass="0.8" contype="0" conaffinity="0"/>
+    </body>
+
+    <body name="k_refrigerator" pos="5.0 -1.5 0.85">
+      <geom name="k_fridge_body" type="box" size="0.35 0.35 0.85" material="metal_mat" mass="80"/>
+      <geom name="k_fridge_door" type="box" pos="-0.36 0 0.3" size="0.02 0.33 0.5" rgba="0.85 0.85 0.9 1" mass="8"/>
+      <geom name="k_fridge_handle" type="box" pos="-0.4 -0.28 0.3" size="0.015 0.06 0.15" rgba="0.3 0.3 0.35 1" mass="0.2"/>
+    </body>
+
+    <body name="k_counter" pos="2.6 -0.8 0.45">
+      <geom name="k_counter_top" type="box" size="1.3 0.3 0.03" material="tile_floor_mat" mass="40"/>
+      <geom name="k_counter_cabinet" type="box" pos="0 0 -0.42" size="1.28 0.28 0.42" material="wood_light_mat" mass="35"/>
+      <body name="k_counter_door_left" pos="-0.6 -0.3 -0.42">
+        <joint name="k_counter_door_left_hinge" type="hinge" pos="-0.65 0 0" axis="0 0 1" range="-90 5" damping="3" armature="0.05"/>
+        <geom name="k_counter_door_left_panel" type="box" pos="0 0 0" size="0.6 0.02 0.4" material="wood_light_mat" mass="3" friction="1.0 0.5 0.01"/>
+        <geom name="k_counter_door_left_knob" type="sphere" pos="0.5 -0.04 0.2" size="0.015" rgba="0.85 0.85 0.88 1" mass="0.05"/>
+      </body>
+      <body name="k_counter_door_right" pos="0.6 -0.3 -0.42">
+        <joint name="k_counter_door_right_hinge" type="hinge" pos="0.65 0 0" axis="0 0 1" range="-5 90" damping="3" armature="0.05"/>
+        <geom name="k_counter_door_right_panel" type="box" pos="0 0 0" size="0.6 0.02 0.4" material="wood_light_mat" mass="3" friction="1.0 0.5 0.01"/>
+        <geom name="k_counter_door_right_knob" type="sphere" pos="-0.5 -0.04 0.2" size="0.015" rgba="0.85 0.85 0.88 1" mass="0.05"/>
+      </body>
+      <geom name="k_sink_basin" type="box" pos="0.5 0 -0.05" size="0.25 0.2 0.1" material="metal_mat" mass="5"/>
+      <geom name="k_faucet_base" type="cylinder" pos="0.5 -0.15 0.08" size="0.02 0.05" material="metal_mat" mass="0.3"/>
+      <geom name="k_faucet_spout" type="cylinder" pos="0.5 0 0.18" size="0.015 0.1" material="metal_mat" mass="0.2" euler="75 0 0"/>
+    </body>
+
+    <body name="k_stove" pos="3.2 -0.8 0.45">
+      <geom name="k_stove_top" type="box" size="0.35 0.3 0.03" rgba="0.2 0.2 0.2 1" mass="25"/>
+      <geom name="k_stove_body" type="box" pos="0 0 -0.42" size="0.33 0.28 0.42" material="wood_light_mat" mass="30"/>
+      <geom name="k_burner_1" type="cylinder" pos="-0.15 0.1 0.04" size="0.08 0.01" rgba="0.3 0.3 0.3 1" mass="0.5"/>
+      <geom name="k_burner_2" type="cylinder" pos="0.15 0.1 0.04" size="0.08 0.01" rgba="0.3 0.3 0.3 1" mass="0.5"/>
+    </body>
+
+    <body name="k_dining_table" pos="2.2 -2.8 0.4">
+      <geom name="k_dining_table_top" type="box" size="0.5 0.4 0.025" material="wood_light_mat" mass="15"/>
+      <geom name="k_dining_table_leg" type="cylinder" pos="0 0 -0.21" size="0.04 0.19" rgba="0.35 0.25 0.15 1" mass="3"/>
+    </body>
+    <body name="k_dining_chair_1" pos="2.2 -3.4 0.25">
+      <geom name="k_chair1_seat" type="box" size="0.2 0.2 0.03" material="wood_light_mat" mass="3"/>
+      <geom name="k_chair1_back" type="box" pos="0 0.18 0.25" size="0.18 0.03 0.25" material="wood_light_mat" mass="2"/>
+      <geom name="k_chair1_leg1" type="cylinder" pos="0.15 0.15 -0.135" size="0.02 0.115" rgba="0.35 0.25 0.15 1" mass="0.3"/>
+      <geom name="k_chair1_leg2" type="cylinder" pos="-0.15 0.15 -0.135" size="0.02 0.115" rgba="0.35 0.25 0.15 1" mass="0.3"/>
+    </body>
+    <!-- 增加餐椅以符合真实布置 -->
+    <body name="k_dining_chair_2" pos="2.0 -3.4 0.25">
+      <geom name="k_chair2_seat" type="box" size="0.2 0.2 0.03" material="wood_light_mat" mass="3"/>
+      <geom name="k_chair2_back" type="box" pos="0 0.18 0.25" size="0.18 0.03 0.25" material="wood_light_mat" mass="2"/>
+      <geom name="k_chair2_leg1" type="cylinder" pos="0.15 0.15 -0.135" size="0.02 0.115" rgba="0.35 0.25 0.15 1" mass="0.3"/>
+      <geom name="k_chair2_leg2" type="cylinder" pos="-0.15 0.15 -0.135" size="0.02 0.115" rgba="0.35 0.25 0.15 1" mass="0.3"/>
+    </body>
+    <body name="k_dining_chair_3" pos="2.4 -3.4 0.25">
+      <geom name="k_chair3_seat" type="box" size="0.2 0.2 0.03" material="wood_light_mat" mass="3"/>
+      <geom name="k_chair3_back" type="box" pos="0 0.18 0.25" size="0.18 0.03 0.25" material="wood_light_mat" mass="2"/>
+      <geom name="k_chair3_leg1" type="cylinder" pos="0.15 0.15 -0.135" size="0.02 0.115" rgba="0.35 0.25 0.15 1" mass="0.3"/>
+      <geom name="k_chair3_leg2" type="cylinder" pos="-0.15 0.15 -0.135" size="0.02 0.115" rgba="0.35 0.25 0.15 1" mass="0.3"/>
+    </body>
+
+    <body name="bl_bed" pos="-4 2.75 0.4">
+      <geom name="bl_bed_frame" type="box" size="1.0 0.75 0.18" material="wood_dark_mat" mass="45"/>
+      <geom name="bl_bed_mattress" type="box" pos="0 0 0.23" size="0.95 0.7 0.12" rgba="0.95 0.95 0.98 1" mass="22" friction="1.5 0.8 0.02" solref="0.005 0.8" solimp="0.9 0.95 0.001"/>
+      <geom name="bl_bed_headboard" type="box" pos="-0.95 0 0.5" size="0.05 0.7 0.25" material="wood_dark_mat" mass="10"/>
+      <geom name="bl_bed_blanket" type="box" pos="0.2 0 0.29" size="0.7 0.65 0.015" rgba="0.9 0.9 0.95 1" mass="5" friction="1.2 0.6 0.02"/>
+    </body>
+    <body name="bl_wardrobe" pos="-3.0 2.2 1.0">
+      <geom name="bl_wardrobe_body" type="box" size="0.25 0.5 1.0" material="wood_dark_mat" mass="70"/>
+      <geom name="bl_wardrobe_door_left" type="box" pos="-0.26 -0.25 0" size="0.02 0.23 0.95" material="wood_dark_mat" mass="8"/>
+      <geom name="bl_wardrobe_door_right" type="box" pos="-0.26 0.25 0" size="0.02 0.23 0.95" material="wood_dark_mat" mass="8"/>
+      <geom name="bl_wardrobe_handle_left" type="cylinder" pos="-0.3 -0.15 0" size="0.015 0.06" rgba="0.7 0.6 0.3 1" mass="0.1" euler="0 90 0"/>
+      <geom name="bl_wardrobe_handle_right" type="cylinder" pos="-0.3 0.15 0" size="0.015 0.06" rgba="0.7 0.6 0.3 1" mass="0.1" euler="0 90 0"/>
+    </body>
+    <body name="bl_nightstand_1" pos="-3.3 2.75 0.3">
+      <geom name="bl_nightstand1_body" type="box" size="0.25 0.2 0.3" material="wood_light_mat" mass="12"/>
+      <geom name="bl_nightstand1_top" type="box" pos="0 0 0.32" size="0.27 0.22 0.02" material="wood_light_mat" mass="3"/>
+    </body>
+    <body name="bl_nightstand_2" pos="-4.7 2.75 0.3">
+      <geom name="bl_nightstand2_body" type="box" size="0.25 0.2 0.3" material="wood_light_mat" mass="12"/>
+      <geom name="bl_nightstand2_top" type="box" pos="0 0 0.32" size="0.27 0.22 0.02" material="wood_light_mat" mass="3"/>
+    </body>
+    <!-- 卧室左侧台灯 -->
+    <body name="bl_bed_lamp" pos="-3.3 2.95 0">
+      <geom name="bl_lamp_base" type="cylinder" size="0.08 0.02" rgba="0.3 0.3 0.3 1" mass="0.5"/>
+      <geom name="bl_lamp_pole" type="cylinder" pos="0 0 0.25" size="0.01 0.25" rgba="0.3 0.3 0.3 1" mass="0.2"/>
+      <geom name="bl_lamp_shade" type="box" pos="0 0 0.32" size="0.12 0.12 0.08" rgba="1.0 0.95 0.85 0.8" mass="0.3" contype="0" conaffinity="0"/>
+    </body>
+    <body name="bl_dresser" pos="-3.0 3.2 0.4">
+      <geom name="bl_dresser_body" type="box" size="0.25 0.4 0.4" material="wood_light_mat" mass="35"/>
+      <geom name="bl_dresser_top" type="box" pos="0 0 0.42" size="0.27 0.42 0.02" material="wood_light_mat" mass="8"/>
+      <geom name="bl_dresser_mirror" type="box" pos="-0.05 0 0.85" size="0.02 0.35 0.4" rgba="0.9 0.95 1.0 0.7" mass="3"/>
+    </body>
+
+    <body name="bm_bed" pos="0 2.75 0.4">
+      <geom name="bm_bed_frame" type="box" size="1.0 0.75 0.18" material="wood_dark_mat" mass="45"/>
+      <geom name="bm_bed_mattress" type="box" pos="0 0 0.23" size="0.95 0.7 0.12" rgba="0.95 0.95 0.98 1" mass="22" friction="1.5 0.8 0.02" solref="0.005 0.8" solimp="0.9 0.95 0.001"/>
+      <geom name="bm_bed_headboard" type="box" pos="-0.95 0 0.5" size="0.05 0.7 0.25" material="wood_dark_mat" mass="10"/>
+      <geom name="bm_bed_blanket" type="box" pos="0.2 0 0.29" size="0.7 0.65 0.015" rgba="0.9 0.9 0.95 1" mass="5" friction="1.2 0.6 0.02"/>
+    </body>
+    <body name="bm_wardrobe" pos="1.0 2.2 1.0">
+      <geom name="bm_wardrobe_body" type="box" size="0.25 0.5 1.0" material="wood_dark_mat" mass="70"/>
+      <geom name="bm_wardrobe_door_left" type="box" pos="-0.26 -0.25 0" size="0.02 0.23 0.95" material="wood_dark_mat" mass="8"/>
+      <geom name="bm_wardrobe_door_right" type="box" pos="-0.26 0.25 0" size="0.02 0.23 0.95" material="wood_dark_mat" mass="8"/>
+      <geom name="bm_wardrobe_handle_left" type="cylinder" pos="-0.3 -0.15 0" size="0.015 0.06" rgba="0.7 0.6 0.3 1" mass="0.1" euler="0 90 0"/>
+      <geom name="bm_wardrobe_handle_right" type="cylinder" pos="-0.3 0.15 0" size="0.015 0.06" rgba="0.7 0.6 0.3 1" mass="0.1" euler="0 90 0"/>
+    </body>
+    <body name="bm_nightstand_1" pos="0.7 2.75 0.3">
+      <geom name="bm_nightstand1_body" type="box" size="0.25 0.2 0.3" material="wood_light_mat" mass="12"/>
+      <geom name="bm_nightstand1_top" type="box" pos="0 0 0.32" size="0.27 0.22 0.02" material="wood_light_mat" mass="3"/>
+    </body>
+    <body name="bm_nightstand_2" pos="-0.7 2.75 0.3">
+      <geom name="bm_nightstand2_body" type="box" size="0.25 0.2 0.3" material="wood_light_mat" mass="12"/>
+      <geom name="bm_nightstand2_top" type="box" pos="0 0 0.32" size="0.27 0.22 0.02" material="wood_light_mat" mass="3"/>
+    </body>
+    <!-- 卧室中间台灯 -->
+    <body name="bm_bed_lamp" pos="0.7 2.95 0">
+      <geom name="bm_lamp_base" type="cylinder" size="0.08 0.02" rgba="0.3 0.3 0.3 1" mass="0.5"/>
+      <geom name="bm_lamp_pole" type="cylinder" pos="0 0 0.25" size="0.01 0.25" rgba="0.3 0.3 0.3 1" mass="0.2"/>
+      <geom name="bm_lamp_shade" type="box" pos="0 0 0.32" size="0.12 0.12 0.08" rgba="1.0 0.95 0.85 0.8" mass="0.3" contype="0" conaffinity="0"/>
+    </body>
+    <body name="bm_dresser" pos="1.0 3.2 0.4">
+      <geom name="bm_dresser_body" type="box" size="0.25 0.4 0.4" material="wood_light_mat" mass="35"/>
+      <geom name="bm_dresser_top" type="box" pos="0 0 0.42" size="0.27 0.42 0.02" material="wood_light_mat" mass="8"/>
+      <geom name="bm_dresser_mirror" type="box" pos="-0.05 0 0.85" size="0.02 0.35 0.4" rgba="0.9 0.95 1.0 0.7" mass="3"/>
+    </body>
+
+    <!-- 清理第三卧室占位对象，场景为两卧室 -->
+
+    <body name="ba_bathroom_sink" pos="4.2 3.4 0.45">
+      <geom name="ba_sink_cabinet_body" type="box" pos="0 0 -0.4" size="0.35 0.25 0.4" material="wood_light_mat" mass="25"/>
+      <geom name="ba_sink_countertop" type="box" size="0.38 0.27 0.03" material="tile_floor_mat" mass="12"/>
+      <geom name="ba_bathroom_sink_basin" type="box" pos="0 0 0.05" size="0.2 0.15 0.08" material="ceramic_mat" mass="5"/>
+      <geom name="ba_sink_faucet_base" type="cylinder" pos="0 -0.12 0.18" size="0.015 0.05" material="metal_mat" mass="0.2"/>
+      <geom name="ba_sink_faucet_spout" type="cylinder" pos="0 0 0.24" size="0.012 0.06" material="metal_mat" mass="0.15" euler="60 0 0"/>
+      <geom name="ba_bathroom_mirror" type="box" pos="-0.02 0 0.75" size="0.01 0.35 0.4" rgba="0.9 0.95 1.0 0.85" mass="3" contype="0" conaffinity="0"/>
+      <body name="ba_sink_cabinet_door" pos="0 -0.27 -0.4">
+        <joint name="ba_sink_door_hinge" type="hinge" pos="-0.35 0 0" axis="0 0 1" range="-90 5" damping="3" armature="0.05"/>
+        <geom name="ba_sink_door_panel" type="box" pos="0 0 0" size="0.35 0.02 0.38" material="wood_light_mat" mass="3" friction="1.0 0.5 0.01"/>
+        <geom name="ba_sink_door_knob" type="sphere" pos="0.28 -0.04 0" size="0.015" rgba="0.85 0.85 0.88 1" mass="0.05"/>
+      </body>
+    </body>
+
+    <body name="ba_toilet" pos="5.6 3.4 0.2">
+      <geom name="ba_toilet_base" type="box" size="0.2 0.25 0.2" material="ceramic_mat" mass="25"/>
+      <geom name="ba_toilet_tank" type="box" pos="-0.15 0 0.35" size="0.08 0.22 0.15" material="ceramic_mat" mass="15"/>
+      <body name="ba_toilet_seat" pos="0 0 0.22">
+        <joint name="ba_toilet_seat_hinge" type="hinge" pos="0 0.2 0" axis="1 0 0" range="0 100" damping="2" armature="0.03"/>
+        <geom name="ba_toilet_seat_ring" type="box" pos="0 -0.05 0" size="0.18 0.2 0.02" rgba="0.95 0.95 0.98 1" mass="1.5" friction="0.8 0.4 0.01"/>
+      </body>
+      <geom name="ba_toilet_flush_button" type="cylinder" pos="-0.15 0 0.52" size="0.025 0.01" rgba="0.85 0.85 0.90 1" mass="0.05"/>
+    </body>
+
+    <body name="ba_shower_area" pos="4.5 2.8 0">
+      <geom name="ba_shower_base" type="box" pos="0 0 0.02" size="0.5 0.5 0.02" material="tile_floor_mat" mass="20"/>
+      <geom name="ba_shower_glass_front" type="box" pos="0.5 0 0.3" size="0.02 0.48 0.3" rgba="0.9 0.95 1.0 0.3" mass="8" contype="1" conaffinity="1"/>
+      <geom name="ba_shower_glass_left" type="box" pos="0 -0.5 0.3" size="0.48 0.02 0.3" rgba="0.9 0.95 1.0 0.3" mass="8" contype="1" conaffinity="1"/>
+      <geom name="ba_shower_glass_right" type="box" pos="0 0.5 0.3" size="0.48 0.02 0.3" rgba="0.9 0.95 1.0 0.3" mass="8" contype="1" conaffinity="1"/>
+      <geom name="ba_shower_partition" type="box" pos="0.25 0 0.3" size="0.02 0.48 0.3" rgba="0.9 0.95 1.0 0.25" mass="6" contype="1" conaffinity="1"/>
+      <geom name="ba_shower_pipe" type="cylinder" pos="-0.3 -0.3 1.5" size="0.015 0.5" material="metal_mat" mass="1" euler="10 0 0"/>
+      <geom name="ba_shower_head" type="cylinder" pos="-0.25 -0.2 2.0" size="0.06 0.03" material="metal_mat" mass="0.5"/>
+      <geom name="ba_shower_faucet" type="box" pos="-0.3 -0.35 1.0" size="0.04 0.03 0.06" material="metal_mat" mass="0.3"/>
+    </body>
+    <body name="foyer_shoe_cabinet" pos="-5.3 -3.6 0.35">
+      <geom name="foyer_shoe_cabinet_body" type="box" size="0.3 0.4 0.4" rgba="0.5 0.4 0.3 1"/>
+    </body>
+    <body name="foyer_coat_rack" pos="-5.3 -4.1 0">
+      <geom name="foyer_coat_rack_base" type="cylinder" size="0.15 0.02" rgba="0.3 0.25 0.2 1" mass="3"/>
+      <geom name="foyer_coat_rack_pole" type="cylinder" pos="0 0 1.0" size="0.025 1.0" rgba="0.3 0.25 0.2 1" mass="2"/>
+      <geom name="foyer_coat_rack_hook1" type="box" pos="0.1 0 1.8" size="0.1 0.02 0.02" rgba="0.3 0.25 0.2 1" mass="0.1"/>
+      <geom name="foyer_coat_rack_hook2" type="box" pos="-0.1 0 1.6" size="0.1 0.02 0.02" rgba="0.3 0.25 0.2 1" mass="0.1"/>
+    </body>
+  </worldbody>
+  <actuator/>
+</mujoco>

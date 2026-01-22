@@ -9,14 +9,14 @@
   <compiler angle="degree" coordinate="local" inertiafromgeom="true" meshdir="../assets/meshes"/>
 
   <!-- 仿真选项 -->
-  <option timestep="0.004" gravity="0 0 -9.81">
+  <option timestep="0.003" iterations="100" gravity="0 0 -9.81">
     <flag warmstart="enable"/>
   </option>
 
   <!-- 默认物理参数 -->
   <default>
     <geom solref="0.01 1" solimp="0.95 0.95 0.001"/>
-    <joint damping="1" armature="0.01"/>
+    <joint damping="2" armature="0.01"/>
   </default>
 
   <!-- ====================================================================

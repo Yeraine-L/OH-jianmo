@@ -158,6 +158,32 @@ python scripts/test_scene.py
 
 ---
 
+### 3. 客厅 + UR5 机械臂场景 (living_room_with_ur5.xml)
+
+**描述**: 在客厅场景中集成一台 UR5 简化机械臂模型，机械臂安装在预留的机器人工作区附近，可用于后续抓取、轨迹规划等控制算法开发。
+
+**特点**:
+- 环境：沿用 living_room_v2 的客厅布局和材质
+- 机器人：6 自由度 UR5 机械臂 + 简单夹爪
+- 执行器：8 个控制通道（6 个关节 + 2 个夹爪电机）
+- 传感器：关节位置/速度、末端位姿、夹爪触觉
+
+**适用场景**:
+- 桌面抓取与放置任务
+- 逆运动学与轨迹规划调试
+- 具身智能模型在家居环境中的操作能力评估
+
+**使用方法**:
+```bash
+# 直接通过文件名加载
+python scripts/test_scene.py -f living_room_with_ur5.xml
+
+# 或使用预设场景名（若在 AVAILABLE_SCENES 中配置为 living_room_ur5）
+python scripts/test_scene.py -s living_room_ur5
+```
+
+---
+
 ## 机器人集成
 
 项目支持多种机器人模型的无缝集成。

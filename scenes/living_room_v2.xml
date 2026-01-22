@@ -3,7 +3,7 @@
   <compiler angle="degree" coordinate="local" inertiafromgeom="true" meshdir="../assets/meshes"/>
 
   <!-- 默认设置 -->
-  <option timestep="0.002" gravity="0 0 -9.81">
+  <option timestep="0.004" gravity="0 0 -9.81">
     <!-- 优化求解器参数 -->
     <flag warmstart="enable"/>
   </option>
@@ -70,7 +70,7 @@
   <visual>
     <global offwidth="1920" offheight="1080" elevation="-20" azimuth="135" fovy="50"/>
     <quality shadowsize="4096" offsamples="4"/>
-    <map force="0.1" zfar="50" znear="0.01"/>
+    <map force="0.1" zfar="50" znear="0.05"/>
     <headlight ambient="0.4 0.4 0.4" diffuse="0.8 0.8 0.8" specular="0.4 0.4 0.4"/>
   </visual>
 
@@ -80,7 +80,7 @@
     <!-- 主光源（天花板中央） -->
     <light name="ceiling_main" pos="0 0 2.8" dir="0 0 -1"
            directional="false" diffuse="0.9 0.9 0.85" specular="0.6 0.6 0.6"
-           castshadow="true"/>
+           castshadow="false"/>
 
     <!-- 补光1（左前方） -->
     <light name="fill_light_1" pos="2 -2 2.5" dir="-0.4 0.4 -1"
@@ -110,37 +110,36 @@
     <geom name="wall_right" type="box" pos="3 0 1.25" size="0.1 3 1.25"
           material="wall_mat" contype="0" conaffinity="0"/>
 
-    <!-- 客厅茶几 (房间中央) -->
-    <body name="coffee_table" pos="0 0 0.35">
+    <!-- 客厅茶几 (房间中央) - 修正高度 -->
+    <body name="coffee_table" pos="0 0 0.375">
       <!-- 桌面 -->
       <geom name="table_top" type="box" size="0.6 0.4 0.025"
             material="wood_mat" mass="12" friction="0.8 0.4 0.01"/>
 
-      <!-- 桌腿 (四个) - 优化碰撞参数 -->
-      <geom name="leg_1" type="cylinder" pos="0.5 0.3 -0.325"
-            size="0.03 0.325" rgba="0.35 0.25 0.15 1" mass="1.2"
+      <!-- 桌腿 (四个) - 修正长度避免穿地 -->
+      <geom name="leg_1" type="cylinder" pos="0.5 0.3 -0.2"
+            size="0.03 0.175" rgba="0.35 0.25 0.15 1" mass="1.2"
             friction="1.0 0.5 0.01"/>
-      <geom name="leg_2" type="cylinder" pos="0.5 -0.3 -0.325"
-            size="0.03 0.325" rgba="0.35 0.25 0.15 1" mass="1.2"
+      <geom name="leg_2" type="cylinder" pos="0.5 -0.3 -0.2"
+            size="0.03 0.175" rgba="0.35 0.25 0.15 1" mass="1.2"
             friction="1.0 0.5 0.01"/>
-      <geom name="leg_3" type="cylinder" pos="-0.5 0.3 -0.325"
-            size="0.03 0.325" rgba="0.35 0.25 0.15 1" mass="1.2"
+      <geom name="leg_3" type="cylinder" pos="-0.5 0.3 -0.2"
+            size="0.03 0.175" rgba="0.35 0.25 0.15 1" mass="1.2"
             friction="1.0 0.5 0.01"/>
-      <geom name="leg_4" type="cylinder" pos="-0.5 -0.3 -0.325"
-            size="0.03 0.325" rgba="0.35 0.25 0.15 1" mass="1.2"
+      <geom name="leg_4" type="cylinder" pos="-0.5 -0.3 -0.2"
+            size="0.03 0.175" rgba="0.35 0.25 0.15 1" mass="1.2"
             friction="1.0 0.5 0.01"/>
+    </body>
 
-      <!-- 茶壶（放在桌面上）-->
-      <body name="teapot" pos="0.15 0 0.07">
-        <freejoint/>
-        <geom name="teapot_geom" type="mesh" mesh="teapot_mesh"
-              material="ceramic_mat" mass="0.5"
-              friction="0.6 0.3 0.005" solref="0.01 1"/>
-      </body>
+    <body name="teapot" pos="0.15 0 0.45">
+      <freejoint/>
+      <geom name="teapot_geom" type="mesh" mesh="teapot_mesh"
+            material="ceramic_mat" mass="0.5"
+            friction="0.6 0.3 0.005" solref="0.01 1"/>
     </body>
 
     <!-- 长沙发 (靠后墙) - 多组件设计 -->
-    <body name="long_sofa" pos="0 2.4 0.25">
+    <body name="long_sofa" pos="0 2.4 0.08">
       <!-- 座椅底座 -->
       <geom name="sofa_base" type="box" size="1.2 0.45 0.08"
             rgba="0.25 0.25 0.30 1" mass="20"
@@ -165,26 +164,26 @@
       <geom name="sofa_armrest_right" type="box" pos="1.1 0 0.30" size="0.1 0.45 0.22"
             material="fabric_mat" mass="4"
             friction="1.2 0.6 0.01"/>
+    </body>
 
-      <!-- 装饰枕头1 -->
-      <body name="cushion_1" pos="-0.5 -0.15 0.30">
-        <freejoint/>
-        <geom name="cushion_1_geom" type="box" size="0.15 0.15 0.08"
-              rgba="0.85 0.75 0.45 1" mass="0.3"
-              friction="1.0 0.5 0.01" solref="0.003 0.5"/>
-      </body>
+    <!-- 装饰枕头1 -->
+    <body name="cushion_1" pos="-0.5 2.25 0.38">
+      <freejoint/>
+      <geom name="cushion_1_geom" type="box" size="0.15 0.15 0.08"
+            rgba="0.85 0.75 0.45 1" mass="0.3"
+            friction="1.0 0.5 0.01" solref="0.003 0.5"/>
+    </body>
 
-      <!-- 装饰枕头2 -->
-      <body name="cushion_2" pos="0.5 -0.15 0.30">
-        <freejoint/>
-        <geom name="cushion_2_geom" type="box" size="0.15 0.15 0.08"
-              rgba="0.75 0.45 0.50 1" mass="0.3"
-              friction="1.0 0.5 0.01" solref="0.003 0.5"/>
-      </body>
+    <!-- 装饰枕头2 -->
+    <body name="cushion_2" pos="0.5 2.25 0.38">
+      <freejoint/>
+      <geom name="cushion_2_geom" type="box" size="0.15 0.15 0.08"
+            rgba="0.75 0.45 0.50 1" mass="0.3"
+            friction="1.0 0.5 0.01" solref="0.003 0.5"/>
     </body>
 
     <!-- 地毯 (在茶几下方) - 优化纹理和物理 -->
-    <geom name="carpet" type="box" pos="0 0 0.008" size="1.8 1.4 0.008"
+    <geom name="carpet" type="box" pos="0 0 0.003" size="1.8 1.4 0.002"
           material="carpet_mat" friction="1.8 0.9 0.02"
           solref="0.005 0.5" solimp="0.95 0.98 0.001"/>
 

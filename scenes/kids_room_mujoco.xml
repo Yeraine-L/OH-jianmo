@@ -1,0 +1,479 @@
+<mujoco model="kids_room">
+  <compiler angle="degree" inertiafromgeom="true"/>
+  <option gravity="0 0 -9.81" integrator="RK4"/>
+  <default>
+    <default class="floor"><geom friction="1 0.005 0.0001" rgba="0.92 0.92 0.96 1"/></default>
+    <default class="wall"><geom type="box" rgba="0.98 0.85 0.9 1"/></default>
+    <default class="ceiling"><geom type="box" rgba="0.93 0.93 0.95 1"/></default>
+    <default class="furniture"><geom friction="0.8 0.03 0.001" rgba="0.65 0.65 0.68 1"/></default>
+    <default class="wood"><geom friction="0.8 0.03 0.001" rgba="0.95 0.9 0.8 1"/></default>
+    <default class="metal"><geom friction="0.9 0.02 0.001" rgba="0.55 0.55 0.6 1"/></default>
+    <default class="plastic"><geom friction="0.6 0.02 0.001" rgba="0.7 0.7 0.8 1"/></default>
+    <default class="toy"><geom type="sphere" size="0.08" friction="0.6 0.01 0.001" rgba="0.9 0.4 0.4 1"/></default>
+    <default class="lamp"><geom rgba="1 1 0.75 1"/></default>
+    <default class="arm"><geom rgba="0.45 0.48 0.52 1" friction="0.9 0.02 0.001"/></default>
+  </default>
+  <worldbody>
+    <light name="ambient_top" pos="4 5 3.1" dir="0 0 -1" diffuse="0.6 0.6 0.6" specular="0.2 0.2 0.2"/>
+    <light name="north_soft" pos="4 1 3.0" dir="0 0 -1" diffuse="0.4 0.4 0.45" specular="0.15 0.15 0.15"/>
+    <light name="south_soft" pos="4 9 3.0" dir="0 0 -1" diffuse="0.4 0.4 0.45" specular="0.15 0.15 0.15"/>
+    <light name="ceiling_light" pos="4 5 3.5" dir="0 0 -1" diffuse="0.8 0.8 0.8" specular="0.5 0.5 0.5"/>
+    <body name="room">
+      <geom name="floor_plane" class="floor" type="plane" pos="0 0 0" size="40 40 0.1"/>
+      <geom name="floor_visual" class="floor" type="box" pos="5 6 0" size="5 6 0.03" rgba="0.95 0.95 0.97 1"/>
+      <!-- Decorative floor pattern -->
+      <geom class="floor" type="box" pos="2 3 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="3 3 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="4 3 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="5 3 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="6 3 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="2 4 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="3 4 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="4 4 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="5 4 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="6 4 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="2 5 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="3 5 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="4 5 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="5 5 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="6 5 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="2 6 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="3 6 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="4 6 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="5 6 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="6 6 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="2 7 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="3 7 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="4 7 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="5 7 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="6 7 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom name="north_wall" class="wall" pos="5 0 1.6" size="5 0.05 1.6" rgba="0.98 0.85 0.9 1"/>
+      <geom name="south_wall" class="wall" pos="5 12 1.6" size="5 0.05 1.6" rgba="0.98 0.85 0.9 1"/>
+      <geom name="west_wall" class="wall" pos="0 6 1.6" size="0.05 6 1.6" rgba="0.98 0.85 0.9 1"/>
+      <geom name="east_wall" class="wall" pos="10 6 1.6" size="0.05 6 1.6" rgba="0.98 0.85 0.9 1"/>
+      <!-- Windows -->
+      <geom name="north_window" type="box" pos="5 0 2.0" size="1.5 0.02 0.8" rgba="0.3 0.6 0.9 0.6"/>
+      <geom name="north_window_frame1" class="metal" type="box" pos="4.25 0 2.0" size="0.02 0.03 0.85"/>
+      <geom name="north_window_frame2" class="metal" type="box" pos="5.75 0 2.0" size="0.02 0.03 0.85"/>
+      <geom name="north_window_frame3" class="metal" type="box" pos="5 0 1.6" size="1.55 0.03 0.02"/>
+      <geom name="north_window_frame4" class="metal" type="box" pos="5 0 2.4" size="1.55 0.03 0.02"/>
+      <!-- Wall decorations -->
+      <geom name="painting1" type="box" pos="3 0 2.2" size="0.6 0.01 0.4" rgba="0.9 0.7 0.5 1"/>
+      <geom name="painting2" type="box" pos="7 0 2.2" size="0.6 0.01 0.4" rgba="0.5 0.7 0.9 1"/>
+      <geom name="painting3" type="box" pos="3 12 2.2" size="0.6 0.01 0.4" rgba="0.7 0.9 0.5 1"/>
+      <geom name="painting4" type="box" pos="7 12 2.2" size="0.6 0.01 0.4" rgba="0.9 0.5 0.9 1"/>
+      <geom name="shelf1" class="wood" type="box" pos="3 12 1.8" size="0.4 0.02 0.2"/>
+      <geom name="shelf2" class="wood" type="box" pos="7 12 1.8" size="0.4 0.02 0.2"/>
+      <geom name="shelf3" class="wood" type="box" pos="0.5 6 1.8" size="0.4 0.02 0.2"/>
+      <geom name="shelf4" class="wood" type="box" pos="9.5 6 1.8" size="0.4 0.02 0.2"/>
+    </body>
+    <body name="rest_area">
+      <geom name="rest_rug" type="box" pos="4 4.5 0.01" size="2 2 0.01" rgba="0.85 0.92 0.98 1"/>
+      <geom name="middle_rug" type="box" pos="5 6 0.015" size="2 1.5 0.005" rgba="0.92 0.85 0.98 1"/>
+      <geom name="corner_rug" type="box" pos="8 8 0.015" size="1.5 1.5 0.005" rgba="0.85 0.98 0.92 1"/>
+      <body name="bed" pos="4 4 0.25" euler="0 0 0">
+        <geom class="wood" type="box" size="1 0.6 0.25" rgba="0.82 0.72 0.58 1"/>
+        <geom class="wood" type="box" size="0.05 0.6 0.25" pos="1.05 0 0.25" rgba="0.78 0.66 0.52 1"/>
+        <geom class="wood" type="box" size="0.05 0.6 0.25" pos="-1.05 0 0.25" rgba="0.78 0.66 0.52 1"/>
+        <geom type="box" size="1 0.6 0.05" pos="0 0 0.5" rgba="0.95 0.85 0.9 1"/>
+      </body>
+      <body name="bedside_cabinet" pos="2.5 4 0.2">
+        <geom class="wood" type="box" size="0.3 0.25 0.15" rgba="0.72 0.56 0.42 1"/>
+        <!-- Drawers -->
+        <geom class="wood" type="box" size="0.28 0.23 0.01" pos="0 0 0.16" rgba="0.8 0.65 0.5 1"/>
+        <geom class="wood" type="box" size="0.28 0.1 0.05" pos="0 0 0.07" rgba="0.78 0.63 0.48 1"/>
+        <geom class="wood" type="box" size="0.28 0.1 0.05" pos="0 0 0.14" rgba="0.78 0.63 0.48 1"/>
+        <geom class="wood" type="box" size="0.28 0.01 0.05" pos="0 0 0.11" rgba="0.85 0.7 0.55 1"/>
+        <!-- Drawer handles -->
+        <geom class="metal" type="box" size="0.02 0.02 0.01" pos="0.1 0 0.07" rgba="0.6 0.6 0.65 1"/>
+        <geom class="metal" type="box" size="0.02 0.02 0.01" pos="0.1 0 0.14" rgba="0.6 0.6 0.65 1"/>
+      </body>
+      <body name="bed_lamp" pos="2.5 4 0.6">
+        <geom class="lamp" type="cylinder" size="0.05 0.2" rgba="1 0.95 0.6 1"/>
+      </body>
+      <!-- Add small items on bedside cabinet -->
+      <body name="alarm_clock" pos="2.3 4 0.4">
+        <geom class="plastic" type="box" size="0.08 0.08 0.08" rgba="0.7 0.9 0.95 1"/>
+        <geom class="plastic" type="box" size="0.05 0.05 0.01" pos="0 0 0.085" rgba="0.2 0.3 0.4 1"/>
+      </body>
+      <body name="photo_frame" pos="2.7 4 0.4">
+        <geom class="wood" type="box" size="0.1 0.12 0.02" rgba="0.9 0.85 0.7 1"/>
+        <geom type="box" size="0.08 0.1 0.01" pos="0 0 0.025" rgba="0.95 0.85 0.9 1"/>
+      </body>
+      <body name="small_wardrobe" pos="5 4 0.9" euler="0 0 90">
+        <geom class="wood" type="box" size="0.25 0.9 0.5" rgba="0.72 0.56 0.42 1"/>
+        <!-- Door frames -->
+        <geom class="wood" type="box" size="0.26 0.01 0.52" pos="0 0.45 0" rgba="0.85 0.7 0.55 1"/>
+        <geom class="wood" type="box" size="0.26 0.01 0.52" pos="0 -0.45 0" rgba="0.85 0.7 0.55 1"/>
+        <geom class="wood" type="box" size="0.26 0.9 0.01" pos="0 0 -0.26" rgba="0.85 0.7 0.55 1"/>
+        <geom class="wood" type="box" size="0.26 0.9 0.01" pos="0 0 0.26" rgba="0.85 0.7 0.55 1"/>
+        <!-- Middle divider -->
+        <geom class="wood" type="box" size="0.26 0.01 0.5" pos="0 0 0" rgba="0.85 0.7 0.55 1"/>
+        <!-- Doors -->
+        <geom class="wood" type="box" size="0.24 0.43 0.23" pos="0 0.22 0" rgba="0.78 0.63 0.48 1"/>
+        <geom class="wood" type="box" size="0.24 0.43 0.23" pos="0 -0.22 0" rgba="0.78 0.63 0.48 1"/>
+        <!-- Door handles -->
+        <geom class="metal" type="box" size="0.02 0.02 0.01" pos="0.12 0.22 0" rgba="0.6 0.6 0.65 1"/>
+        <geom class="metal" type="box" size="0.02 0.02 0.01" pos="0.12 -0.22 0" rgba="0.6 0.6 0.65 1"/>
+        <!-- Internal shelves -->
+        <geom class="wood" type="box" size="0.24 0.01 0.23" pos="0 0.22 0.12" rgba="0.8 0.65 0.5 1"/>
+        <geom class="wood" type="box" size="0.24 0.01 0.23" pos="0 -0.22 0.12" rgba="0.8 0.65 0.5 1"/>
+      </body>
+    </body>
+    <body name="storage_area">
+      <geom name="storage_floor" type="box" pos="2 1.5 0.01" size="2 1.5 0.01" rgba="0.96 0.94 0.9 1"/>
+      <body name="large_wardrobe" pos="0.5 0.5 1.1">
+        <geom class="wood" type="box" size="1 0.3 1.1" rgba="0.65 0.45 0.3 1"/>
+        <!-- Door frames -->
+        <geom class="wood" type="box" size="1.02 0.02 1.12" pos="0 0.15 0" rgba="0.8 0.65 0.5 1"/>
+        <geom class="wood" type="box" size="1.02 0.02 1.12" pos="0 -0.15 0" rgba="0.8 0.65 0.5 1"/>
+        <geom class="wood" type="box" size="1.02 0.3 0.02" pos="0 0 -0.57" rgba="0.8 0.65 0.5 1"/>
+        <geom class="wood" type="box" size="1.02 0.3 0.02" pos="0 0 0.57" rgba="0.8 0.65 0.5 1"/>
+        <!-- Middle divider -->
+        <geom class="wood" type="box" size="0.02 0.3 1.1" pos="0 0 0" rgba="0.8 0.65 0.5 1"/>
+        <!-- Doors -->
+        <geom class="wood" type="box" size="0.48 0.28 0.01" pos="-0.25 0 1.1" rgba="0.75 0.55 0.4 1"/>
+        <geom class="wood" type="box" size="0.48 0.28 0.01" pos="0.25 0 1.1" rgba="0.75 0.55 0.4 1"/>
+        <!-- Door panels -->
+        <geom class="wood" type="box" size="0.4 0.12 0.01" pos="-0.25 0.08 1.11" rgba="0.78 0.63 0.48 1"/>
+        <geom class="wood" type="box" size="0.4 0.12 0.01" pos="-0.25 -0.08 1.11" rgba="0.78 0.63 0.48 1"/>
+        <geom class="wood" type="box" size="0.4 0.12 0.01" pos="0.25 0.08 1.11" rgba="0.78 0.63 0.48 1"/>
+        <geom class="wood" type="box" size="0.4 0.12 0.01" pos="0.25 -0.08 1.11" rgba="0.78 0.63 0.48 1"/>
+        <!-- Enhanced door handles -->
+        <geom class="metal" type="box" size="0.03 0.03 0.08" pos="-0.2 0.0 1.0" rgba="0.7 0.7 0.75 1"/>
+        <geom class="metal" type="cylinder" size="0.015 0.1" pos="-0.2 0.0 1.05" rgba="0.7 0.7 0.75 1"/>
+        <geom class="metal" type="box" size="0.03 0.03 0.08" pos="0.2 0.0 1.0" rgba="0.7 0.7 0.75 1"/>
+        <geom class="metal" type="cylinder" size="0.015 0.1" pos="0.2 0.0 1.05" rgba="0.7 0.7 0.75 1"/>
+        <!-- Internal shelves -->
+        <geom class="wood" type="box" size="0.96 0.01 0.5" pos="0 0.1 0.25" rgba="0.75 0.6 0.45 1"/>
+        <geom class="wood" type="box" size="0.96 0.01 0.5" pos="0 -0.1 0.25" rgba="0.75 0.6 0.45 1"/>
+        <geom class="wood" type="box" size="0.96 0.01 0.5" pos="0 0.1 -0.25" rgba="0.75 0.6 0.45 1"/>
+        <geom class="wood" type="box" size="0.96 0.01 0.5" pos="0 -0.1 -0.25" rgba="0.75 0.6 0.45 1"/>
+        <!-- Decorative trim -->
+        <geom class="wood" type="box" size="0.05 0.05 0.05" pos="-0.4 0.1 1.11" rgba="0.85 0.7 0.55 1"/>
+        <geom class="wood" type="box" size="0.05 0.05 0.05" pos="-0.4 -0.1 1.11" rgba="0.85 0.7 0.55 1"/>
+        <geom class="wood" type="box" size="0.05 0.05 0.05" pos="0.4 0.1 1.11" rgba="0.85 0.7 0.55 1"/>
+        <geom class="wood" type="box" size="0.05 0.05 0.05" pos="0.4 -0.1 1.11" rgba="0.85 0.7 0.55 1"/>
+        <!-- Add a decorative vase on top of wardrobe -->
+        <body name="decorative_vase" pos="0 0 2.3">
+          <geom class="plastic" type="cylinder" size="0.1 0.15" rgba="0.9 0.85 0.95 0.8"/>
+          <geom type="sphere" size="0.08" pos="0 0 0.15" rgba="0.7 0.9 0.8 1"/>
+        </body>
+      </body>
+      <body name="toy_rack_1" pos="1.5 0.5 0.9">
+        <geom class="metal" type="box" size="0.75 0.2 0.9" rgba="0.7 0.75 0.8 1"/>
+        <!-- Enhanced frame -->
+        <geom class="metal" type="box" size="0.8 0.22 0.05" pos="0 0 0" rgba="0.65 0.7 0.75 1"/>
+        <geom class="metal" type="box" size="0.8 0.22 0.05" pos="0 0 0.9" rgba="0.65 0.7 0.75 1"/>
+        <!-- Additional shelves -->
+        <geom class="plastic" type="box" size="0.7 0.18 0.15" pos="0 0 0.15" rgba="0.8 0.9 0.8 0.8"/>
+        <geom class="plastic" type="box" size="0.7 0.18 0.15" pos="0 0 0.35" rgba="0.9 0.8 0.8 0.8"/>
+        <geom class="plastic" type="box" size="0.7 0.18 0.15" pos="0 0 0.55" rgba="0.8 0.8 0.9 0.8"/>
+        <geom class="plastic" type="box" size="0.7 0.18 0.15" pos="0 0 0.75" rgba="0.9 0.9 0.8 0.8"/>
+        <!-- Decorative edges -->
+        <geom class="metal" type="box" size="0.72 0.2 0.01" pos="0 0 0.15" rgba="0.6 0.65 0.7 1"/>
+        <geom class="metal" type="box" size="0.72 0.2 0.01" pos="0 0 0.35" rgba="0.6 0.65 0.7 1"/>
+        <geom class="metal" type="box" size="0.72 0.2 0.01" pos="0 0 0.55" rgba="0.6 0.65 0.7 1"/>
+        <geom class="metal" type="box" size="0.72 0.2 0.01" pos="0 0 0.75" rgba="0.6 0.65 0.7 1"/>
+        <!-- Decorative corner caps -->
+        <geom class="plastic" type="sphere" size="0.03" pos="-0.38 0.11 0" rgba="0.9 0.4 0.4 1"/>
+        <geom class="plastic" type="sphere" size="0.03" pos="0.38 0.11 0" rgba="0.9 0.4 0.4 1"/>
+        <geom class="plastic" type="sphere" size="0.03" pos="-0.38 -0.11 0" rgba="0.9 0.4 0.4 1"/>
+        <geom class="plastic" type="sphere" size="0.03" pos="0.38 -0.11 0" rgba="0.9 0.4 0.4 1"/>
+      </body>
+      <body name="toy_rack_2" pos="3.0 0.5 0.9">
+        <geom class="metal" type="box" size="0.75 0.2 0.9" rgba="0.7 0.75 0.8 1"/>
+        <!-- Enhanced frame -->
+        <geom class="metal" type="box" size="0.8 0.22 0.05" pos="0 0 0" rgba="0.65 0.7 0.75 1"/>
+        <geom class="metal" type="box" size="0.8 0.22 0.05" pos="0 0 0.9" rgba="0.65 0.7 0.75 1"/>
+        <!-- Additional shelves -->
+        <geom class="plastic" type="box" size="0.7 0.18 0.15" pos="0 0 0.15" rgba="0.8 0.8 0.9 0.8"/>
+        <geom class="plastic" type="box" size="0.7 0.18 0.15" pos="0 0 0.35" rgba="0.9 0.9 0.8 0.8"/>
+        <geom class="plastic" type="box" size="0.7 0.18 0.15" pos="0 0 0.55" rgba="0.9 0.8 0.9 0.8"/>
+        <geom class="plastic" type="box" size="0.7 0.18 0.15" pos="0 0 0.75" rgba="0.8 0.9 0.9 0.8"/>
+        <!-- Decorative edges -->
+        <geom class="metal" type="box" size="0.72 0.2 0.01" pos="0 0 0.15" rgba="0.6 0.65 0.7 1"/>
+        <geom class="metal" type="box" size="0.72 0.2 0.01" pos="0 0 0.35" rgba="0.6 0.65 0.7 1"/>
+        <geom class="metal" type="box" size="0.72 0.2 0.01" pos="0 0 0.55" rgba="0.6 0.65 0.7 1"/>
+        <geom class="metal" type="box" size="0.72 0.2 0.01" pos="0 0 0.75" rgba="0.6 0.65 0.7 1"/>
+        <!-- Decorative corner caps -->
+        <geom class="plastic" type="sphere" size="0.03" pos="-0.38 0.11 0" rgba="0.4 0.9 0.4 1"/>
+        <geom class="plastic" type="sphere" size="0.03" pos="0.38 0.11 0" rgba="0.4 0.9 0.4 1"/>
+        <geom class="plastic" type="sphere" size="0.03" pos="-0.38 -0.11 0" rgba="0.4 0.9 0.4 1"/>
+        <geom class="plastic" type="sphere" size="0.03" pos="0.38 -0.11 0" rgba="0.4 0.9 0.4 1"/>
+      </body>
+      <body name="storage_box_1" pos="2.1 1.0 0.15">
+        <geom class="plastic" type="box" size="0.3 0.2 0.15" rgba="0.85 0.9 0.95 1"/>
+        <geom type="box" size="0.25 0.01 0.16" pos="0 0 0.16" rgba="0.75 0.8 0.85 1"/>
+      </body>
+      <body name="storage_box_2" pos="2.5 1.0 0.15">
+        <geom class="plastic" type="box" size="0.3 0.2 0.15" rgba="0.85 0.95 0.9 1"/>
+        <geom type="box" size="0.25 0.01 0.16" pos="0 0 0.16" rgba="0.75 0.85 0.8 1"/>
+      </body>
+      <body name="storage_box_3" pos="2.9 1.0 0.15">
+        <geom class="plastic" type="box" size="0.3 0.2 0.15" rgba="0.95 0.85 0.9 1"/>
+        <geom type="box" size="0.25 0.01 0.16" pos="0 0 0.16" rgba="0.85 0.75 0.85 1"/>
+      </body>
+      <!-- Add a small plant -->
+      <body name="plant" pos="1 1.8 0.3">
+        <geom class="plastic" type="cylinder" size="0.15 0.3" rgba="0.5 0.3 0.1 1"/>
+        <geom type="sphere" size="0.2" pos="0 0 0.6" rgba="0.2 0.7 0.3 1"/>
+        <geom type="sphere" size="0.15" pos="0.15 0 0.55" rgba="0.2 0.7 0.3 1"/>
+        <geom type="sphere" size="0.15" pos="-0.15 0 0.55" rgba="0.2 0.7 0.3 1"/>
+        <geom type="sphere" size="0.15" pos="0 0.15 0.55" rgba="0.2 0.7 0.3 1"/>
+      </body>
+      <body name="storage_toys">
+        <geom class="toy" name="st_toy_01" pos="0.3 0.3 0.08" rgba="0.95 0.45 0.45 1"/>
+        <geom class="toy" name="st_toy_02" pos="1.0 0.3 0.08" rgba="0.95 0.7 0.45 1"/>
+        <geom class="toy" name="st_toy_03" pos="1.7 0.3 0.08" rgba="0.45 0.6 0.95 1"/>
+        <geom class="toy" name="st_toy_04" pos="2.4 0.3 0.08" rgba="0.45 0.9 0.6 1"/>
+        <geom class="toy" name="st_toy_05" pos="3.1 0.3 0.08" rgba="0.85 0.45 0.95 1"/>
+        <geom class="toy" name="st_toy_06" pos="3.8 0.3 0.08" rgba="0.95 0.85 0.45 1"/>
+        <geom class="toy" name="st_toy_07" pos="0.3 0.54 0.08" rgba="0.4 0.9 0.4 1"/>
+        <geom class="toy" name="st_toy_08" pos="1.0 0.54 0.08" rgba="0.4 0.4 0.9 1"/>
+        <geom class="toy" name="st_toy_09" pos="1.7 0.54 0.08" rgba="0.9 0.9 0.4 1"/>
+        <geom class="toy" name="st_toy_10" pos="2.4 0.54 0.08" rgba="0.9 0.4 0.9 1"/>
+        <geom class="toy" name="st_toy_11" pos="3.1 0.54 0.08" rgba="0.4 0.9 0.9 1"/>
+        <geom class="toy" name="st_toy_12" pos="3.8 0.54 0.08" rgba="0.9 0.6 0.4 1"/>
+        <geom class="toy" name="st_toy_13" pos="0.3 0.78 0.08" rgba="0.6 0.9 0.4 1"/>
+        <geom class="toy" name="st_toy_14" pos="1.0 0.78 0.08" rgba="0.9 0.6 0.9 1"/>
+        <geom class="toy" name="st_toy_15" pos="1.7 0.78 0.08" rgba="0.6 0.4 0.9 1"/>
+        <geom class="toy" name="st_toy_16" pos="2.4 0.78 0.08" rgba="0.9 0.9 0.6 1"/>
+        <geom class="toy" name="st_toy_17" pos="3.1 0.78 0.08" rgba="0.4 0.6 0.9 1"/>
+        <geom class="toy" name="st_toy_18" pos="3.8 0.78 0.08" rgba="0.9 0.4 0.6 1"/>
+        <geom class="toy" name="st_toy_19" pos="0.3 1.02 0.08" rgba="0.6 0.9 0.6 1"/>
+        <geom class="toy" name="st_toy_20" pos="1.0 1.02 0.08" rgba="0.4 0.9 0.9 1"/>
+        <geom class="toy" name="st_toy_21" pos="1.7 1.02 0.08" rgba="0.9 0.4 0.4 1"/>
+        <geom class="toy" name="st_toy_22" pos="2.4 1.02 0.08" rgba="0.4 0.4 0.4 1"/>
+        <geom class="toy" name="st_toy_23" pos="3.1 1.02 0.08" rgba="0.9 0.9 0.9 1"/>
+        <geom class="toy" name="st_toy_24" pos="3.8 1.02 0.08" rgba="0.6 0.6 0.6 1"/>
+        <geom class="toy" name="st_toy_25" pos="0.3 1.26 0.08" rgba="0.7 0.4 0.9 1"/>
+        <geom class="toy" name="st_toy_26" pos="1.0 1.26 0.08" rgba="0.9 0.7 0.4 1"/>
+        <geom class="toy" name="st_toy_27" pos="1.7 1.26 0.08" rgba="0.4 0.9 0.7 1"/>
+        <geom class="toy" name="st_toy_28" pos="2.4 1.26 0.08" rgba="0.9 0.4 0.7 1"/>
+        <geom class="toy" name="st_toy_29" pos="3.1 1.26 0.08" rgba="0.7 0.9 0.4 1"/>
+        <geom class="toy" name="st_toy_30" pos="3.8 1.26 0.08" rgba="0.4 0.7 0.9 1"/>
+        <geom class="toy" name="st_toy_31" pos="0.3 1.5 0.08" rgba="0.9 0.7 0.7 1"/>
+        <geom class="toy" name="st_toy_32" pos="1.0 1.5 0.08" rgba="0.7 0.9 0.9 1"/>
+        <geom class="toy" name="st_toy_33" pos="1.7 1.5 0.08" rgba="0.7 0.7 0.9 1"/>
+        <geom class="toy" name="st_toy_34" pos="2.4 1.5 0.08" rgba="0.9 0.9 0.7 1"/>
+        <geom class="toy" name="st_toy_35" pos="3.1 1.5 0.08" rgba="0.7 0.9 0.7 1"/>
+        <geom class="toy" name="st_toy_36" pos="3.8 1.5 0.08" rgba="0.9 0.7 0.9 1"/>
+        <geom class="toy" name="st_toy_37" pos="0.3 1.74 0.08" rgba="0.5 0.5 0.9 1"/>
+        <geom class="toy" name="st_toy_38" pos="1.0 1.74 0.08" rgba="0.9 0.5 0.5 1"/>
+        <geom class="toy" name="st_toy_39" pos="1.7 1.74 0.08" rgba="0.5 0.9 0.5 1"/>
+        <geom class="toy" name="st_toy_40" pos="2.4 1.74 0.08" rgba="0.9 0.9 0.5 1"/>
+        <geom class="toy" name="st_toy_41" pos="3.1 1.74 0.08" rgba="0.5 0.5 0.5 1"/>
+        <geom class="toy" name="st_toy_42" pos="3.8 1.74 0.08" rgba="0.7 0.7 0.7 1"/>
+        <geom class="toy" name="st_toy_43" pos="0.3 1.98 0.08" rgba="0.6 0.4 0.6 1"/>
+        <geom class="toy" name="st_toy_44" pos="1.0 1.98 0.08" rgba="0.4 0.6 0.6 1"/>
+        <geom class="toy" name="st_toy_45" pos="1.7 1.98 0.08" rgba="0.6 0.6 0.4 1"/>
+        <geom class="toy" name="st_toy_46" pos="2.4 1.98 0.08" rgba="0.8 0.4 0.6 1"/>
+        <geom class="toy" name="st_toy_47" pos="3.1 1.98 0.08" rgba="0.4 0.8 0.6 1"/>
+        <geom class="toy" name="st_toy_48" pos="3.8 1.98 0.08" rgba="0.6 0.4 0.8 1"/>
+        <geom class="toy" name="st_toy_49" pos="0.3 2.22 0.08" rgba="0.8 0.6 0.4 1"/>
+        <geom class="toy" name="st_toy_50" pos="1.0 2.22 0.08" rgba="0.4 0.8 0.8 1"/>
+        <geom class="toy" name="st_toy_51" pos="1.7 2.22 0.08" rgba="0.8 0.4 0.8 1"/>
+        <geom class="toy" name="st_toy_52" pos="2.4 2.22 0.08" rgba="0.6 0.8 0.4 1"/>
+        <geom class="toy" name="st_toy_53" pos="3.1 2.22 0.08" rgba="0.4 0.6 0.8 1"/>
+        <geom class="toy" name="st_toy_54" pos="3.8 2.22 0.08" rgba="0.8 0.6 0.8 1"/>
+        <geom class="toy" name="st_toy_55" pos="0.3 2.46 0.08" rgba="0.7 0.5 0.3 1"/>
+        <geom class="toy" name="st_toy_56" pos="1.0 2.46 0.08" rgba="0.3 0.7 0.5 1"/>
+        <geom class="toy" name="st_toy_57" pos="1.7 2.46 0.08" rgba="0.5 0.3 0.7 1"/>
+        <geom class="toy" name="st_toy_58" pos="2.4 2.46 0.08" rgba="0.7 0.3 0.5 1"/>
+        <geom class="toy" name="st_toy_59" pos="3.1 2.46 0.08" rgba="0.3 0.5 0.7 1"/>
+        <geom class="toy" name="st_toy_60" pos="3.8 2.46 0.08" rgba="0.5 0.7 0.3 1"/>
+      </body>
+    </body>
+    <body name="study_area">
+      <geom name="study_floor" type="box" pos="6 2 0.01" size="2 2 0.01" rgba="0.9 0.96 0.9 1"/>
+      <body name="desk" pos="6.5 2 0.375" euler="0 0 0">
+        <geom class="wood" type="box" size="0.7 0.35 0.375" rgba="0.7 0.55 0.4 1"/>
+        <geom class="plastic" type="box" size="0.5 0.25 0.02" pos="0 0 0.395" rgba="0.3 0.6 0.9 0.8"/>
+        <geom class="plastic" type="cylinder" size="0.03 0.1" pos="-0.3 0 -0.375" rgba="0.5 0.5 0.5 1"/>
+        <geom class="plastic" type="cylinder" size="0.03 0.1" pos="0.3 0 -0.375" rgba="0.5 0.5 0.5 1"/>
+      </body>
+      <body name="chair" pos="6.5 2.5 0.4">
+        <geom class="plastic" type="box" size="0.225 0.225 0.3" rgba="0.75 0.8 0.9 1"/>
+        <geom class="plastic" type="box" size="0.2 0.2 0.1" pos="0 0 0.45" rgba="0.85 0.9 1 1"/>
+        <geom class="plastic" type="cylinder" size="0.02 0.05" pos="0.15 0.15 -0.35" rgba="0.5 0.5 0.5 1"/>
+        <geom class="plastic" type="cylinder" size="0.02 0.05" pos="-0.15 0.15 -0.35" rgba="0.5 0.5 0.5 1"/>
+        <geom class="plastic" type="cylinder" size="0.02 0.05" pos="0.15 -0.15 -0.35" rgba="0.5 0.5 0.5 1"/>
+        <geom class="plastic" type="cylinder" size="0.02 0.05" pos="-0.15 -0.15 -0.35" rgba="0.5 0.5 0.5 1"/>
+      </body>
+      <body name="bookshelf" pos="6 0.5 1.0">
+        <geom class="wood" type="box" size="0.9 0.2 1.0" rgba="0.7 0.55 0.4 1"/>
+        <!-- Bookshelf shelves -->
+        <geom class="wood" type="box" size="0.85 0.18 0.01" pos="0 0 0.5" rgba="0.8 0.65 0.5 1"/>
+        <geom class="wood" type="box" size="0.85 0.18 0.01" pos="0 0 1.0" rgba="0.8 0.65 0.5 1"/>
+        <geom class="wood" type="box" size="0.85 0.18 0.01" pos="0 0 1.5" rgba="0.8 0.65 0.5 1"/>
+      </body>
+      <body name="bookshelf_books">
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="5.2 0.5 0.6" rgba="0.9 0.8 0.7 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="5.35 0.5 0.6" rgba="0.85 0.9 0.75 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="5.5 0.5 0.6" rgba="0.8 0.85 0.95 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="5.65 0.5 0.6" rgba="0.95 0.85 0.8 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="5.8 0.5 0.6" rgba="0.75 0.9 0.85 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="5.95 0.5 0.6" rgba="0.9 0.75 0.85 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="6.1 0.5 0.6" rgba="0.85 0.8 0.95 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="6.25 0.5 0.6" rgba="0.9 0.85 0.75 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="6.4 0.5 0.6" rgba="0.8 0.95 0.85 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="6.55 0.5 0.6" rgba="0.75 0.85 0.95 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="6.7 0.5 0.6" rgba="0.95 0.8 0.85 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="6.85 0.5 0.6" rgba="0.85 0.95 0.8 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="7.0 0.5 0.6" rgba="0.8 0.9 0.95 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="7.15 0.5 0.6" rgba="0.95 0.9 0.8 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="7.3 0.5 0.6" rgba="0.85 0.8 0.9 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="7.45 0.5 0.6" rgba="0.9 0.85 0.9 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="5.2 0.5 1.0" rgba="0.9 0.8 0.7 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="5.35 0.5 1.0" rgba="0.85 0.9 0.75 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="5.5 0.5 1.0" rgba="0.8 0.85 0.95 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="5.65 0.5 1.0" rgba="0.95 0.85 0.8 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="5.8 0.5 1.0" rgba="0.75 0.9 0.85 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="5.95 0.5 1.0" rgba="0.9 0.75 0.85 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="6.1 0.5 1.0" rgba="0.85 0.8 0.95 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="6.25 0.5 1.0" rgba="0.9 0.85 0.75 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="6.4 0.5 1.0" rgba="0.8 0.95 0.85 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="6.55 0.5 1.0" rgba="0.75 0.85 0.95 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="6.7 0.5 1.0" rgba="0.95 0.8 0.85 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="6.85 0.5 1.0" rgba="0.85 0.95 0.8 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="7.0 0.5 1.0" rgba="0.8 0.9 0.95 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="7.15 0.5 1.0" rgba="0.95 0.9 0.8 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="7.3 0.5 1.0" rgba="0.85 0.8 0.9 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="5.2 0.5 1.4" rgba="0.9 0.8 0.7 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="5.35 0.5 1.4" rgba="0.85 0.9 0.75 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="5.5 0.5 1.4" rgba="0.8 0.85 0.95 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="5.65 0.5 1.4" rgba="0.95 0.85 0.8 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="5.8 0.5 1.4" rgba="0.75 0.9 0.85 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="5.95 0.5 1.4" rgba="0.9 0.75 0.85 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="6.1 0.5 1.4" rgba="0.85 0.8 0.95 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="6.25 0.5 1.4" rgba="0.9 0.85 0.75 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="6.4 0.5 1.4" rgba="0.8 0.95 0.85 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="6.55 0.5 1.4" rgba="0.75 0.85 0.95 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="6.7 0.5 1.4" rgba="0.95 0.8 0.85 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="6.85 0.5 1.4" rgba="0.85 0.95 0.8 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="7.0 0.5 1.4" rgba="0.8 0.9 0.95 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="7.15 0.5 1.4" rgba="0.95 0.9 0.8 1"/>
+        <geom class="plastic" type="box" size="0.1 0.075 0.01" pos="7.3 0.5 1.4" rgba="0.85 0.8 0.9 1"/>
+      </body>
+      <body name="desk_lamp" pos="5 1.5 0.75">
+        <geom class="lamp" type="cylinder" size="0.05 0.25"/>
+      </body>
+      <!-- Add decorative items on bookshelf -->
+      <body name="bookshelf_decor1" pos="6.5 0.5 2.1">
+        <geom class="plastic" type="box" size="0.1 0.1 0.1" rgba="0.85 0.75 0.95 1"/>
+      </body>
+      <body name="bookshelf_decor2" pos="5.5 0.5 2.1">
+        <geom class="plastic" type="sphere" size="0.06" rgba="0.9 0.8 0.7 1"/>
+      </body>
+    </body>
+    <body name="play_area">
+      <geom name="play_floor" type="box" pos="1.6 8.75 0.01" size="1.6 1.25 0.01" rgba="0.98 0.93 0.9 1"/>
+      <body name="play_mat" pos="1.6 8.75 0.025">
+        <geom type="box" size="1.5 1.2 0.025" rgba="0.95 0.85 0.8 1"/>
+      </body>
+      <body name="slide_base" pos="0.2 8.5 0.6">
+        <geom class="plastic" type="box" size="1 0.5 0.6" rgba="0.9 0.6 0.6 1"/>
+        <geom class="plastic" type="box" size="0.9 0.4 0.05" pos="0 0 0.625" rgba="0.95 0.7 0.7 1"/>
+        <geom class="plastic" type="box" size="0.05 0.4 0.55" pos="0.95 0 0.3" rgba="0.8 0.5 0.5 1"/>
+      </body>
+      <body name="blocks_table" pos="2 8.5 0.25">
+        <geom class="wood" type="box" size="0.4 0.4 0.25" rgba="0.7 0.55 0.4 1"/>
+        <geom class="plastic" type="box" size="0.35 0.35 0.02" pos="0 0 0.27" rgba="0.95 0.9 0.8 1"/>
+        <!-- Add some blocks -->
+        <geom class="plastic" type="box" size="0.06 0.06 0.06" pos="-0.1 0 0.3" rgba="0.9 0.4 0.4 1"/>
+        <geom class="plastic" type="box" size="0.06 0.06 0.06" pos="0 0 0.3" rgba="0.4 0.9 0.4 1"/>
+        <geom class="plastic" type="box" size="0.06 0.06 0.06" pos="0.1 0 0.3" rgba="0.4 0.4 0.9 1"/>
+        <geom class="plastic" type="box" size="0.06 0.06 0.06" pos="0 0 0.36" rgba="0.9 0.9 0.4 1"/>
+      </body>
+      <body name="kids_sofa" pos="2.5 9 0.25">
+        <geom class="plastic" type="box" size="0.4 0.3 0.25" rgba="0.8 0.75 0.85 1"/>
+        <geom class="plastic" type="box" size="0.38 0.28 0.05" pos="0 0 0.275" rgba="0.9 0.85 0.95 1"/>
+      </body>
+      <body name="play_toys">
+        <geom class="toy" name="pl_toy_01" pos="0.2 7.6 0.08" rgba="0.95 0.45 0.45 1"/>
+        <geom class="toy" name="pl_toy_02" pos="0.6 7.6 0.08" rgba="0.45 0.6 0.95 1"/>
+        <geom class="toy" name="pl_toy_03" pos="1.0 7.6 0.08" rgba="0.95 0.7 0.45 1"/>
+        <geom class="toy" name="pl_toy_04" pos="1.4 7.6 0.08" rgba="0.45 0.9 0.6 1"/>
+        <geom class="toy" name="pl_toy_05" pos="1.8 7.6 0.08" rgba="0.85 0.45 0.95 1"/>
+        <geom class="toy" name="pl_toy_06" pos="2.2 7.6 0.08" rgba="0.95 0.85 0.45 1"/>
+        <geom class="toy" name="pl_toy_07" pos="2.6 7.6 0.08" rgba="0.45 0.95 0.8 1"/>
+        <geom class="toy" name="pl_toy_08" pos="3.0 7.6 0.08" rgba="0.7 0.45 0.95 1"/>
+        <geom class="toy" name="pl_toy_09" pos="0.2 7.86 0.08"/>
+        <geom class="toy" name="pl_toy_10" pos="0.6 7.86 0.08"/>
+        <geom class="toy" name="pl_toy_11" pos="1.0 7.86 0.08"/>
+        <geom class="toy" name="pl_toy_12" pos="1.4 7.86 0.08"/>
+        <geom class="toy" name="pl_toy_13" pos="1.8 7.86 0.08"/>
+        <geom class="toy" name="pl_toy_14" pos="2.2 7.86 0.08"/>
+        <geom class="toy" name="pl_toy_15" pos="2.6 7.86 0.08"/>
+        <geom class="toy" name="pl_toy_16" pos="3.0 7.86 0.08"/>
+        <geom class="toy" name="pl_toy_17" pos="0.2 8.12 0.08"/>
+        <geom class="toy" name="pl_toy_18" pos="0.6 8.12 0.08"/>
+        <geom class="toy" name="pl_toy_19" pos="1.0 8.12 0.08"/>
+        <geom class="toy" name="pl_toy_20" pos="1.4 8.12 0.08"/>
+        <geom class="toy" name="pl_toy_21" pos="1.8 8.12 0.08"/>
+        <geom class="toy" name="pl_toy_22" pos="2.2 8.12 0.08"/>
+        <geom class="toy" name="pl_toy_23" pos="2.6 8.12 0.08"/>
+        <geom class="toy" name="pl_toy_24" pos="3.0 8.12 0.08"/>
+        <geom class="toy" name="pl_toy_25" pos="0.2 8.38 0.08"/>
+        <geom class="toy" name="pl_toy_26" pos="0.6 8.38 0.08"/>
+        <geom class="toy" name="pl_toy_27" pos="1.0 8.38 0.08"/>
+        <geom class="toy" name="pl_toy_28" pos="1.4 8.38 0.08"/>
+        <geom class="toy" name="pl_toy_29" pos="1.8 8.38 0.08"/>
+        <geom class="toy" name="pl_toy_30" pos="2.2 8.38 0.08"/>
+        <geom class="toy" name="pl_toy_31" pos="2.6 8.38 0.08"/>
+        <geom class="toy" name="pl_toy_32" pos="3.0 8.38 0.08"/>
+        <geom class="toy" name="pl_toy_33" pos="0.2 8.64 0.08"/>
+        <geom class="toy" name="pl_toy_34" pos="0.6 8.64 0.08"/>
+        <geom class="toy" name="pl_toy_35" pos="1.0 8.64 0.08"/>
+        <geom class="toy" name="pl_toy_36" pos="1.4 8.64 0.08"/>
+        <geom class="toy" name="pl_toy_37" pos="1.8 8.64 0.08"/>
+        <geom class="toy" name="pl_toy_38" pos="2.2 8.64 0.08"/>
+        <geom class="toy" name="pl_toy_39" pos="2.6 8.64 0.08"/>
+        <geom class="toy" name="pl_toy_40" pos="3.0 8.64 0.08"/>
+        <geom class="toy" name="pl_toy_41" pos="0.2 8.9 0.08"/>
+        <geom class="toy" name="pl_toy_42" pos="0.6 8.9 0.08"/>
+        <geom class="toy" name="pl_toy_43" pos="1.0 8.9 0.08"/>
+        <geom class="toy" name="pl_toy_44" pos="1.4 8.9 0.08"/>
+        <geom class="toy" name="pl_toy_45" pos="1.8 8.9 0.08"/>
+        <geom class="toy" name="pl_toy_46" pos="2.2 8.9 0.08"/>
+        <geom class="toy" name="pl_toy_47" pos="2.6 8.9 0.08"/>
+        <geom class="toy" name="pl_toy_48" pos="3.0 8.9 0.08"/>
+        <geom class="toy" name="pl_toy_49" pos="0.2 9.16 0.08"/>
+        <geom class="toy" name="pl_toy_50" pos="0.6 9.16 0.08"/>
+        <geom class="toy" name="pl_toy_51" pos="1.0 9.16 0.08"/>
+        <geom class="toy" name="pl_toy_52" pos="1.4 9.16 0.08"/>
+        <geom class="toy" name="pl_toy_53" pos="1.8 9.16 0.08"/>
+        <geom class="toy" name="pl_toy_54" pos="2.2 9.16 0.08"/>
+        <geom class="toy" name="pl_toy_55" pos="2.6 9.16 0.08"/>
+        <geom class="toy" name="pl_toy_56" pos="3.0 9.16 0.08"/>
+        <geom class="toy" name="pl_toy_57" pos="0.2 9.42 0.08"/>
+        <geom class="toy" name="pl_toy_58" pos="0.6 9.42 0.08"/>
+        <geom class="toy" name="pl_toy_59" pos="1.0 9.42 0.08"/>
+        <geom class="toy" name="pl_toy_60" pos="1.4 9.42 0.08"/>
+        <geom class="toy" name="pl_toy_61" pos="1.8 9.42 0.08"/>
+        <geom class="toy" name="pl_toy_62" pos="2.2 9.42 0.08"/>
+        <geom class="toy" name="pl_toy_63" pos="2.6 9.42 0.08"/>
+        <geom class="toy" name="pl_toy_64" pos="3.0 9.42 0.08"/>
+        <geom class="toy" name="pl_toy_65" pos="0.2 9.68 0.08"/>
+        <geom class="toy" name="pl_toy_66" pos="0.6 9.68 0.08"/>
+        <geom class="toy" name="pl_toy_67" pos="1.0 9.68 0.08"/>
+        <geom class="toy" name="pl_toy_68" pos="1.4 9.68 0.08"/>
+        <geom class="toy" name="pl_toy_69" pos="1.8 9.68 0.08"/>
+        <geom class="toy" name="pl_toy_70" pos="2.2 9.68 0.08"/>
+        <geom class="toy" name="pl_toy_71" pos="2.6 9.68 0.08"/>
+        <geom class="toy" name="pl_toy_72" pos="3.0 9.68 0.08"/>
+        <geom class="toy" name="pl_toy_73" pos="0.2 9.94 0.08"/>
+        <geom class="toy" name="pl_toy_74" pos="0.6 9.94 0.08"/>
+        <geom class="toy" name="pl_toy_75" pos="1.0 9.94 0.08"/>
+        <geom class="toy" name="pl_toy_76" pos="1.4 9.94 0.08"/>
+        <geom class="toy" name="pl_toy_77" pos="1.8 9.94 0.08"/>
+        <geom class="toy" name="pl_toy_78" pos="2.2 9.94 0.08"/>
+        <geom class="toy" name="pl_toy_79" pos="2.6 9.94 0.08"/>
+        <geom class="toy" name="pl_toy_80" pos="3.0 9.94 0.08"/>
+      </body>
+    </body>
+  </worldbody>
+  <actuator>
+  </actuator>
+</mujoco>
