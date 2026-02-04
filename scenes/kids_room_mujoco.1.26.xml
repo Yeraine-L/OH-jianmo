@@ -1,0 +1,659 @@
+<mujoco model="kids_room">
+  <compiler angle="degree" inertiafromgeom="true" meshdir="../assets/meshes"/>
+  <option gravity="0 0 -9.81" integrator="RK4"/>
+  <default>
+    <default class="floor"><geom friction="1 0.005 0.0001" rgba="0.92 0.92 0.96 1"/></default>
+    <default class="wall"><geom type="box" rgba="0.98 0.85 0.9 1"/></default>
+    <default class="ceiling"><geom type="box" rgba="0.93 0.93 0.95 1"/></default>
+    <default class="furniture"><geom friction="0.8 0.03 0.001" rgba="0.65 0.65 0.68 1"/></default>
+    <default class="wood"><geom friction="0.8 0.03 0.001" rgba="0.95 0.9 0.8 1"/></default>
+    <default class="metal"><geom friction="0.9 0.02 0.001" rgba="0.55 0.55 0.6 1"/></default>
+    <default class="plastic"><geom friction="0.6 0.02 0.001" rgba="0.7 0.7 0.8 1"/></default>
+    <default class="toy"><geom type="sphere" size="0.08" friction="0.6 0.01 0.001" rgba="0.9 0.4 0.4 1"/></default>
+    <default class="lamp"><geom rgba="1 1 0.75 1"/></default>
+    <default class="arm"><geom rgba="0.45 0.48 0.52 1" friction="0.9 0.02 0.001"/></default>
+  </default>
+  <worldbody>
+    <!-- Warm and soft lighting for children's room -->
+    <!-- Ambient light -->
+    <light name="ambient_light" pos="5 6 4" dir="0 0 -1" diffuse="0.4 0.4 0.35" specular="0.1 0.1 0.1"/>
+    <!-- Main ceiling light -->
+    <light name="ceiling_light" pos="5 6 4" dir="0 0 -1" diffuse="0.6 0.55 0.5" specular="0.2 0.2 0.2" castshadow="false"/>
+    <!-- Desk lamp -->
+    <light name="desk_lamp" type="spot" pos="8.5 9.5 1.2" dir="0 -1 0" diffuse="1.0 0.9 0.8" specular="0.2 0.2 0.2" attenuation="0.5 0.1 0.05"/>
+    <body name="room">
+      <geom name="floor_plane" class="floor" type="plane" pos="0 0 0" size="40 40 0.1"/>
+      <geom name="floor_visual" class="floor" type="box" pos="5 6 0" size="5 6 0.03" rgba="0.95 0.95 0.97 1"/>
+      <!-- Decorative floor pattern - full room coverage -->
+      <!-- Row 1 (y=1) -->
+      <geom class="floor" type="box" pos="1 1 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="2 1 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="3 1 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="4 1 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="5 1 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="6 1 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="7 1 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="8 1 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="9 1 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      
+      <!-- Row 2 (y=2) -->
+      <geom class="floor" type="box" pos="1 2 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="2 2 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="3 2 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="4 2 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="5 2 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="6 2 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="7 2 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="8 2 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="9 2 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      
+      <!-- Row 3 (y=3) -->
+      <geom class="floor" type="box" pos="1 3 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="2 3 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="3 3 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="4 3 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="5 3 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="6 3 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="7 3 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="8 3 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="9 3 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      
+      <!-- Row 4 (y=4) -->
+      <geom class="floor" type="box" pos="1 4 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="2 4 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="3 4 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="4 4 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="5 4 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="6 4 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="7 4 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="8 4 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="9 4 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      
+      <!-- Row 5 (y=5) -->
+      <geom class="floor" type="box" pos="1 5 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="2 5 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="3 5 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="4 5 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="5 5 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="6 5 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="7 5 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="8 5 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="9 5 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      
+      <!-- Row 6 (y=6) -->
+      <geom class="floor" type="box" pos="1 6 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="2 6 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="3 6 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="4 6 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="5 6 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="6 6 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="7 6 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="8 6 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="9 6 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      
+      <!-- Row 7 (y=7) -->
+      <geom class="floor" type="box" pos="1 7 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="2 7 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="3 7 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="4 7 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="5 7 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="6 7 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="7 7 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="8 7 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="9 7 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      
+      <!-- Row 8 (y=8) -->
+      <geom class="floor" type="box" pos="1 8 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="2 8 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="3 8 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="4 8 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="5 8 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="6 8 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="7 8 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="8 8 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="9 8 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      
+      <!-- Row 9 (y=9) -->
+      <geom class="floor" type="box" pos="1 9 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="2 9 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="3 9 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="4 9 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="5 9 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="6 9 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="7 9 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="8 9 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="9 9 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      
+      <!-- Row 10 (y=10) -->
+      <geom class="floor" type="box" pos="1 10 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="2 10 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="3 10 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="4 10 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="5 10 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="6 10 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="7 10 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="8 10 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="9 10 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      
+      <!-- Row 11 (y=11) -->
+      <geom class="floor" type="box" pos="1 11 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="2 11 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="3 11 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="4 11 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="5 11 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom class="floor" type="box" pos="6 11 0.031" size="1 1 0.001" rgba="0.98 0.95 0.9 1"/>
+      <geom class="floor" type="box" pos="7 11 0.031" size="1 1 0.001" rgba="0.9 0.95 0.98 1"/>
+      <geom class="floor" type="box" pos="8 11 0.031" size="1 1 0.001" rgba="0.98 0.9 0.95 1"/>
+      <geom class="floor" type="box" pos="9 11 0.031" size="1 1 0.001" rgba="0.9 0.98 0.95 1"/>
+      <geom name="north_wall" class="wall" pos="5 0 1.6" size="5 0.05 1.6" rgba="0.98 0.85 0.9 1"/>
+      <geom name="south_wall" class="wall" pos="5 12 1.6" size="5 0.05 1.6" rgba="0.98 0.85 0.9 1"/>
+      <geom name="west_wall" class="wall" pos="0 6 1.6" size="0.05 6 1.6" rgba="0.98 0.85 0.9 1"/>
+      <geom name="east_wall" class="wall" pos="10 6 1.6" size="0.05 6 1.6" rgba="0.98 0.85 0.9 1"/>
+      <!-- Windows -->
+      <geom name="north_window" type="box" pos="5 0 2.0" size="1.5 0.02 0.8" rgba="0.3 0.6 0.9 0.6"/>
+      <geom name="north_window_frame1" class="metal" type="box" pos="4.25 0 2.0" size="0.02 0.03 0.85"/>
+      <geom name="north_window_frame2" class="metal" type="box" pos="5.75 0 2.0" size="0.02 0.03 0.85"/>
+      <geom name="north_window_frame3" class="metal" type="box" pos="5 0 1.6" size="1.55 0.03 0.02"/>
+      <geom name="north_window_frame4" class="metal" type="box" pos="5 0 2.4" size="1.55 0.03 0.02"/>
+      <!-- Wall decorations -->
+      <geom name="painting1" type="box" pos="3 0 2.2" size="0.6 0.01 0.4" rgba="0.9 0.7 0.5 1"/>
+      <geom name="painting2" type="box" pos="7 0 2.2" size="0.6 0.01 0.4" rgba="0.5 0.7 0.9 1"/>
+      <geom name="painting3" type="box" pos="3 12 2.2" size="0.6 0.01 0.4" rgba="0.7 0.9 0.5 1"/>
+      <geom name="painting4" type="box" pos="7 12 2.2" size="0.6 0.01 0.4" rgba="0.9 0.5 0.9 1"/>
+      <geom name="shelf1" class="wood" type="box" pos="3 12 1.8" size="0.4 0.02 0.2"/>
+      <geom name="shelf2" class="wood" type="box" pos="7 12 1.8" size="0.4 0.02 0.2"/>
+      <geom name="shelf3" class="wood" type="box" pos="0.5 6 1.8" size="0.4 0.02 0.2"/>
+      <geom name="shelf4" class="wood" type="box" pos="9.5 6 1.8" size="0.4 0.02 0.2"/>
+    </body>
+    <body name="rest_area">
+      <!-- Redesigned rest area with new bed and furniture layout -->
+      <!-- Update rug to match new layout -->
+      <geom name="rest_rug" type="box" pos="5 4 0.01" size="2.5 3 0.01" rgba="0.85 0.92 0.98 1"/>
+      
+      <!-- New bed from warehouse: Modern bed with mattress and pillows -->
+      <body name="bed" pos="5 3 0.3" euler="0 0 0">
+        <!-- Bed frame -->
+        <geom class="wood" type="box" size="1.2 1.8 0.05" pos="0 0 0" rgba="0.8 0.65 0.5 1"/>
+        <!-- Headboard -->
+        <geom class="wood" type="box" size="1.2 0.05 0.6" pos="0 -1.8 0.3" rgba="0.8 0.65 0.5 1"/>
+        <!-- Mattress -->
+        <geom type="box" size="1.1 1.7 0.2" pos="0 -0.1 0.4" rgba="0.95 0.9 0.85 1"/>
+        <!-- Pillows -->
+        <geom type="box" size="0.5 0.6 0.1" pos="0 -1.3 0.55" rgba="0.9 0.75 0.8 1"/>
+        <geom type="box" size="0.5 0.6 0.1" pos="-0.5 -1.3 0.55" rgba="0.8 0.75 0.9 1"/>
+        <!-- Blanket -->
+        <geom type="box" size="1.1 1.7 0.03" pos="0 -0.9 0.51" rgba="0.85 0.8 0.75 1"/>
+      </body>
+      
+      <!-- New bedside cabinets from warehouse -->
+      <body name="bedside_cabinet_left" pos="3.5 1.5 0.3">
+        <geom class="wood" type="box" size="0.35 0.35 0.6" rgba="0.8 0.65 0.5 1"/>
+        <!-- Drawers -->
+        <geom class="wood" type="box" size="0.3 0.3 0.15" pos="0 0 0.175" rgba="0.75 0.6 0.45 1"/>
+        <geom class="wood" type="box" size="0.3 0.3 0.15" pos="0 0 0.425" rgba="0.75 0.6 0.45 1"/>
+        <geom class="wood" type="box" size="0.32 0.02 0.32" pos="0 0 0.3" rgba="0.8 0.65 0.5 1"/>
+        <!-- Drawer handles -->
+        <geom class="metal" type="cylinder" size="0.015 0.05" pos="0.15 0 0.175" rgba="0.7 0.7 0.75 1"/>
+        <geom class="metal" type="cylinder" size="0.015 0.05" pos="0.15 0 0.425" rgba="0.7 0.7 0.75 1"/>
+        <!-- Lamp on cabinet -->
+        <geom class="lamp" type="cylinder" size="0.05 0.25" pos="0 0 0.65" rgba="1 0.95 0.6 1"/>
+      </body>
+      
+      <body name="bedside_cabinet_right" pos="6.5 1.5 0.3">
+        <geom class="wood" type="box" size="0.35 0.35 0.6" rgba="0.8 0.65 0.5 1"/>
+        <!-- Drawers -->
+        <geom class="wood" type="box" size="0.3 0.3 0.15" pos="0 0 0.175" rgba="0.75 0.6 0.45 1"/>
+        <geom class="wood" type="box" size="0.3 0.3 0.15" pos="0 0 0.425" rgba="0.75 0.6 0.45 1"/>
+        <geom class="wood" type="box" size="0.32 0.02 0.32" pos="0 0 0.3" rgba="0.8 0.65 0.5 1"/>
+        <!-- Drawer handles -->
+        <geom class="metal" type="cylinder" size="0.015 0.05" pos="0.15 0 0.175" rgba="0.7 0.7 0.75 1"/>
+        <geom class="metal" type="cylinder" size="0.015 0.05" pos="0.15 0 0.425" rgba="0.7 0.7 0.75 1"/>
+        <!-- Lamp on cabinet -->
+        <geom class="lamp" type="cylinder" size="0.05 0.25" pos="0 0 0.65" rgba="1 0.95 0.6 1"/>
+      </body>
+      
+
+    </body>
+    
+    <body name="study_area">
+      <geom name="study_floor" type="box" pos="8.5 10 0.01" size="1.5 2 0.01" rgba="0.9 0.96 0.9 1"/>
+      <!-- New desk from warehouse: Modern wooden desk -->
+      <body name="desk" pos="8.5 10 0.375" euler="0 0 0">
+        <geom class="wood" type="box" size="0.8 0.6 0.05" pos="0 0 0" rgba="0.8 0.65 0.5 1"/>
+        <!-- Desk top -->
+        <geom class="wood" type="box" size="0.75 0.55 0.02" pos="0 0 0.06" rgba="0.85 0.7 0.55 1"/>
+        <!-- Desk legs -->
+        <geom class="wood" type="box" size="0.05 0.05 0.375" pos="0.35 0.25 -0.1875" rgba="0.8 0.65 0.5 1"/>
+        <geom class="wood" type="box" size="0.05 0.05 0.375" pos="-0.35 0.25 -0.1875" rgba="0.8 0.65 0.5 1"/>
+        <geom class="wood" type="box" size="0.05 0.05 0.375" pos="0.35 -0.25 -0.1875" rgba="0.8 0.65 0.5 1"/>
+        <geom class="wood" type="box" size="0.05 0.05 0.375" pos="-0.35 -0.25 -0.1875" rgba="0.8 0.65 0.5 1"/>
+        <!-- Drawers -->
+        <geom class="wood" type="box" size="0.3 0.25 0.15" pos="-0.25 0.25 0.1" rgba="0.75 0.6 0.45 1"/>
+        <geom class="wood" type="box" size="0.3 0.25 0.15" pos="0.25 0.25 0.1" rgba="0.75 0.6 0.45 1"/>
+        <!-- Drawer handles -->
+        <geom class="metal" type="cylinder" size="0.015 0.05" pos="-0.1 0.25 0.1" rgba="0.7 0.7 0.75 1"/>
+        <geom class="metal" type="cylinder" size="0.015 0.05" pos="0.1 0.25 0.1" rgba="0.7 0.7 0.75 1"/>
+        <!-- Monitor stand -->
+        <geom class="plastic" type="box" size="0.2 0.2 0.05" pos="0 -0.15 0.4" rgba="0.6 0.6 0.6 1"/>
+        <!-- Monitor -->
+        <geom class="plastic" type="box" size="0.4 0.25 0.02" pos="0 -0.15 0.47" rgba="0.2 0.2 0.2 1"/>
+        <!-- Keyboard -->
+        <geom class="plastic" type="box" size="0.4 0.15 0.01" pos="0 0.15 0.38" rgba="0.3 0.3 0.3 1"/>
+        <!-- Mouse -->
+        <geom class="plastic" type="box" size="0.1 0.05 0.01" pos="0.25 0.05 0.38" rgba="0.3 0.3 0.3 1"/>
+        
+        <!-- Desk文具 from warehouse -->
+        <!-- Pen holder with pens -->
+        <geom class="plastic" type="cylinder" size="0.05 0.1" pos="-0.35 -0.15 0.39" rgba="0.7 0.8 0.9 1"/>
+        <geom class="plastic" type="cylinder" size="0.008 0.15" pos="-0.35 -0.15 0.5" rgba="0.9 0.3 0.3 1"/>
+        <geom class="plastic" type="cylinder" size="0.008 0.15" pos="-0.33 -0.15 0.5" rgba="0.3 0.9 0.3 1"/>
+        <geom class="plastic" type="cylinder" size="0.008 0.15" pos="-0.37 -0.15 0.5" rgba="0.3 0.3 0.9 1"/>
+        <!-- Notebook -->
+        <geom class="plastic" type="box" size="0.15 0.2 0.02" pos="-0.2 -0.15 0.39" rgba="0.9 0.7 0.7 1"/>
+        <!-- Pencil -->
+        <geom class="plastic" type="cylinder" size="0.006 0.12" pos="-0.1 -0.15 0.39" rgba="0.7 0.4 0.2 1"/>
+        <!-- Eraser -->
+        <geom class="plastic" type="box" size="0.03 0.02 0.01" pos="-0.05 -0.15 0.39" rgba="0.9 0.9 0 1"/>
+        <!-- Stapler -->
+        <geom class="plastic" type="box" size="0.05 0.02 0.08" pos="0.3 -0.15 0.39" rgba="0.8 0.3 0.3 1"/>
+      </body>
+      
+      <!-- New chair from warehouse: Ergonomic office chair -->
+      <body name="desk_chair" pos="8.5 10.6 0.4">
+        <geom class="plastic" type="box" size="0.25 0.25 0.05" pos="0 0 0" rgba="0.5 0.5 0.5 1"/>
+        <!-- Chair seat -->
+        <geom class="plastic" type="box" size="0.3 0.3 0.05" pos="0 0 0.45" rgba="0.8 0.8 0.8 1"/>
+        <!-- Chair back -->
+        <geom class="plastic" type="box" size="0.3 0.1 0.4" pos="0 0 0.7" rgba="0.8 0.8 0.8 1"/>
+        <!-- Chair legs -->
+        <geom class="plastic" type="box" size="0.03 0.03 0.35" pos="0.1 0.1 -0.175" rgba="0.5 0.5 0.5 1"/>
+        <geom class="plastic" type="box" size="0.03 0.03 0.35" pos="-0.1 0.1 -0.175" rgba="0.5 0.5 0.5 1"/>
+        <geom class="plastic" type="box" size="0.03 0.03 0.35" pos="0.1 -0.1 -0.175" rgba="0.5 0.5 0.5 1"/>
+        <geom class="plastic" type="box" size="0.03 0.03 0.35" pos="-0.1 -0.1 -0.175" rgba="0.5 0.5 0.5 1"/>
+      </body>
+      
+      <!-- Children's room bookshelf with glass doors -->
+      <body name="bookshelf" pos="9.0 11.8 0.6">
+        <!-- Main structure: width 150cm, height 120cm, depth 30cm -->
+        <!-- Bottom base (10cm height) -->
+        <geom class="wood" type="box" size="0.75 0.15 0.1" pos="0 0 0.1" rgba="0.85 0.7 0.55 1" mass="5"/>
+        
+        <!-- Left side panel -->
+        <geom class="wood" type="box" size="0.05 0.15 0.55" pos="-0.75 0 0.7" rgba="0.9 0.8 0.65 1" mass="5"/>
+        <!-- Right side panel -->
+        <geom class="wood" type="box" size="0.05 0.15 0.55" pos="0.75 0 0.7" rgba="0.9 0.8 0.65 1" mass="5"/>
+        <!-- Top panel -->
+        <geom class="wood" type="box" size="0.75 0.15 0.05" pos="0 0 1.2" rgba="0.9 0.8 0.65 1" mass="3"/>
+        <!-- Back panel -->
+        <geom class="wood" type="box" size="0.75 0.05 0.55" pos="0 0.15 0.7" rgba="0.85 0.75 0.6 1" mass="2"/>
+        
+        <!-- 5 horizontal shelves with equal spacing (120cm height / 6 sections = 20cm per section) -->
+        <!-- Shelf 1 -->
+        <geom class="wood" type="box" size="0.7 0.13 0.03" pos="0 0 0.2" rgba="0.95 0.9 0.8 1" mass="2"/>
+        <!-- Shelf 2 -->
+        <geom class="wood" type="box" size="0.7 0.13 0.03" pos="0 0 0.4" rgba="0.95 0.9 0.8 1" mass="2"/>
+        <!-- Shelf 3 -->
+        <geom class="wood" type="box" size="0.7 0.13 0.03" pos="0 0 0.6" rgba="0.95 0.9 0.8 1" mass="2"/>
+        <!-- Shelf 4 -->
+        <geom class="wood" type="box" size="0.7 0.13 0.03" pos="0 0 0.8" rgba="0.95 0.9 0.8 1" mass="2"/>
+        <!-- Shelf 5 -->
+        <geom class="wood" type="box" size="0.7 0.13 0.03" pos="0 0 1.0" rgba="0.95 0.9 0.8 1" mass="2"/>
+        
+        <!-- Left glass door -->
+        <body name="left_door" pos="-0.375 0 0.7">
+          <joint name="left_door_joint" type="hinge" axis="0 0 1" range="0 90" damping="0.5"/>
+          <!-- Door frame -->
+          <geom class="wood" type="box" size="0.375 0.02 0.55" pos="0 0 0" rgba="1 1 1 1" mass="1"/>
+          <!-- Glass panel -->
+          <geom type="box" size="0.35 0.01 0.53" pos="0 -0.01 0" rgba="0.8 0.9 1 0.3" mass="0.5"/>
+          <!-- Door handle -->
+          <geom class="metal" type="cylinder" size="0.01 0.02" pos="0.35 -0.02 0.7" rgba="0.7 0.7 0.7 1" mass="0.1"/>
+        </body>
+        
+        <!-- Right glass door -->
+        <body name="right_door" pos="0.375 0 0.7">
+          <joint name="right_door_joint" type="hinge" axis="0 0 1" range="-90 0" damping="0.5"/>
+          <!-- Door frame -->
+          <geom class="wood" type="box" size="0.375 0.02 0.55" pos="0 0 0" rgba="1 1 1 1" mass="1"/>
+          <!-- Glass panel -->
+          <geom type="box" size="0.35 0.01 0.53" pos="0 -0.01 0" rgba="0.8 0.9 1 0.3" mass="0.5"/>
+          <!-- Door handle -->
+          <geom class="metal" type="cylinder" size="0.01 0.02" pos="-0.35 -0.02 0.7" rgba="0.7 0.7 0.7 1" mass="0.1"/>
+        </body>
+        
+        <!-- Books on shelves (realistic sizes: 20cm x 15cm x 2-5cm) -->
+        <!-- Shelf 1 books -->
+        <geom class="plastic" name="book1" type="box" size="0.1 0.075 0.02" pos="-0.6 0 0.21" rgba="0.9 0.4 0.4 1" mass="0.2"/>
+        <geom class="plastic" name="book2" type="box" size="0.1 0.075 0.03" pos="-0.4 0 0.21" rgba="0.4 0.9 0.4 1" mass="0.3"/>
+        <geom class="plastic" name="book3" type="box" size="0.1 0.075 0.04" pos="-0.2 0 0.21" rgba="0.4 0.4 0.9 1" mass="0.4"/>
+        <geom class="plastic" name="book4" type="box" size="0.1 0.075 0.025" pos="0 0 0.21" rgba="0.9 0.9 0.4 1" mass="0.25"/>
+        <geom class="plastic" name="book5" type="box" size="0.1 0.075 0.035" pos="0.2 0 0.21" rgba="0.9 0.4 0.9 1" mass="0.35"/>
+        <geom class="plastic" name="book6" type="box" size="0.1 0.075 0.045" pos="0.4 0 0.21" rgba="0.4 0.9 0.9 1" mass="0.45"/>
+        <geom class="plastic" name="book7" type="box" size="0.1 0.075 0.05" pos="0.6 0 0.21" rgba="0.9 0.6 0.4 1" mass="0.5"/>
+        
+        <!-- Shelf 2 books -->
+        <geom class="plastic" name="book8" type="box" size="0.1 0.075 0.02" pos="-0.6 0 0.41" rgba="0.6 0.4 0.9 1" mass="0.2"/>
+        <geom class="plastic" name="book9" type="box" size="0.1 0.075 0.03" pos="-0.4 0 0.41" rgba="0.4 0.6 0.9 1" mass="0.3"/>
+        <geom class="plastic" name="book10" type="box" size="0.1 0.075 0.04" pos="-0.2 0 0.41" rgba="0.9 0.4 0.6 1" mass="0.4"/>
+        <geom class="plastic" name="book11" type="box" size="0.1 0.075 0.025" pos="0 0 0.41" rgba="0.6 0.9 0.4 1" mass="0.25"/>
+        <geom class="plastic" name="book12" type="box" size="0.1 0.075 0.035" pos="0.2 0 0.41" rgba="0.8 0.6 0.4 1" mass="0.35"/>
+        <geom class="plastic" name="book13" type="box" size="0.1 0.075 0.045" pos="0.4 0 0.41" rgba="0.4 0.8 0.6 1" mass="0.45"/>
+        <geom class="plastic" name="book14" type="box" size="0.1 0.075 0.05" pos="0.6 0 0.41" rgba="0.6 0.4 0.8 1" mass="0.5"/>
+        
+        <!-- Shelf 3 books -->
+        <geom class="plastic" name="book15" type="box" size="0.1 0.075 0.02" pos="-0.6 0 0.61" rgba="0.9 0.4 0.4 1" mass="0.2"/>
+        <geom class="plastic" name="book16" type="box" size="0.1 0.075 0.03" pos="-0.4 0 0.61" rgba="0.4 0.9 0.4 1" mass="0.3"/>
+        <geom class="plastic" name="book17" type="box" size="0.1 0.075 0.04" pos="-0.2 0 0.61" rgba="0.4 0.4 0.9 1" mass="0.4"/>
+        <geom class="plastic" name="book18" type="box" size="0.1 0.075 0.025" pos="0 0 0.61" rgba="0.9 0.9 0.4 1" mass="0.25"/>
+        <geom class="plastic" name="book19" type="box" size="0.1 0.075 0.035" pos="0.2 0 0.61" rgba="0.9 0.4 0.9 1" mass="0.35"/>
+        <geom class="plastic" name="book20" type="box" size="0.1 0.075 0.045" pos="0.4 0 0.61" rgba="0.4 0.9 0.9 1" mass="0.45"/>
+        <geom class="plastic" name="book21" type="box" size="0.1 0.075 0.05" pos="0.6 0 0.61" rgba="0.9 0.6 0.4 1" mass="0.5"/>
+        
+        <!-- Shelf 4 books -->
+        <geom class="plastic" name="book22" type="box" size="0.1 0.075 0.02" pos="-0.6 0 0.81" rgba="0.6 0.4 0.9 1" mass="0.2"/>
+        <geom class="plastic" name="book23" type="box" size="0.1 0.075 0.03" pos="-0.4 0 0.81" rgba="0.4 0.6 0.9 1" mass="0.3"/>
+        <geom class="plastic" name="book24" type="box" size="0.1 0.075 0.04" pos="-0.2 0 0.81" rgba="0.9 0.4 0.6 1" mass="0.4"/>
+        <geom class="plastic" name="book25" type="box" size="0.1 0.075 0.025" pos="0 0 0.81" rgba="0.6 0.9 0.4 1" mass="0.25"/>
+        <geom class="plastic" name="book26" type="box" size="0.1 0.075 0.035" pos="0.2 0 0.81" rgba="0.8 0.6 0.4 1" mass="0.35"/>
+        <geom class="plastic" name="book27" type="box" size="0.1 0.075 0.045" pos="0.4 0 0.81" rgba="0.4 0.8 0.6 1" mass="0.45"/>
+        <geom class="plastic" name="book28" type="box" size="0.1 0.075 0.05" pos="0.6 0 0.81" rgba="0.6 0.4 0.8 1" mass="0.5"/>
+        
+        <!-- Shelf 5 books -->
+        <geom class="plastic" name="book29" type="box" size="0.1 0.075 0.02" pos="-0.6 0 1.01" rgba="0.9 0.4 0.4 1" mass="0.2"/>
+        <geom class="plastic" name="book30" type="box" size="0.1 0.075 0.03" pos="-0.4 0 1.01" rgba="0.4 0.9 0.4 1" mass="0.3"/>
+        <geom class="plastic" name="book31" type="box" size="0.1 0.075 0.04" pos="-0.2 0 1.01" rgba="0.4 0.4 0.9 1" mass="0.4"/>
+        <geom class="plastic" name="book32" type="box" size="0.1 0.075 0.025" pos="0 0 1.01" rgba="0.9 0.9 0.4 1" mass="0.25"/>
+        <geom class="plastic" name="book33" type="box" size="0.1 0.075 0.035" pos="0.2 0 1.01" rgba="0.9 0.4 0.9 1" mass="0.35"/>
+        <geom class="plastic" name="book34" type="box" size="0.1 0.075 0.045" pos="0.4 0 1.01" rgba="0.4 0.9 0.9 1" mass="0.45"/>
+        <geom class="plastic" name="book35" type="box" size="0.1 0.075 0.05" pos="0.6 0 1.01" rgba="0.9 0.6 0.4 1" mass="0.5"/>
+      </body>
+    </body>
+    
+    <body name="storage_area">
+      <geom name="storage_floor" type="box" pos="2 1.5 0.01" size="2 1.5 0.01" rgba="0.96 0.94 0.9 1"/>
+
+      <body name="toy_rack_1" pos="1.5 0.5 0.9">
+        <geom class="metal" type="box" size="0.75 0.2 0.9" rgba="0.7 0.75 0.8 1"/>
+        <!-- Enhanced frame -->
+        <geom class="metal" type="box" size="0.8 0.22 0.05" pos="0 0 0" rgba="0.65 0.7 0.75 1"/>
+        <geom class="metal" type="box" size="0.8 0.22 0.05" pos="0 0 0.9" rgba="0.65 0.7 0.75 1"/>
+        <!-- Additional shelves -->
+        <geom class="plastic" type="box" size="0.7 0.18 0.15" pos="0 0 0.15" rgba="0.8 0.9 0.8 0.8"/>
+        <geom class="plastic" type="box" size="0.7 0.18 0.15" pos="0 0 0.35" rgba="0.9 0.8 0.8 0.8"/>
+        <geom class="plastic" type="box" size="0.7 0.18 0.15" pos="0 0 0.55" rgba="0.8 0.8 0.9 0.8"/>
+        <geom class="plastic" type="box" size="0.7 0.18 0.15" pos="0 0 0.75" rgba="0.9 0.9 0.8 0.8"/>
+        <!-- Decorative edges -->
+        <geom class="metal" type="box" size="0.72 0.2 0.01" pos="0 0 0.15" rgba="0.6 0.65 0.7 1"/>
+        <geom class="metal" type="box" size="0.72 0.2 0.01" pos="0 0 0.35" rgba="0.6 0.65 0.7 1"/>
+        <geom class="metal" type="box" size="0.72 0.2 0.01" pos="0 0 0.55" rgba="0.6 0.65 0.7 1"/>
+        <geom class="metal" type="box" size="0.72 0.2 0.01" pos="0 0 0.75" rgba="0.6 0.65 0.7 1"/>
+        <!-- Decorative corner caps -->
+        <geom class="plastic" type="sphere" size="0.03" pos="-0.38 0.11 0" rgba="0.9 0.4 0.4 1"/>
+        <geom class="plastic" type="sphere" size="0.03" pos="0.38 0.11 0" rgba="0.9 0.4 0.4 1"/>
+        <geom class="plastic" type="sphere" size="0.03" pos="-0.38 -0.11 0" rgba="0.9 0.4 0.4 1"/>
+        <geom class="plastic" type="sphere" size="0.03" pos="0.38 -0.11 0" rgba="0.9 0.4 0.4 1"/>
+      </body>
+      <body name="toy_rack_2" pos="3.0 0.5 0.9">
+        <geom class="metal" type="box" size="0.75 0.2 0.9" rgba="0.7 0.75 0.8 1"/>
+        <!-- Enhanced frame -->
+        <geom class="metal" type="box" size="0.8 0.22 0.05" pos="0 0 0" rgba="0.65 0.7 0.75 1"/>
+        <geom class="metal" type="box" size="0.8 0.22 0.05" pos="0 0 0.9" rgba="0.65 0.7 0.75 1"/>
+        <!-- Additional shelves -->
+        <geom class="plastic" type="box" size="0.7 0.18 0.15" pos="0 0 0.15" rgba="0.8 0.8 0.9 0.8"/>
+        <geom class="plastic" type="box" size="0.7 0.18 0.15" pos="0 0 0.35" rgba="0.9 0.9 0.8 0.8"/>
+        <geom class="plastic" type="box" size="0.7 0.18 0.15" pos="0 0 0.55" rgba="0.9 0.8 0.9 0.8"/>
+        <geom class="plastic" type="box" size="0.7 0.18 0.15" pos="0 0 0.75" rgba="0.8 0.9 0.9 0.8"/>
+        <!-- Decorative edges -->
+        <geom class="metal" type="box" size="0.72 0.2 0.01" pos="0 0 0.15" rgba="0.6 0.65 0.7 1"/>
+        <geom class="metal" type="box" size="0.72 0.2 0.01" pos="0 0 0.35" rgba="0.6 0.65 0.7 1"/>
+        <geom class="metal" type="box" size="0.72 0.2 0.01" pos="0 0 0.55" rgba="0.6 0.65 0.7 1"/>
+        <geom class="metal" type="box" size="0.72 0.2 0.01" pos="0 0 0.75" rgba="0.6 0.65 0.7 1"/>
+        <!-- Decorative corner caps -->
+        <geom class="plastic" type="sphere" size="0.03" pos="-0.38 0.11 0" rgba="0.4 0.9 0.4 1"/>
+        <geom class="plastic" type="sphere" size="0.03" pos="0.38 0.11 0" rgba="0.4 0.9 0.4 1"/>
+        <geom class="plastic" type="sphere" size="0.03" pos="-0.38 -0.11 0" rgba="0.4 0.9 0.4 1"/>
+        <geom class="plastic" type="sphere" size="0.03" pos="0.38 -0.11 0" rgba="0.4 0.9 0.4 1"/>
+      </body>
+      <body name="storage_box_1" pos="2.1 1.0 0.15">
+        <geom class="plastic" type="box" size="0.3 0.2 0.15" rgba="0.85 0.9 0.95 1"/>
+        <geom type="box" size="0.25 0.01 0.16" pos="0 0 0.16" rgba="0.75 0.8 0.85 1"/>
+      </body>
+      <body name="storage_box_2" pos="2.5 1.0 0.15">
+        <geom class="plastic" type="box" size="0.3 0.2 0.15" rgba="0.85 0.95 0.9 1"/>
+        <geom type="box" size="0.25 0.01 0.16" pos="0 0 0.16" rgba="0.75 0.85 0.8 1"/>
+      </body>
+      <body name="storage_box_3" pos="2.9 1.0 0.15">
+        <geom class="plastic" type="box" size="0.3 0.2 0.15" rgba="0.95 0.85 0.9 1"/>
+        <geom type="box" size="0.25 0.01 0.16" pos="0 0 0.16" rgba="0.85 0.75 0.85 1"/>
+      </body>
+
+      <body name="storage_toys">
+        <geom class="toy" name="st_toy_01" pos="0.3 0.3 0.08" rgba="0.95 0.45 0.45 1"/>
+        <geom class="toy" name="st_toy_02" pos="1.0 0.3 0.08" rgba="0.95 0.7 0.45 1"/>
+        <geom class="toy" name="st_toy_03" pos="1.7 0.3 0.08" rgba="0.45 0.6 0.95 1"/>
+        <geom class="toy" name="st_toy_04" pos="2.4 0.3 0.08" rgba="0.45 0.9 0.6 1"/>
+        <geom class="toy" name="st_toy_05" pos="3.1 0.3 0.08" rgba="0.85 0.45 0.95 1"/>
+        <geom class="toy" name="st_toy_06" pos="3.8 0.3 0.08" rgba="0.95 0.85 0.45 1"/>
+        <geom class="toy" name="st_toy_07" pos="0.3 0.54 0.08" rgba="0.4 0.9 0.4 1"/>
+        <geom class="toy" name="st_toy_08" pos="1.0 0.54 0.08" rgba="0.4 0.4 0.9 1"/>
+        <geom class="toy" name="st_toy_09" pos="1.7 0.54 0.08" rgba="0.9 0.9 0.4 1"/>
+        <geom class="toy" name="st_toy_10" pos="2.4 0.54 0.08" rgba="0.9 0.4 0.9 1"/>
+        <geom class="toy" name="st_toy_11" pos="3.1 0.54 0.08" rgba="0.4 0.9 0.9 1"/>
+        <geom class="toy" name="st_toy_12" pos="3.8 0.54 0.08" rgba="0.9 0.6 0.4 1"/>
+      </body>
+    </body>
+    <body name="play_area">
+      <geom name="play_floor" type="box" pos="1.6 8.75 0.01" size="1.6 1.25 0.01" rgba="0.98 0.93 0.9 1"/>
+      <body name="play_mat" pos="1.6 8.75 0.025">
+        <geom type="box" size="1.5 1.2 0.025" rgba="0.95 0.85 0.8 1"/>
+      </body>
+
+      <body name="blocks_table" pos="2 8.5 0.25">
+        <geom class="wood" type="box" size="0.4 0.4 0.25" rgba="0.7 0.55 0.4 1"/>
+        <geom class="plastic" type="box" size="0.35 0.35 0.02" pos="0 0 0.27" rgba="0.95 0.9 0.8 1"/>
+        <!-- Add some blocks -->
+        <geom class="plastic" type="box" size="0.06 0.06 0.06" pos="-0.1 0 0.3" rgba="0.9 0.4 0.4 1"/>
+        <geom class="plastic" type="box" size="0.06 0.06 0.06" pos="0 0 0.3" rgba="0.4 0.9 0.4 1"/>
+        <geom class="plastic" type="box" size="0.06 0.06 0.06" pos="0.1 0 0.3" rgba="0.4 0.4 0.9 1"/>
+        <geom class="plastic" type="box" size="0.06 0.06 0.06" pos="0 0 0.36" rgba="0.9 0.9 0.4 1"/>
+      </body>
+      <body name="kids_sofa" pos="2.5 9 0.25">
+        <geom class="plastic" type="box" size="0.4 0.3 0.25" rgba="0.8 0.75 0.85 1"/>
+        <geom class="plastic" type="box" size="0.38 0.28 0.05" pos="0 0 0.275" rgba="0.9 0.85 0.95 1"/>
+      </body>
+      
+      <!-- 增加的仓库玩具模型在爬爬垫上 -->
+      <body name="play_toys">
+        <!-- 球类玩具 -->
+        <geom name="ball_01" type="sphere" size="0.1" pos="0.5 8.5 0.1" rgba="1 0.5 0.5 1" mass="0.2"/>
+        <geom name="ball_02" type="sphere" size="0.08" pos="1 8.5 0.08" rgba="0.5 1 0.5 1" mass="0.15"/>
+        <geom name="ball_03" type="sphere" size="0.12" pos="1.5 8.5 0.12" rgba="0.5 0.5 1 1" mass="0.25"/>
+        <geom name="ball_04" type="sphere" size="0.09" pos="0.75 8.75 0.09" rgba="1 1 0.5 1" mass="0.18"/>
+        <geom name="ball_05" type="sphere" size="0.11" pos="1.25 8.75 0.11" rgba="1 0.5 1 1" mass="0.22"/>
+        
+        <!-- 积木玩具 -->
+        <geom name="block_01" type="box" size="0.08 0.08 0.08" pos="0.5 9 0.08" rgba="0.8 0.2 0.2 1" mass="0.1"/>
+        <geom name="block_02" type="box" size="0.08 0.08 0.08" pos="0.7 9 0.08" rgba="0.2 0.8 0.2 1" mass="0.1"/>
+        <geom name="block_03" type="box" size="0.08 0.08 0.08" pos="0.9 9 0.08" rgba="0.2 0.2 0.8 1" mass="0.1"/>
+        <geom name="block_04" type="box" size="0.1 0.1 0.1" pos="1.1 9 0.1" rgba="0.8 0.8 0.2 1" mass="0.15"/>
+        <geom name="block_05" type="box" size="0.08 0.08 0.24" pos="1.3 9 0.12" rgba="0.8 0.2 0.8 1" mass="0.15"/>
+        <geom name="block_06" type="box" size="0.24 0.08 0.08" pos="1.5 9 0.08" rgba="0.2 0.8 0.8 1" mass="0.15"/>
+        
+        <!-- 毛绒玩具 -->
+        <geom name="plush_01" type="box" size="0.15 0.1 0.2" pos="0.75 9.25 0.15" rgba="0.9 0.7 0.5 1" mass="0.3"/>
+        <geom name="plush_02" type="sphere" size="0.15" pos="1 9.25 0.15" rgba="0.7 0.9 0.7 1" mass="0.25"/>
+        <geom name="plush_03" type="ellipsoid" size="0.12 0.15 0.1" pos="1.25 9.25 0.1" rgba="0.7 0.7 0.9 1" mass="0.3"/>
+        
+        <!-- 汽车玩具 -->
+        <geom name="car_01" type="box" size="0.12 0.06 0.05" pos="0.5 9.5 0.05" rgba="0.9 0.1 0.1 1" mass="0.2"/>
+        <geom name="car_02" type="box" size="0.1 0.05 0.04" pos="0.8 9.5 0.04" rgba="0.1 0.1 0.9 1" mass="0.15"/>
+        <geom name="car_03" type="box" size="0.14 0.07 0.06" pos="1.1 9.5 0.06" rgba="0.1 0.9 0.1 1" mass="0.25"/>
+        <geom name="car_04" type="box" size="0.11 0.055 0.045" pos="1.4 9.5 0.045" rgba="0.9 0.9 0.1 1" mass="0.18"/>
+        
+        <!-- 其他玩具 -->
+        <geom name="toy_01" type="cylinder" size="0.05 0.15" pos="0.75 9.75 0.075" rgba="0.8 0.4 0.2 1" mass="0.12"/>
+        <geom name="toy_02" type="cylinder" size="0.04 0.12" pos="1.0 9.75 0.06" rgba="0.2 0.4 0.8 1" mass="0.1"/>
+        <geom name="toy_03" type="box" size="0.06 0.06 0.2" pos="1.25 9.75 0.1" rgba="0.4 0.8 0.2 1" mass="0.16"/>
+        <geom name="toy_04" type="sphere" size="0.07" pos="1.5 9.75 0.07" rgba="0.8 0.2 0.8 1" mass="0.08"/>
+        
+        <!-- 散落的积木 -->
+        <geom name="scatter_block_01" type="box" size="0.06 0.06 0.06" pos="0.3 8.75 0.06" rgba="0.9 0.5 0.2 1" mass="0.08"/>
+        <geom name="scatter_block_02" type="box" size="0.06 0.06 0.06" pos="0.6 9.25 0.06" rgba="0.2 0.5 0.9 1" mass="0.08"/>
+        <geom name="scatter_block_03" type="box" size="0.06 0.06 0.06" pos="0.9 9.5 0.06" rgba="0.5 0.9 0.2 1" mass="0.08"/>
+        <geom name="scatter_block_04" type="box" size="0.06 0.06 0.06" pos="1.2 9.25 0.06" rgba="0.9 0.2 0.5 1" mass="0.08"/>
+        <geom name="scatter_block_05" type="box" size="0.06 0.06 0.06" pos="1.5 8.75 0.06" rgba="0.2 0.9 0.5 1" mass="0.08"/>
+        <geom name="scatter_block_06" type="box" size="0.06 0.06 0.06" pos="1.8 9 0.06" rgba="0.5 0.2 0.9 1" mass="0.08"/>
+        
+        <!-- 玩具车配件 -->
+        <geom name="wheel_01" type="cylinder" size="0.03 0.02" pos="0.6 8.8 0.02" euler="90 0 0" rgba="0.3 0.3 0.3 1" mass="0.03"/>
+        <geom name="wheel_02" type="cylinder" size="0.025 0.02" pos="0.8 9.3 0.02" euler="90 0 0" rgba="0.4 0.4 0.4 1" mass="0.025"/>
+      </body>
+    </body>
+    
+    <!-- 机械臂部分 -->
+    <body name="robotic_arm_1" pos="5 5 3.0" euler="0 0 0">
+      <!-- 机械臂基座 -->
+      <geom class="arm" type="cylinder" size="0.1 0.1" pos="0 0 0" mass="10"/>
+      
+      <!-- 肩关节 -->
+      <body name="shoulder_link_1" pos="0 0 -0.1">
+        <joint name="shoulder_pan_joint" type="hinge" axis="0 0 1" range="-180 180" damping="0.5" armature="0.1"/>
+        <geom class="arm" type="cylinder" size="0.06 0.1" pos="0 0 0" mass="3.7"/>
+        
+        <!-- 上臂 -->
+        <body name="upper_arm_link" pos="0 0.135 0" euler="0 90 0">
+          <joint name="shoulder_lift_joint" type="hinge" axis="0 0 1" range="-180 180" damping="0.5" armature="0.1"/>
+          <geom class="arm" type="capsule" size="0.05" fromto="0 0 0 0.425 0 0" mass="8.4"/>
+          
+          <!-- 肘关节 -->
+          <body name="forearm_link" pos="0.425 0 0">
+            <joint name="elbow_joint" type="hinge" axis="0 0 1" range="-180 180" damping="0.5" armature="0.1"/>
+            <geom class="arm" type="capsule" size="0.045" fromto="0 0 0 0.392 0 0" mass="2.3"/>
+            
+            <!-- 手腕1 -->
+            <body name="wrist_1_link" pos="0.392 0 0.109" euler="0 90 0">
+              <joint name="wrist_1_joint" type="hinge" axis="0 0 1" range="-180 180" damping="0.3" armature="0.05"/>
+              <geom class="arm" type="cylinder" size="0.04 0.05" pos="0 0 0" mass="1.2"/>
+              
+              <!-- 手腕2 -->
+              <body name="wrist_2_link" pos="0 0.094 0">
+                <joint name="wrist_2_joint" type="hinge" axis="0 0 1" range="-180 180" damping="0.3" armature="0.05"/>
+                <geom class="arm" type="cylinder" size="0.035 0.04" pos="0 0 0" mass="1.2"/>
+                
+                <!-- 手腕3 / 末端法兰 -->
+                <body name="wrist_3_link" pos="0 0 0.094" euler="0 90 0">
+                  <joint name="wrist_3_joint" type="hinge" axis="0 0 1" range="-180 180" damping="0.3" armature="0.05"/>
+                  <geom class="arm" type="cylinder" size="0.03 0.03" pos="0 0 0" mass="0.8"/>
+                  
+                  <!-- 末端执行器接口 -->
+                  <site name="ee_site" pos="0 0 0.02" size="0.01" rgba="1 0 0 0.5"/>
+                  
+                  <!-- 两指夹爪 -->
+                  <body name="gripper_base" pos="0 0 0.03">
+                    <geom name="gripper_palm" type="box" size="0.03 0.03 0.01" rgba="0.3 0.3 0.3 1" mass="0.2"/>
+                    
+                    <!-- 左指 -->
+                    <body name="left_finger" pos="0 0.02 0.02">
+                      <joint name="left_finger_joint" type="slide" axis="0 1 0" range="0 0.08" damping="0.5"/>
+                      <geom name="left_finger_geom" type="box" size="0.008 0.01 0.03" rgba="0.2 0.2 0.2 1" mass="0.05"/>
+                    </body>
+                    
+                    <!-- 右指 -->
+                    <body name="right_finger" pos="0 -0.02 0.02">
+                      <joint name="right_finger_joint" type="slide" axis="0 -1 0" range="0 0.08" damping="0.5"/>
+                      <geom name="right_finger_geom" type="box" size="0.008 0.01 0.03" rgba="0.2 0.2 0.2 1" mass="0.05"/>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+    
+    <body name="robotic_arm_2" pos="2 9 3.0" euler="0 0 0">
+      <!-- 机械臂基座 -->
+      <geom class="arm" type="cylinder" size="0.1 0.1" pos="0 0 0" mass="10"/>
+      
+      <!-- 肩关节 -->
+      <body name="shoulder_link_2" pos="0 0 -0.1">
+        <joint name="shoulder_pan_joint_2" type="hinge" axis="0 0 1" range="-180 180" damping="0.5" armature="0.1"/>
+        <geom class="arm" type="cylinder" size="0.06 0.1" pos="0 0 0" mass="3.7"/>
+        
+        <!-- 上臂 -->
+        <body name="upper_arm_link_2" pos="0 0.135 0" euler="0 90 0">
+          <joint name="shoulder_lift_joint_2" type="hinge" axis="0 0 1" range="-180 180" damping="0.5" armature="0.1"/>
+          <geom class="arm" type="capsule" size="0.05" fromto="0 0 0 0.425 0 0" mass="8.4"/>
+          
+          <!-- 肘关节 -->
+          <body name="forearm_link_2" pos="0.425 0 0">
+            <joint name="elbow_joint_2" type="hinge" axis="0 0 1" range="-180 180" damping="0.5" armature="0.1"/>
+            <geom class="arm" type="capsule" size="0.045" fromto="0 0 0 0.392 0 0" mass="2.3"/>
+            
+            <!-- 手腕1 -->
+            <body name="wrist_1_link_2" pos="0.392 0 0.109" euler="0 90 0">
+              <joint name="wrist_1_joint_2" type="hinge" axis="0 0 1" range="-180 180" damping="0.3" armature="0.05"/>
+              <geom class="arm" type="cylinder" size="0.04 0.05" pos="0 0 0" mass="1.2"/>
+              
+              <!-- 手腕2 -->
+              <body name="wrist_2_link_2" pos="0 0.094 0">
+                <joint name="wrist_2_joint_2" type="hinge" axis="0 0 1" range="-180 180" damping="0.3" armature="0.05"/>
+                <geom class="arm" type="cylinder" size="0.035 0.04" pos="0 0 0" mass="1.2"/>
+                
+                <!-- 手腕3 / 末端法兰 -->
+                <body name="wrist_3_link_2" pos="0 0 0.094" euler="0 90 0">
+                  <joint name="wrist_3_joint_2" type="hinge" axis="0 0 1" range="-180 180" damping="0.3" armature="0.05"/>
+                  <geom class="arm" type="cylinder" size="0.03 0.03" pos="0 0 0" mass="0.8"/>
+                  
+                  <!-- 末端执行器接口 -->
+                  <site name="ee_site_2" pos="0 0 0.02" size="0.01" rgba="1 0 0 0.5"/>
+                  
+                  <!-- 两指夹爪 -->
+                  <body name="gripper_base_2" pos="0 0 0.03">
+                    <geom name="gripper_palm_2" type="box" size="0.03 0.03 0.01" rgba="0.3 0.3 0.3 1" mass="0.2"/>
+                    
+                    <!-- 左指 -->
+                    <body name="left_finger_2" pos="0 0.02 0.02">
+                      <joint name="left_finger_joint_2" type="slide" axis="0 1 0" range="0 0.08" damping="0.5"/>
+                      <geom name="left_finger_geom_2" type="box" size="0.008 0.01 0.03" rgba="0.2 0.2 0.2 1" mass="0.05"/>
+                    </body>
+                    
+                    <!-- 右指 -->
+                    <body name="right_finger_2" pos="0 -0.02 0.02">
+                      <joint name="right_finger_joint_2" type="slide" axis="0 -1 0" range="0 0.08" damping="0.5"/>
+                      <geom name="right_finger_geom_2" type="box" size="0.008 0.01 0.03" rgba="0.2 0.2 0.2 1" mass="0.05"/>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+  <actuator>
+    <!-- 机械臂1关节执行器 -->
+    <position name="arm1_shoulder_pan" joint="shoulder_pan_joint" kp="2000" kv="100" ctrlrange="-3.14159 3.14159"/>
+    <position name="arm1_shoulder_lift" joint="shoulder_lift_joint" kp="2000" kv="100" ctrlrange="-3.14159 3.14159"/>
+    <position name="arm1_elbow" joint="elbow_joint" kp="1500" kv="100" ctrlrange="-3.14159 3.14159"/>
+    <position name="arm1_wrist_1" joint="wrist_1_joint" kp="500" kv="50" ctrlrange="-3.14159 3.14159"/>
+    <position name="arm1_wrist_2" joint="wrist_2_joint" kp="500" kv="50" ctrlrange="-3.14159 3.14159"/>
+    <position name="arm1_wrist_3" joint="wrist_3_joint" kp="500" kv="50" ctrlrange="-3.14159 3.14159"/>
+    <!-- 机械臂1夹爪执行器 -->
+    <motor name="arm1_gripper" joint="left_finger_joint" gear="50" ctrllimited="true" ctrlrange="0 0.08"/>
+    <motor name="arm1_gripper_mirror" joint="right_finger_joint" gear="50" ctrllimited="true" ctrlrange="0 0.08"/>
+    
+    <!-- 机械臂2关节执行器 -->
+    <position name="arm2_shoulder_pan" joint="shoulder_pan_joint_2" kp="2000" kv="100" ctrlrange="-3.14159 3.14159"/>
+    <position name="arm2_shoulder_lift" joint="shoulder_lift_joint_2" kp="2000" kv="100" ctrlrange="-3.14159 3.14159"/>
+    <position name="arm2_elbow" joint="elbow_joint_2" kp="1500" kv="100" ctrlrange="-3.14159 3.14159"/>
+    <position name="arm2_wrist_1" joint="wrist_1_joint_2" kp="500" kv="50" ctrlrange="-3.14159 3.14159"/>
+    <position name="arm2_wrist_2" joint="wrist_2_joint_2" kp="500" kv="50" ctrlrange="-3.14159 3.14159"/>
+    <position name="arm2_wrist_3" joint="wrist_3_joint_2" kp="500" kv="50" ctrlrange="-3.14159 3.14159"/>
+    <!-- 机械臂2夹爪执行器 -->
+    <motor name="arm2_gripper" joint="left_finger_joint_2" gear="50" ctrllimited="true" ctrlrange="0 0.08"/>
+    <motor name="arm2_gripper_mirror" joint="right_finger_joint_2" gear="50" ctrllimited="true" ctrlrange="0 0.08"/>
+  </actuator>
+</mujoco>
