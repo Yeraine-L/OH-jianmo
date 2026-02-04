@@ -29,6 +29,7 @@
     <light name="west_soft" pos="0 6 3.0" dir="0 0 -1" diffuse="0.25 0.26 0.28" specular="0.05 0.05 0.05"/>
     <light name="east_soft" pos="10 6 3.0" dir="0 0 -1" diffuse="0.25 0.26 0.28" specular="0.05 0.05 0.05"/>
     <body name="room">
+      <camera name="top_view" pos="5 8.5 2.5" euler="-45 0 0" mode="fixed"/>
       <geom name="floor_plane" class="floor" type="plane" pos="0 0 0" size="40 40 0.1"/>
       <geom name="floor_visual" class="floor" type="box" pos="5 6 0" size="5 6 0.03" rgba="0.75 0.75 0.78 1"/>
       <!-- Decorative floor pattern - full room coverage -->
@@ -675,6 +676,7 @@
               <joint name="joint3" type="hinge" axis="0 1 0" pos="0 0 0" range="-90 90"/>
               <!-- Gripper -->
               <body name="gripper_base" pos="0 0 0.12">
+                <camera name="hand_camera" pos="0 0 0.05" fovy="45" mode="fixed" dir="0 0 1"/>
                 <geom class="metal" type="box" size="0.03 0.03 0.05" rgba="0.7 0.7 0.75 1"/>
                 <!-- Gripper fingers -->
                 <body name="gripper_finger1" pos="0.02 0 0">
